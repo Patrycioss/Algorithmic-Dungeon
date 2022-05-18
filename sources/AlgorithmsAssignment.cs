@@ -2,6 +2,7 @@ using System.Drawing;
 using GXPEngine;
 using GXPEngine.OpenGL;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
+using Saxion.CMGT.Algorithms.sources.Solution;
 using Saxion.CMGT.Algorithms.sources.Util;
 
 namespace Saxion.CMGT.Algorithms.sources
@@ -30,13 +31,13 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder = null;
 
 		//common settings
-		private const int SCALE = 20;				//TODO: experiment with changing this
-		private const int MIN_ROOM_SIZE = 7;		//TODO: use this setting in your dungeon generator
+		private const int SCALE = 20;				
+		public const int MIN_ROOM_SIZE = 7;		
 
 		public AlgorithmsAssignment() : base(800, 600, false, true, -1, -1, false)
 		{
 			/////////////////////////////////////////////////////////////////////////////////////////
-			///	BASE SETUP - FEEL FREE TO SKIP
+			//	BASE SETUP - FEEL FREE TO SKIP
 
 			//set our default background color and title
 			GL.ClearColor(1, 1, 1, 1);
@@ -52,7 +53,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			Grid grid = new Grid(width, height, SCALE);
 
 			/////////////////////////////////////////////////////////////////////////////////////////
-			///	ASSIGNMENT 1 : DUNGEON - READ CAREFULLY
+			//	ASSIGNMENT 1 : DUNGEON - READ CAREFULLY
 
 			//The Dungeon in this assignment is an object that holds Rooms & Doors instances, and
 			//extends a canvas that we scale up so that it can visualize these rooms & doors.
@@ -103,9 +104,9 @@ namespace Saxion.CMGT.Algorithms.sources
 			}
 
 			/////////////////////////////////////////////////////////////////////////////////////////
-			/// ASSIGNMENT 2 : GRAPHS, AGENTS & TILES
-			///							
-			/// SKIP THIS BLOCK UNTIL YOU'VE FINISHED ASSIGNMENT 1 AND ASKED FOR TEACHER FEEDBACK !
+			// ASSIGNMENT 2 : GRAPHS, AGENTS & TILES
+			//							
+			// SKIP THIS BLOCK UNTIL YOU'VE FINISHED ASSIGNMENT 1 AND ASKED FOR TEACHER FEEDBACK !
 
 			/////////////////////////////////////////////////////////////
 			//Assignment 2.1 Sufficient (Mandatory) High Level NodeGraph
@@ -156,9 +157,9 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Comment out the HighLevelDungeonNodeGraph above, and implement the LowLevelDungeonNodeGraph 
 
 			/////////////////////////////////////////////////////////////////////////////////////////
-			/// ASSIGNMENT 3 : PathFinding and PathFindingAgents
-			///							
-			/// SKIP THIS BLOCK UNTIL YOU'VE FINISHED ASSIGNMENT 2 AND ASKED FOR TEACHER FEEDBACK !
+			// ASSIGNMENT 3 : PathFinding and PathFindingAgents
+			//							
+			// SKIP THIS BLOCK UNTIL YOU'VE FINISHED ASSIGNMENT 2 AND ASKED FOR TEACHER FEEDBACK !
 
 			//////////////////////////////////////////////////////////////////////////
 			//Assignment 3.1 Sufficient (Mandatory) - Recursive Pathfinding
@@ -190,8 +191,8 @@ namespace Saxion.CMGT.Algorithms.sources
 			//PathFindingAgent below the creation of your PathFinder!
 
 			//------------------------------------------------------------------------------------------
-			/// REQUIRED BLOCK OF CODE TO ADD ALL OBJECTS YOU CREATED TO THE SCREEN IN THE CORRECT ORDER
-			/// LOOK BUT DON'T TOUCH :)
+			// REQUIRED BLOCK OF CODE TO ADD ALL OBJECTS YOU CREATED TO THE SCREEN IN THE CORRECT ORDER
+			// LOOK BUT DON'T TOUCH :)
 
 			if (grid != null) AddChild(grid);
 			if (dungeon != null) AddChild(dungeon);

@@ -20,3 +20,11 @@ C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\base\obj\Debug\Algorithms.csproj
 C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\base\obj\Debug\Algorithms.csproj.CoreCompileInputs.cache
 C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\base\obj\Debug\dcg.exe
 C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\base\obj\Debug\dcg.pdb
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\bin\Debug\dcg.exe.config
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\bin\Debug\dcg.exe
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\bin\Debug\dcg.pdb
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\obj\Debug\Algorithms.csproj.AssemblyReference.cache
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\obj\Debug\Algorithms.csproj.SuggestedBindingRedirects.cache
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\obj\Debug\Algorithms.csproj.CoreCompileInputs.cache
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\obj\Debug\dcg.exe
+C:\Users\patri\Documents\CMGT\YEAR 1\algorithms\algorithm\obj\Debug\dcg.pdb
