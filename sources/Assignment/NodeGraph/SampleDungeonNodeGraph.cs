@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 
 /**
  * An example of a dungeon nodegraph implementation.

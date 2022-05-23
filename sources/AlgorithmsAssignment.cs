@@ -100,7 +100,7 @@ namespace Saxion.CMGT.Algorithms.sources
 				//assign the SCALE we talked about above, so that it no longer looks like a tinietiny stamp:
 				dungeon.scale = SCALE;
 				//Tell the dungeon to generate rooms and doors with the given MIN_ROOM_SIZE
-				dungeon.Generate(MIN_ROOM_SIZE);
+				dungeon.Generate(MIN_ROOM_SIZE, 100);
 			}
 
 			/////////////////////////////////////////////////////////////////////////////////////////

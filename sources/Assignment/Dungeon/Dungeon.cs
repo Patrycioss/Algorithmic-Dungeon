@@ -2,6 +2,7 @@
 using GXPEngine.OpenGL;
 using System.Collections.Generic;
 using System.Drawing;
+using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 
 /**
  * The base Dungeon class. 
@@ -59,14 +60,14 @@ abstract class Dungeon : Canvas
 	 * 
 	 * @param pMinimumRoomSize the minimum size that a room should have
 	 */
-	public void Generate(int pMinimumRoomSize)
+	public void Generate(int pMinimumRoomSize, int seed)
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Generating dungeon...");
 
 		rooms.Clear();
 		doors.Clear();
 
-		generate(pMinimumRoomSize);
+		generate(pMinimumRoomSize, seed);
 
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Dungeon generated.");
 
@@ -74,7 +75,7 @@ abstract class Dungeon : Canvas
 	}
 
 	//TODO: Override this method in your subclass to generate a dungeon as described in assignment 1
-	protected abstract void generate(int pMinimumRoomSize);
+	protected abstract void generate(int pMinimumRoomSize, int seed);
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	///	This section contains helper methods to draw all or specific doors/rooms

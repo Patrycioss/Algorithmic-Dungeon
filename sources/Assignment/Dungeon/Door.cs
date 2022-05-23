@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 
 /**
  * This class represents (the data for) a Door, at this moment only a position in the dungeon.
@@ -10,16 +11,21 @@ class Door
 
 	//Keeping tracks of the Rooms that this door connects to,
 	//might make your life easier during some of the assignments
-	public Room roomA = null;
-	public Room roomB = null;
+	public Room roomA;
+	public Room roomB;
+
+	
 
 	//You can also keep track of additional information such as whether the door connects horizontally/vertically
 	//Again, whether you need flags like this depends on how you implement the algorithm, maybe you need other flags
-	public bool horizontal = false;
+	public readonly bool horizontal;
+	public readonly Point boundaries;
 
-	public Door(Point pLocation)
+	public Door(Point pLocation, bool pHorizontal = false, Point pBoundaries = new Point())
 	{
 		location = pLocation;
+		horizontal = pHorizontal;
+		boundaries = pBoundaries;
 	}
 
 	//TODO: Implement a toString method for debugging
