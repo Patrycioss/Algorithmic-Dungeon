@@ -1,8 +1,11 @@
-﻿using GXPEngine;
-using GXPEngine.OpenGL;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
+using System.Linq;
+using GXPEngine;
+using GXPEngine.OpenGL;
+
+namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 
 /**
  * The base Dungeon class. 
@@ -15,8 +18,8 @@ using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
  * TODO:
  * - Read carefully through all the code below, so that you know which helper methods are available to you.
  * - Create a subclass of this class and override the generate method (see the SampleDungeon for an example).
- */ 
-abstract class Dungeon : Canvas
+ */
+internal abstract class Dungeon : Canvas
 {
 	//the (unscaled) dimensions of the dungeon (basically how 'tiles' wide and high)
 	public readonly Size size;
@@ -34,11 +37,14 @@ abstract class Dungeon : Canvas
 	private Pen wallPen = new Pen(Color.FromArgb(255, Color.Black));
 	private Pen doorPen = Pens.White;
 
+
+	protected int minimumRoomSize;
+
 	/**
 	 * Create empty dungeon instance of the specified size.
 	 * It's empty because it doesn't contain any rooms yet.
 	 */
-	public Dungeon(Size pSize) : base(pSize.Width, pSize.Height)
+	protected Dungeon(Size pSize) : base(pSize.Width, pSize.Height)
 	{
 		size = pSize;
 
@@ -67,26 +73,27 @@ abstract class Dungeon : Canvas
 		rooms.Clear();
 		doors.Clear();
 
-		generate(pMinimumRoomSize, seed);
+		minimumRoomSize = pMinimumRoomSize;
+		Make(pMinimumRoomSize, seed);
 
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Dungeon generated.");
 
-		if (autoDrawAfterGenerate) draw();
+		if (autoDrawAfterGenerate) Draw();
 	}
 
-	//TODO: Override this method in your subclass to generate a dungeon as described in assignment 1
-	protected abstract void generate(int pMinimumRoomSize, int seed);
+	//TODO: Override this method in your subclass to make a dungeon as described in assignment 1
+	protected abstract void Make(int pMinimumRoomSize, int seed);
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	///	This section contains helper methods to draw all or specific doors/rooms
 	///	You can call them from your own methods to actually draw the dungeon during/after generation
 	///	These methods do not have to be changed.
 
-	protected virtual void draw()
+	protected virtual void Draw()
 	{
 		graphics.Clear(Color.Transparent);
-		drawRooms(rooms, wallPen);    
-		drawDoors(doors, doorPen);
+		DrawRooms(rooms, wallPen);    
+		DrawDoors(doors, doorPen);
 	}
 
 	/**
@@ -95,11 +102,11 @@ abstract class Dungeon : Canvas
 	 * @param pWallColor	the color of the walls
 	 * @param pFillColor	if not null, the color of the inside of the room, if null insides will be transparent
 	 */
-	protected virtual void drawRooms(IEnumerable<Room> pRooms, Pen pWallColor, Brush pFillColor = null)
+	protected virtual void DrawRooms(IEnumerable<Room> pRooms, Pen pWallColor, Brush pFillColor = null)
 	{
 		foreach (Room room in pRooms)
 		{
-			drawRoom(room, pWallColor, pFillColor);
+			DrawRoom(room, pWallColor, pFillColor);
 		}
 	}
 
@@ -109,7 +116,7 @@ abstract class Dungeon : Canvas
 	 * @param pWallColor	the color of the walls
 	 * @param pFillColor	if not null, the color of the inside of the room, if null insides will be transparent
 	 */
-	protected virtual void drawRoom (Room pRoom, Pen pWallColor, Brush pFillColor = null)
+	protected virtual void DrawRoom (Room pRoom, Pen pWallColor, Brush pFillColor = null)
 	{
 		//the -0.5 has two reasons:
 		//- Doing it this way actually makes sure that an area of 0,0,4,4 (x,y,width,height) is draw as an area of 0,0,4,4
@@ -118,15 +125,15 @@ abstract class Dungeon : Canvas
 		graphics.DrawRectangle(pWallColor, pRoom.area.Left, pRoom.area.Top, pRoom.area.Width - 0.5f, pRoom.area.Height - 0.5f);
 	}
 
-	protected virtual void drawDoors(IEnumerable<Door> pDoors, Pen pColor)
+	protected virtual void DrawDoors(IEnumerable<Door> pDoors, Pen pColor)
 	{
 		foreach (Door door in pDoors)
 		{
-			drawDoor(door, pColor);
+			DrawDoor(door, pColor);
 		}
 	}
 
-	protected virtual void drawDoor (Door pDoor, Pen pColor)
+	protected virtual void DrawDoor (Door pDoor, Pen pColor)
 	{
 		//note the 0.5, 0.5, this forces the drawing api to draw at least 1 pixel ;)
 		graphics.DrawRectangle(pColor, pDoor.location.X, pDoor.location.Y, 0.5f, 0.5f);

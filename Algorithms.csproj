@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -148,6 +149,7 @@
     <Compile Include="sources\Assignment\Tiles\TiledView.cs" />
     <Compile Include="sources\Program.cs" />
     <Compile Include="sources\Assignment\PathFinding\PathFinder.cs" />
+    <Compile Include="sources\Solution\Functions.cs" />
     <Compile Include="sources\Solution\SufficientDungeon.cs" />
     <Compile Include="sources\Util\Grid.cs" />
     <Compile Include="sources\Util\NodeLabelDrawer.cs" />

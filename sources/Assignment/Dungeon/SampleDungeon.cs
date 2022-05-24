@@ -7,7 +7,7 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
  * An example of a dungeon implementation.  
  * This implementation places two rooms manually but your implementation has to do it procedurally.
  */
-	class SampleDungeon : global::Dungeon
+	class SampleDungeon : global::Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Dungeon
 	{
 		public SampleDungeon(Size pSize) : base(pSize) {}
 
@@ -21,7 +21,7 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
 	 * - playing/experiment freely is the key to all success
 	 * - this problem can be solved both iteratively or recursively
 	 */
-		protected override void generate(int pMinimumRoomSize, int seed)
+		protected override void Make(int pMinimumRoomSize, int seed)
 		{
 			//left room from 0 to half of screen + 1 (so that the walls overlap with the right room)
 			//(TODO: experiment with removing the +1 below to see what happens with the walls)

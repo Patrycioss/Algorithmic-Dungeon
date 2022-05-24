@@ -1,11 +1,12 @@
 ﻿using System.Drawing;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
+#nullable enable
 
 /**
  * This class represents (the data for) a Door, at this moment only a position in the dungeon.
  * Changes to this class might be required based on your specific implementation of the algorithm.
  */
-class Door
+public class Door
 {
 	public readonly Point location;
 
@@ -21,11 +22,16 @@ class Door
 	public readonly bool horizontal;
 	public readonly Point boundaries;
 
-	public Door(Point pLocation, bool pHorizontal = false, Point pBoundaries = new Point())
+	public Door(Point pLocation, bool pHorizontal = false, Point pBoundaries = new Point(), Room pRoomA = null, Room pRoomB = null)
 	{
 		location = pLocation;
 		horizontal = pHorizontal;
 		boundaries = pBoundaries;
+		roomA = pRoomA;
+		roomB = pRoomB;
+
+		roomA?.doors.Add(this);
+		roomB?.doors.Add(this);
 	}
 
 	//TODO: Implement a toString method for debugging
