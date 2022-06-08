@@ -27,7 +27,7 @@ internal class SufficientDungeonNodeGraph : NodeGraph
 	{
 		foreach (Door door in doors)
 		{
-			Node node = new Node(GetDoorCenter(door));
+			Node node = new(GetDoorCenter(door));
 			nodes.Add(node);
 			
 			doorNodes.Add(door,node);
@@ -35,7 +35,7 @@ internal class SufficientDungeonNodeGraph : NodeGraph
 
 		foreach (Room room in rooms)
 		{
-			Node roomNode = new Node(GetRoomCenter(room));
+			Node roomNode = new(GetRoomCenter(room));
 			nodes.Add(roomNode);
 			
 			foreach (Door door in room.doors)
