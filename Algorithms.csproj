@@ -153,6 +153,7 @@
     <Compile Include="sources\Solution\ExcellentDungeon.cs" />
     <Compile Include="sources\Solution\Generator.cs" />
     <Compile Include="sources\Solution\GoodDungeon.cs" />
+    <Compile Include="sources\Solution\GoodDungeonNodeGraphAgent.cs" />
     <Compile Include="sources\Solution\SufficientDungeon.cs" />
     <Compile Include="sources\Solution\SufficientDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\SufficientNodeGraphAgent.cs" />
