@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 /**
  * This class is the base class for your pathfinder, you 'only' have to override generate so that it returns
@@ -32,8 +33,8 @@ abstract class PathFinder : Canvas
 	public PathFinder (NodeGraph pGraph) : base (pGraph.width, pGraph.height)
 	{
 		_nodeGraph = pGraph;
-		_nodeGraph.OnNodeShiftLeftClicked += (node) => { _startNode = node; draw(); };
-		_nodeGraph.OnNodeShiftRightClicked += (node) => { _endNode = node; draw(); };
+		_nodeGraph.onNodeShiftLeftClicked += (node) => { _startNode = node; draw(); };
+		_nodeGraph.onNodeShiftRightClicked += (node) => { _endNode = node; draw(); };
 
 		Console.WriteLine("\n-----------------------------------------------------------------------------");
 		Console.WriteLine(this.GetType().Name + " created.");

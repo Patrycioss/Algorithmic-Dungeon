@@ -1,7 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
+using System.IO;
 using GXPEngine;
 using GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
+using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Solution;
 using Saxion.CMGT.Algorithms.sources.Util;
 
@@ -17,7 +23,7 @@ namespace Saxion.CMGT.Algorithms.sources
  * split into 3 major parts (see below). This means that you have three 2 week sprints to
  * work on your assignments.
  */
-	class AlgorithmsAssignment : Game
+	public class AlgorithmsAssignment : Game
 	{
 		//Required for assignment 1
 		private Dungeon dungeon = null;
@@ -31,14 +37,22 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder = null;
 
 		//common settings
-		private const int SCALE = 20;				
+		private const int SCALE = 15;				
 		public const int MIN_ROOM_SIZE = 7;		
 
 		public AlgorithmsAssignment() : base(800, 600, false, true, -1, -1, false)
 		{
+			Create();
+		}
+
+		private void Create(int seed = int.MaxValue)
+		{
+			if (seed == int.MaxValue) seed = new Random().Next();
+
 			/////////////////////////////////////////////////////////////////////////////////////////
 			//	BASE SETUP - FEEL FREE TO SKIP
-
+			
+			
 			//set our default background color and title
 			GL.ClearColor(1, 1, 1, 1);
 			GL.glfwSetWindowTitle("Algorithms Game");
@@ -77,7 +91,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Comment out SampleDungeon below, implement a SufficientDungeon class and uncomment it below
 
 			// dungeon = new SampleDungeon(size);
-			dungeon = new SufficientDungeon(size);
+			// dungeon = new SufficientDungeon(size);
 
 			/////////////////////////////////
 			//Assignment 1.2 Good (optional)
@@ -85,7 +99,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study assignment 1.2 on blackboard
 			//TODO: Comment out SufficientDungeon above, implement a GoodDungeon class, and uncomment it below
 
-			//_dungeon = new GoodDungeon(size);
+			dungeon = new BetterDungeon(size);
 
 			//////////////////////////////////////
 			//Assignment 1.3 Excellent (optional)
@@ -100,7 +114,7 @@ namespace Saxion.CMGT.Algorithms.sources
 				//assign the SCALE we talked about above, so that it no longer looks like a tinietiny stamp:
 				dungeon.scale = SCALE;
 				//Tell the dungeon to generate rooms and doors with the given MIN_ROOM_SIZE
-				dungeon.Generate(MIN_ROOM_SIZE, 100);
+				dungeon.Generate(MIN_ROOM_SIZE, seed);
 			}
 
 			/////////////////////////////////////////////////////////////////////////////////////////
@@ -116,7 +130,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleDungeonNodeGraph class and try it out below
 			//TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
-			//_graph = new SampleDungeonNodeGraph(_dungeon);
+			graph = new SufficientDungeonNodeGraph(dungeon);
 			//_graph = new HighLevelDungeonNodeGraph(_dungeon);
 			//_graph = new LowLevelDungeonNodeGraph(_dungeon);
 
@@ -129,8 +143,8 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleNodeGraphAgent class and try it out below
 			//TODO: Comment out the SampleNodeGraphAgent again, implement an OnGraphWayPointAgent class and uncomment it below
 
-			//_agent = new SampleNodeGraphAgent(_graph);
-			//_agent = new OnGraphWayPointAgent(_graph);
+			agent = new SufficientNodeGraphAgent(graph);
+			// agent = new SufficientDungeonNodeGraph(graph);
 
 			////////////////////////////////////////////////////////////
 			//Assignment 2.2 Good (Optional) TiledView
@@ -198,13 +212,42 @@ namespace Saxion.CMGT.Algorithms.sources
 			if (dungeon != null) AddChild(dungeon);
 			if (graph != null) AddChild(graph);
 			if (tiledView != null) AddChild(tiledView);
-			if (pathFinder != null) AddChild(pathFinder);				//pathfinder on top of that
-			if (graph != null) AddChild(new NodeLabelDrawer(graph));	//node label display on top of that
-			if (agent != null) AddChild(agent);                       //and last but not least the agent itself
+			if (pathFinder != null) AddChild(pathFinder); //pathfinder on top of that
+			if (graph != null) AddChild(new NodeLabelDrawer(graph)); //node label display on top of that
+			if (agent != null) AddChild(agent); //and last but not least the agent itself
 
 			/////////////////////////////////////////////////
 			//The end!
 			////
+		}
+
+		private void Update()
+		{
+			if (Input.GetKeyDown(Key.SPACE))
+			{
+				ClearScreen();
+				Create();
+			}
+			
+			
+			for (int i = 48; i <= 57; i++)
+			{
+				if (Input.GetKeyDown(i))
+				{
+					ClearScreen();
+					Create(i);
+				}
+			}
+
+			void ClearScreen()
+			{
+				List<GameObject> list = GetChildren();
+				for (int index = list.Count-1; index >= 0; index--)
+				{
+					GameObject gameObject = list[index];
+					gameObject.Destroy();
+				}	
+			}
 		}
 	}
 }

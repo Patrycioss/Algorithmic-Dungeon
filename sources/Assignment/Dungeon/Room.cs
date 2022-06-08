@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
@@ -15,7 +14,7 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
 		public Point topRight;
 		public Point bottomLeft;
 		public Point bottomRight;
-
+		
 		public List<Door> doors;
 
 		public Room (Rectangle pArea)
@@ -31,8 +30,9 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
 		}
 
 		public int surface => area.Width * area.Height;
-		
-		
+
+		public Point center => new Point(area.X + area.Width / 2, area.Y + area.Height / 2);
+
 
 
 		//TODO: Implement a toString method for debugging?
