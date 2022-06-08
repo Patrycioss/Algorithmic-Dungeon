@@ -1,6 +1,7 @@
 ﻿using GXPEngine;
 using System;
 using System.Collections.Generic;
+using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 /**
  * An example of a PathFinder implementation which completes the process by rolling a die 

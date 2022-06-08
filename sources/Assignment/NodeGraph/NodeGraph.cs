@@ -1,32 +1,34 @@
-﻿using GXPEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using GXPEngine;
 
-/**
- * Very basic implementation of a NodeGraph class that:
- * - contains Nodes
- * - can detect node clicks
- * - can draw itself
- * - add connections between nodes though a helper method
- * 
- * See SampleDungeonNodeGraph for more info on the todos.
- */
-abstract class NodeGraph : Canvas
+namespace Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
+
+
+ // Very basic implementation of a NodeGraph class that:
+ // - contains Nodes
+ // - can detect node clicks
+ // - can draw itself
+ // - add connections between nodes though a helper method
+ 
+ // See SampleDungeonNodeGraph for more info on the todos.
+
+internal abstract class NodeGraph : Canvas
 {
-	//references to all the nodes in our nodegraph
-	public readonly List<Node> nodes = new List<Node>();
+	//references to all the nodes in our node graph
+	public readonly List<Node> nodes = new(); 
 
 	//event handlers, register for any of these events if interested
 	//see SampleNodeGraphAgent for an example of a LeftClick event handler.
 	//see PathFinder for an example of a Shift-Left/Right Click event handler.
-	public Action<Node> OnNodeLeftClicked = delegate { };
-	public Action<Node> OnNodeRightClicked = delegate { };
-	public Action<Node> OnNodeShiftLeftClicked = delegate { };
-	public Action<Node> OnNodeShiftRightClicked = delegate { };
+	public Action<Node> onNodeLeftClicked = delegate { };
+	public Action<Node> onNodeRightClicked = delegate { };
+	public Action<Node> onNodeShiftLeftClicked = delegate { };
+	public Action<Node> onNodeShiftRightClicked = delegate { };
 
 	//required for node highlighting on mouse over
-	private Node _nodeUnderMouse = null;
+	private Node nodeUnderMouse;
 
 	//some drawing settings
 	public int nodeSize { get; private set; }
@@ -35,23 +37,24 @@ abstract class NodeGraph : Canvas
 	private Brush _defaultNodeColor = Brushes.CornflowerBlue;
 	private Brush _highlightedNodeColor = Brushes.Cyan;
 	
-	/** 
-	 * Construct a nodegraph with the given screen dimensions, eg 800x600
-	 */
-	public NodeGraph(int pWidth, int pHeight, int pNodeSize) : base(pWidth, pHeight)
+	
+	/// <summary>
+	/// Construct a nodeGraph with the given screen dimensions, eg 800x600
+	/// </summary>
+	protected NodeGraph(int pWidth, int pHeight, int pNodeSize) : base(pWidth, pHeight)
 	{
 		nodeSize = pNodeSize;
 
 		Console.WriteLine("\n-----------------------------------------------------------------------------");
-		Console.WriteLine(this.GetType().Name + " created.");
+		Console.WriteLine(GetType().Name + " created.");
 		Console.WriteLine("* (Shift) LeftClick/RightClick on nodes to trigger the corresponding events.");
 		Console.WriteLine("-----------------------------------------------------------------------------");
 	}
 
-	/**
-	 * Convenience method for adding a connection between two nodes in the nodegraph
-	 */
-	public void AddConnection(Node pNodeA, Node pNodeB)
+	/// <summary>
+	/// Convenience method for adding a connection between two nodes in the nodeGraph
+	/// </summary>
+	protected void AddConnection(Node pNodeA, Node pNodeB)
 	{
 		if (nodes.Contains(pNodeA) && nodes.Contains(pNodeB))
 		{
@@ -60,41 +63,38 @@ abstract class NodeGraph : Canvas
 		}
 	}
 
-	/**
-	 * Trigger the node graph generation process, do not override this method, 
-	 * but override generate (note the lower case) instead, calling AddConnection as required.
-	 */
+	/// <summary>
+	/// Trigger the node graph generation process, do not override this method,
+	/// but override generate (note the lower case) instead, calling AddConnection as required.
+	/// </summary>
 	public void Generate()
 	{
-		System.Console.WriteLine(this.GetType().Name + ".Generate: Generating graph...");
+		Console.WriteLine(GetType().Name + ".Generate: Generating graph...");
 
 		//always remove all nodes before generating the graph, as it might have been generated previously
 		nodes.Clear();
-		generate();
-		draw();
+		ActualGenerate();
+		Draw();
 
-		System.Console.WriteLine(this.GetType().Name + ".Generate: Graph generated.");
+		Console.WriteLine(GetType().Name + ".Generate: Graph generated.");
 	}
 
-	protected abstract void generate();
+	protected abstract void ActualGenerate();
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	/// NodeGraph visualization helper methods
-	///
-
-	protected virtual void draw()
+	//NodeGraph visualization helper methods
+	protected virtual void Draw()
 	{
 		graphics.Clear(Color.Transparent);
-		drawAllConnections();
-		drawNodes();
+		DrawAllConnections();
+		DrawNodes();
 	}
 
-	protected virtual void drawNodes()
+	protected virtual void DrawNodes()
 	{
-		foreach (Node node in nodes) drawNode(node, _defaultNodeColor);
+		foreach (Node node in nodes) DrawNode(node, _defaultNodeColor);
 	}
 
-	protected virtual void drawNode(Node pNode, Brush pColor)
+	protected virtual void DrawNode(Node pNode, Brush pColor)
 	{
 		//colored node fill
 		graphics.FillEllipse(
@@ -115,22 +115,22 @@ abstract class NodeGraph : Canvas
 		);
 	}
 
-	protected virtual void drawAllConnections()
+	protected virtual void DrawAllConnections()
 	{
 		//note that this means all connections are drawn twice, once from A->B and once from B->A
 		//but since is only a debug view we don't care
-		foreach (Node node in nodes) drawNodeConnections(node);
+		foreach (Node node in nodes) DrawNodeConnections(node);
 	}
 
-	protected virtual void drawNodeConnections(Node pNode)
+	protected virtual void DrawNodeConnections(Node pNode)
 	{
 		foreach (Node connection in pNode.connections)
 		{
-			drawConnection(pNode, connection);
+			DrawConnection(pNode, connection);
 		}
 	}
 
-	protected virtual void drawConnection(Node pStartNode, Node pEndNode)
+	protected virtual void DrawConnection(Node pStartNode, Node pEndNode)
 	{
 		graphics.DrawLine(_connectionPen, pStartNode.location, pEndNode.location);
 	}
@@ -142,14 +142,14 @@ abstract class NodeGraph : Canvas
 	//this has to be virtual or public otherwise the subclass won't pick it up
 	protected virtual void Update()
 	{
-		handleMouseInteraction();
+		HandleMouseInteraction();
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	///							Node click handling
 	///							
 
-	protected virtual void handleMouseInteraction()
+	protected virtual void HandleMouseInteraction()
 	{
 		//then check if one of the nodes is under the mouse and if so assign it to _nodeUnderMouse
 		Node newNodeUnderMouse = null;
@@ -163,16 +163,16 @@ abstract class NodeGraph : Canvas
 			}
 		}
 
-		//do mouse node hightlighting
-		if (newNodeUnderMouse != _nodeUnderMouse)
+		//do mouse node highlighting
+		if (newNodeUnderMouse != nodeUnderMouse)
 		{
-			if (_nodeUnderMouse != null) drawNode(_nodeUnderMouse, _defaultNodeColor);
-			_nodeUnderMouse = newNodeUnderMouse;
-			if (_nodeUnderMouse != null) drawNode(_nodeUnderMouse, _highlightedNodeColor);
+			if (nodeUnderMouse != null) DrawNode(nodeUnderMouse, _defaultNodeColor);
+			nodeUnderMouse = newNodeUnderMouse;
+			if (nodeUnderMouse != null) DrawNode(nodeUnderMouse, _highlightedNodeColor);
 		}
 
 		//if we are still not hovering over a node, we are done
-		if (_nodeUnderMouse == null) return;
+		if (nodeUnderMouse == null) return;
 
 		//If _nodeUnderMouse is not null, check if we released the mouse on it.
 		//This is architecturally not the best way, but for this assignment 
@@ -180,20 +180,21 @@ abstract class NodeGraph : Canvas
 
 		if (Input.GetKey(Key.LEFT_SHIFT) || Input.GetKey(Key.RIGHT_SHIFT))
 		{
-			if (Input.GetMouseButtonUp(0)) OnNodeShiftLeftClicked(_nodeUnderMouse);
-			if (Input.GetMouseButtonUp(1)) OnNodeShiftRightClicked(_nodeUnderMouse);
+			if (Input.GetMouseButtonUp(0)) onNodeShiftLeftClicked(nodeUnderMouse);
+			if (Input.GetMouseButtonUp(1)) onNodeShiftRightClicked(nodeUnderMouse);
 		}
 		else
 		{
-			if (Input.GetMouseButtonUp(0)) OnNodeLeftClicked(_nodeUnderMouse);
-			if (Input.GetMouseButtonUp(1)) OnNodeRightClicked(_nodeUnderMouse);
+			if (Input.GetMouseButtonUp(0)) onNodeLeftClicked(nodeUnderMouse);
+			if (Input.GetMouseButtonUp(1)) onNodeRightClicked(nodeUnderMouse);
 		}
 	}
 
-	/**
-	 * Checks whether the mouse is over a Node.
-	 * This assumes local and global space are the same.
-	 */
+	/// <summary>
+	/// Checks whether the mouse is over a Node. This assumes local and global space are the same.
+	/// </summary>
+	/// <param name="pNode"></param>
+	/// <returns></returns>
 	public bool IsMouseOverNode(Node pNode)
 	{
 		//ah life would be so much easier if we'd all just use Vec2's ;)

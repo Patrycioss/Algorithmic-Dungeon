@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using GXPEngine;
+
+namespace Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 /**
  * This class represents a single node in a nodegraph.
@@ -11,7 +14,7 @@ using System.Drawing;
  * navigation graph. A node in a boardgame for example might represent completely different data, 
  * such as the current state of the board.
  */
-class Node
+public class Node
 {
 	public readonly List<Node> connections = new List<Node>();
 
@@ -36,10 +39,9 @@ class Node
 		id = ""+lastID++;
 		System.Console.WriteLine(id);
 	}
-
+	
 	public override string ToString()
 	{
 		return id;
 	}
 }
-
