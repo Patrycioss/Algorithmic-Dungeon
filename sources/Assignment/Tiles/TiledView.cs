@@ -1,6 +1,8 @@
-using GXPEngine;
-using GXPEngine.Core;
 using System.Diagnostics;
+using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
+
+namespace Saxion.CMGT.Algorithms.sources.Assignment.Tiles;
 
 /**
  * A TileView class that allows you to set a 2D array of tiles and render them on screen.
@@ -11,11 +13,11 @@ using System.Diagnostics;
  */
 abstract class TiledView : GameObject
 {
-	//the dimensions of the tileview
-	public int columns { get; private set; }
-	public int rows { get; private set; }
+	//the dimensions of the tileView
+	public int columns { get; }
+	public int rows { get; }
 	//stores the tiletype for each cell (and with it whether a tile is walkable)
-	private TileType[,] _tileData;
+	private TileType[,] tileData;
 	//used to reset all data to the default tiletype when requested
 	private TileType _defaultTileType;
 	//single sprite, used for rendering all tiles
@@ -35,22 +37,22 @@ abstract class TiledView : GameObject
 		_tileSet = new AnimationSprite("assets/tileset.png", 3, 1);
 		_tileSet.width = _tileSet.height = pTileSize;
 
-		initializeTiles();
+		InitializeTiles();
 	}
 
-	private void initializeTiles ()
+	private void InitializeTiles ()
 	{
 		//initialize all tiles to walkable
-		_tileData = new TileType[columns, rows];
-		resetAllTilesToDefault();
+		tileData = new TileType[columns, rows];
+		ResetAllTilesToDefault();
 	}
 
-	protected void resetAllTilesToDefault()
+	protected void ResetAllTilesToDefault()
 	{
 		//a 'trick' to do everything in one for loop instead of a nested loop
 		for (int i = 0; i < columns * rows; i++)
 		{
-			_tileData[i % columns, i / columns] = _defaultTileType;
+			tileData[i % columns, i / columns] = _defaultTileType;
 		}
 	}
 
@@ -61,7 +63,7 @@ abstract class TiledView : GameObject
 		Debug.Assert(pRow >= 0 && pRow < rows, "Invalid row passed in:" + pRow);
 		Debug.Assert(pTileType != null, "Invalid tile type passed in:" + pTileType);
 
-		_tileData[pColumn, pRow] = pTileType;
+		tileData[pColumn, pRow] = pTileType;
 	}
 
 	public TileType GetTileType(int pColumn, int pRow)
@@ -69,7 +71,7 @@ abstract class TiledView : GameObject
 		Debug.Assert(pColumn >= 0 && pColumn < columns, "Invalid column passed in: " + pColumn);
 		Debug.Assert(pRow >= 0 && pRow < rows, "Invalid row passed in:" + pRow);
 
-		return _tileData[pColumn, pRow];
+		return tileData[pColumn, pRow];
 	}
 
 	protected override void RenderSelf(GLContext glContext)
@@ -93,14 +95,13 @@ abstract class TiledView : GameObject
 	 * Trigger the tile view generation process, do not override this method, 
 	 * but override generate (note the lower case) instead.
 	 */
-	public void Generate()
+	public void InternalGenerate()
 	{
-		System.Console.WriteLine(this.GetType().Name + ".Generate: Generating tile view...");
-		generate();
-		System.Console.WriteLine(this.GetType().Name + ".Generate: tile view generated.");
+		System.Console.WriteLine(GetType().Name + ".Generate: Generating tile view...");
+		Generate();
+		System.Console.WriteLine(GetType().Name + ".Generate: tile view generated.");
 	}
 
-	protected abstract void generate();
+	protected abstract void Generate();
 
 }
-

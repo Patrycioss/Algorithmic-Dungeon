@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using GXPEngine;
-using GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 

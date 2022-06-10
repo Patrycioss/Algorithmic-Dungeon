@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Drawing.Text;
 
-namespace GXPEngine 
+namespace Saxion.CMGT.Algorithms.GXPEngine.AddOns 
 {
 	public enum CenterMode {Min, Center, Max}
 

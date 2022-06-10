@@ -1,7 +1,9 @@
-﻿using GXPEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
+
+namespace Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 
 /**
  * An example of a PathFinder implementation which completes the process by rolling a die 
@@ -9,7 +11,7 @@ using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
  */
 class SamplePathFinder : PathFinder	{
 
-	public SamplePathFinder(NodeGraph pGraph) : base(pGraph) {}
+	public SamplePathFinder(NodeGraph.NodeGraph pGraph) : base(pGraph) {}
 
 	protected override List<Node> generate(Node pFrom, Node pTo)
 	{
@@ -33,4 +35,3 @@ class SamplePathFinder : PathFinder	{
 	}
 
 }
-

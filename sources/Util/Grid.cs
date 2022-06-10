@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine;
 
 namespace Saxion.CMGT.Algorithms.sources.Util
 {

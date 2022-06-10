@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
-using GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine
 {
 	/// <summary>
 	/// GameObject is the base class for all display objects. 

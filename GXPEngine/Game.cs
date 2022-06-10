@@ -1,9 +1,9 @@
 using System;
-using GXPEngine.Core;
-using GXPEngine.Managers;
 using System.Collections.Generic;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.Managers;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine
 {
 	/// <summary>
 	/// The Game class represents the Game window.

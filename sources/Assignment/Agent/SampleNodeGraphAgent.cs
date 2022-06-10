@@ -1,4 +1,4 @@
-﻿using GXPEngine;
+﻿using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.Agent;

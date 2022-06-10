@@ -1,4 +1,4 @@
-namespace GXPEngine {
+namespace Saxion.CMGT.Algorithms.GXPEngine.AddOns {
 	/// <summary>
 	/// A Camera gameobject, that owns a rectangular render window, and determines the focal point, rotation and scale
 	/// of what's rendered in that window.

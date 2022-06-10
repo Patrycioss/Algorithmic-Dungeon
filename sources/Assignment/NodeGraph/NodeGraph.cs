@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 

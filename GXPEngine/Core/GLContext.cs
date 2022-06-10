@@ -1,7 +1,8 @@
 using System;
-using GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 
-namespace GXPEngine.Core {
+namespace Saxion.CMGT.Algorithms.GXPEngine.Core {
 
 	class WindowSize {
 		public static WindowSize instance = new WindowSize();

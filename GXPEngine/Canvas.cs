@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
-using GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine
 {
 	/// <summary>
 	/// The Canvas object can be used for drawing 2D visuals at runtime.

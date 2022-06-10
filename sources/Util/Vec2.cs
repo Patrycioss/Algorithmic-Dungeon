@@ -3,7 +3,7 @@
 /**
  * It's back. The basic basic Vec2 class from Physics Programming.
  */
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.sources.Util
 {
 	public struct Vec2 
 	{

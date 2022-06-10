@@ -1,7 +1,7 @@
 using System;
-using GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine
 {
 	/// <summary>
 	/// Animated Sprite. Has all the functionality of a regular sprite, but supports multiple animation frames/subimages.

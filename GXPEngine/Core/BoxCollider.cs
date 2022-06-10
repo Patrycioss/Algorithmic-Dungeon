@@ -1,6 +1,6 @@
 using System;
 
-namespace GXPEngine.Core
+namespace Saxion.CMGT.Algorithms.GXPEngine.Core
 {
 	public class BoxCollider : Collider
 	{

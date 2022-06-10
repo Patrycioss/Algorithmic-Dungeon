@@ -1,7 +1,6 @@
-using GXPEngine;
 using System.Collections.Generic;
 
-namespace GXPEngine {
+namespace Saxion.CMGT.Algorithms.GXPEngine.AddOns {
 	/// <summary>
 	/// If you are getting strange bugs because you are calling Destroy during the Update loop, 
 	/// you can use this class to do this more cleanly: when using 

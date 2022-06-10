@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Xml;
 using System.Xml.Serialization;
 
-namespace TiledMapParser
+namespace Saxion.CMGT.Algorithms.GXPEngine.AddOns
 {
 	/// <summary>
 	/// Call the method MapParser.ReadMap, with as argument a Tiled file exported as xml (file extension: .tmx),
@@ -37,7 +36,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("map")]
+	[XmlRoot("map")]
 	public class Map {
 		[XmlAttribute("width")]
 		public int Width;
@@ -110,7 +109,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("tileset")]
+	[XmlRoot("tileset")]
 	public class TileSet {
 		[XmlAttribute("tilewidth")]
 		public int TileWidth;
@@ -213,7 +212,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("imagelayer")]
+	[XmlRoot("imagelayer")]
 	public class ImageLayer : PropertyContainer {
 		[XmlAttribute("name")]
 		public string Name;
@@ -229,7 +228,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("image")]
+	[XmlRoot("image")]
 	public class Image {
 		[XmlAttribute("width")]		// width in pixels
 		public int Width;
@@ -243,7 +242,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("layer")]
+	[XmlRoot("layer")]
 	public class Layer : PropertyContainer {
 		[XmlAttribute("name")]
 		public string Name;
@@ -262,7 +261,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("data")]
+	[XmlRoot("data")]
 	public class Data {
 		[XmlAttribute("encoding")]
 		public string Encoding;
@@ -274,7 +273,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("properties")]
+	[XmlRoot("properties")]
 	public class PropertyList {
 		[XmlElement("property")]
 		public Property[] properties;
@@ -287,7 +286,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("property")]
+	[XmlRoot("property")]
 	public class Property {
 		[XmlAttribute("name")]
 		public string Name;
@@ -301,7 +300,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("objectgroup")]
+	[XmlRoot("objectgroup")]
 	public class ObjectGroup : PropertyContainer {
 		[XmlAttribute("name")]
 		public string Name;
@@ -317,7 +316,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("text")]
+	[XmlRoot("text")]
 	public class Text {
 		[XmlAttribute("fontfamily")]
 		public string font;
@@ -349,7 +348,7 @@ namespace TiledMapParser
 		}
 	}
 
-	[XmlRootAttribute("object")]
+	[XmlRoot("object")]
 	public class TiledObject : PropertyContainer {
 		[XmlAttribute("id")]
 		public int ID;

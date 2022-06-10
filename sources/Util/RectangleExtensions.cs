@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 
+namespace Saxion.CMGT.Algorithms.sources.Util;
+
 /**
  * A simple extension class to make sure we can easily scale rectangles and sizes.
  */
@@ -22,4 +24,3 @@ static class Extensions
 	}
 
 }
-

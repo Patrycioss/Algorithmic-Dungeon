@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using GXPEngine;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 

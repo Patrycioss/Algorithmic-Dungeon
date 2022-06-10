@@ -1,6 +1,4 @@
-using System;
-
-namespace GXPEngine.Core
+namespace Saxion.CMGT.Algorithms.GXPEngine.Core
 {
 	public struct Vector2
 	{

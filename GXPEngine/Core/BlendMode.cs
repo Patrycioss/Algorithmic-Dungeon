@@ -1,7 +1,7 @@
 ﻿using System;
-using GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine.Core
 {
 	/// <summary>
 	/// Defines different BlendModes, only two present now, but you can add your own.

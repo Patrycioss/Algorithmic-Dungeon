@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using GXPEngine;
-using GXPEngine.Core;
-using GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
 
-namespace FirstGXPGame {
+namespace Saxion.CMGT.Algorithms.GXPEngine.AddOns {
 	/// <summary>
 	/// This class can be used to easily draw line based shapes (like arrows and rectangles),
 	/// mostly for debug purposes (it is not made for efficiency). 

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using FirstGXPGame;
-using GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.AddOns;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using static Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Door.Orientation;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution;
+namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 
 /// <summary>
 /// Class that contains all the functions necessary for my dungeons to generate. This is done to prevent code duplication.

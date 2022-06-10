@@ -1,8 +1,6 @@
-using System;
-using System.Security;
 using System.Runtime.InteropServices;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine.FMOD
 {
 	public class FMOD
 	{

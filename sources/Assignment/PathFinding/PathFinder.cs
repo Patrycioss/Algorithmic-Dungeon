@@ -1,8 +1,11 @@
-﻿using GXPEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
+
+namespace Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 
 /**
  * This class is the base class for your pathfinder, you 'only' have to override generate so that it returns
@@ -19,7 +22,7 @@ abstract class PathFinder : Canvas
 	protected Node _endNode;
 	protected List<Node> _lastCalculatedPath = null;
 
-	protected NodeGraph _nodeGraph;
+	protected NodeGraph.NodeGraph _nodeGraph;
 
 	//some values for drawing the path
 	private Pen _outlinePen = new Pen(Color.Black, 4);
@@ -30,7 +33,7 @@ abstract class PathFinder : Canvas
 	private Brush _endNodeColor = Brushes.Red;
 	private Brush _pathNodeColor = Brushes.Yellow;
 
-	public PathFinder (NodeGraph pGraph) : base (pGraph.width, pGraph.height)
+	public PathFinder (NodeGraph.NodeGraph pGraph) : base (pGraph.width, pGraph.height)
 	{
 		_nodeGraph = pGraph;
 		_nodeGraph.onNodeShiftLeftClicked += (node) => { _startNode = node; draw(); };

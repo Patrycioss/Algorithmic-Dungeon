@@ -3,7 +3,7 @@ using System.Drawing;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution;
+namespace Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
 
 internal class SufficientDungeonNodeGraph : NodeGraph
 {

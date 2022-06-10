@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
-
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
+using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
 
-using GXPEngine.OpenGL;
-
-namespace GXPEngine.Core
+namespace Saxion.CMGT.Algorithms.GXPEngine.Core
 {
 	public class Texture2D
 	{

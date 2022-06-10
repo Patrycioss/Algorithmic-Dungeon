@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using FirstGXPGame;
-using GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution;
+namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 
 internal class SufficientDungeon : Dungeon
 {

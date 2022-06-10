@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 namespace Saxion.CMGT.Algorithms.sources.Util

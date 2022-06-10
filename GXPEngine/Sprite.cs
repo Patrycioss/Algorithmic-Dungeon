@@ -1,7 +1,7 @@
 using System;
-using GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine
 {
 	/// <summary>
 	/// The Sprite class holds 2D images that can be used as objects in your game.

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution;
+namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 
-internal class GoodDungeon : Dungeon
+internal class BetterDungeon : Dungeon
 {
 	private List<Room> roomsToBeAdded;
 	private List<Door> doorsToBeAdded;
@@ -15,7 +15,7 @@ internal class GoodDungeon : Dungeon
 
 	private int increment = 1;
 
-	public GoodDungeon(Size pSize) : base(pSize) { autoDrawAfterGenerate = false; }
+	public BetterDungeon(Size pSize) : base(pSize) { autoDrawAfterGenerate = false; }
 
 	private void Update()
 	{
@@ -41,6 +41,8 @@ internal class GoodDungeon : Dungeon
 			increment /= 10;
 		}
 		
+		
+
 		Generator.RegenerateRooms(this);
 	}
 
@@ -52,7 +54,7 @@ internal class GoodDungeon : Dungeon
 		roomsToBeAdded = new List<Room>();
 			
 		//Start room (Covers whole dungeon)
-		Generator.DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)), random, doorsToBeTested, minimumRoomSize, roomsToBeAdded);
+		Generator.DivideRoomBetter(new Room(new Rectangle(0, 0, size.Width, size.Height)), random, doorsToBeTested, minimumRoomSize, roomsToBeAdded, false);
 		
 		//Remove smallest rooms
 		foreach (Room room in Generator.GetRoomsWithSurface(roomsToBeAdded, Generator.GetSmallestSurface(roomsToBeAdded)))
@@ -66,48 +68,34 @@ internal class GoodDungeon : Dungeon
 			roomsToBeAdded.Remove(room);
 		}
 		
-		//Move doors to another random position if they are placed on the corner of a room
-		for (int index = doorsToBeTested.Count-1; index >= 0; index--)
+		//Add doors to rooms
+		foreach (Room room in roomsToBeAdded)
 		{
-			Door door = doorsToBeTested[index];
-			Generator.TestDoor(door, roomsToBeAdded, random, doorsToBeAdded);
-		}
-
-		//Assign the doors to the rooms, if the door doesn't have any rooms to get assigned to it gets deleted
-		for (int index = doorsToBeAdded.Count - 1; index >= 0; index--)
-		{
-			Door door = doorsToBeAdded[index];
-			Generator.AssignDoor(door, roomsToBeAdded);
-			
-			if (door.roomB == null || door.roomA == null) doorsToBeAdded.Remove(door);
-			else
-			{
-				door.roomA?.doors.Add(door);
-				door.roomB?.doors.Add(door);
-			}
+			Generator.AddDoorsOfRoomToList(room,roomsToBeAdded,doorsToBeAdded,random);
 		}
 
 		//Debug purposes
-		foreach (Room room in roomsToBeAdded)
-		{
-			string doorPositions = $"Room: {room.topLeft} with {room.doors.Count} doors";
-			
-			foreach (Door door in room.doors)
-			{
-				doorPositions += $" ,{door.location} (rooms: {door.roomA}, {door.roomB}";
-			}
-			Console.WriteLine(doorPositions);
-		}
-		
+		// foreach (Room room in roomsToBeAdded)
+		// {
+		// 	string doorPositions = $"Room: {room.topLeft} with {room.doors.Count} doors";
+		// 	
+		// 	foreach (Door door in room.doors)
+		// 	{
+		// 		doorPositions += $" ,{door.location} (rooms: {door.roomA}, {door.roomB}";
+		// 	}
+		// 	Console.WriteLine(doorPositions);
+		// }
 
+
+		rooms.AddRange(roomsToBeAdded);
+		doors.AddRange(doorsToBeAdded);
+		
 
 		//Draw everything
 		graphics.Clear(Color.Transparent);
 		
-		foreach (Room room in roomsToBeAdded)
+		foreach (Room room in rooms)
 		{
-			Console.WriteLine(room.doors.Count);
-			
 			switch (room.doors.Count)
 			{
 				case 0:
@@ -130,6 +118,6 @@ internal class GoodDungeon : Dungeon
 			}
 		}
 		
-		DrawDoors(doorsToBeAdded, Pens.White);
+		DrawDoors(doors, Pens.GreenYellow);
 	}
 }

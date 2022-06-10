@@ -1,7 +1,6 @@
 using System;
-using GXPEngine.Core;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine.Core
 {
 	/// <summary>
 	/// The Transformable class contains all positional data of GameObjects.

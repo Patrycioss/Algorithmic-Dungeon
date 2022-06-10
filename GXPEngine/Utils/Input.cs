@@ -1,7 +1,6 @@
-using System;
-using GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine.Utils
 {
 	/// <summary>
 	/// The Input class contains functions for reading keys and mouse

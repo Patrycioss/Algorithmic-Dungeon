@@ -1,7 +1,7 @@
-using GXPEngine.OpenGL;
-using GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.Core;
+using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
 
-namespace GXPEngine {
+namespace Saxion.CMGT.Algorithms.GXPEngine.AddOns {
 	/// <summary>
 	/// A class that can be used to create "sub windows" (e.g. mini-map, splitscreen, etc).
 	/// This is not a gameobject. Instead, subscribe the RenderWindow method to the main game's 

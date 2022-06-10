@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 
-namespace GXPEngine {
+namespace Saxion.CMGT.Algorithms.GXPEngine.AddOns {
 	/// <summary>
 	/// Static class that contains various settings, such as screen resolution and player controls. 
 	/// In your Main method, you can Call the Settings.Load() method to initialize these settings from a text file 

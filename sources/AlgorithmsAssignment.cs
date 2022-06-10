@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.IO;
-using GXPEngine;
-using GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
+using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
+using Saxion.CMGT.Algorithms.sources.Assignment.Tiles;
 using Saxion.CMGT.Algorithms.sources.Solution;
+using Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
+using Saxion.CMGT.Algorithms.sources.Solution.GraphAgents;
+using Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
+using Saxion.CMGT.Algorithms.sources.Solution.TiledViewers;
 using Saxion.CMGT.Algorithms.sources.Util;
 
 namespace Saxion.CMGT.Algorithms.sources
@@ -143,7 +150,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleNodeGraphAgent class and try it out below
 			//TODO: Comment out the SampleNodeGraphAgent again, implement an OnGraphWayPointAgent class and uncomment it below
 
-			agent = new SufficientNodeGraphAgent(graph);
+			// agent = new SufficientNodeGraphAgent(graph);
 			// agent = new SufficientDungeonNodeGraph(graph);
 
 			////////////////////////////////////////////////////////////
@@ -154,16 +161,16 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleTileView class and try it out below
 			//TODO: Comment out the SampleTiledView again, implement the TiledDungeonView and uncomment it below
 
-			//_tiledView = new SampleTiledView(_dungeon, TileType.GROUND);
-			//_tiledView = new TiledDungeonView(_dungeon, TileType.GROUND); 
-			if (tiledView != null) tiledView.Generate();
+			// tiledView = new SampleTiledView(dungeon, TileType.GROUND);
+			tiledView = new TiledDungeonView(dungeon); 
+			if (tiledView != null) tiledView.InternalGenerate();
 
 			////////////////////////////////////////////////////////////
 			//Assignment 2.2 Good (Optional) RandomWayPointAgent
 			//
 			//TODO: Comment out the OnGraphWayPointAgent above, implement a RandomWayPointAgent class and uncomment it below
 
-			//_agent = new RandomWayPointAgent(_graph);	
+			agent = new GoodNodeGraphAgent(graph);	
 
 			//////////////////////////////////////////////////////////////
 			//Assignment 2.3 Excellent (Optional) LowLevelDungeonNodeGraph
@@ -209,9 +216,13 @@ namespace Saxion.CMGT.Algorithms.sources
 			// LOOK BUT DON'T TOUCH :)
 
 			if (grid != null) AddChild(grid);
+			
 			if (dungeon != null) AddChild(dungeon);
-			if (graph != null) AddChild(graph);
+			
 			if (tiledView != null) AddChild(tiledView);
+
+			
+			if (graph != null) AddChild(graph);
 			if (pathFinder != null) AddChild(pathFinder); //pathfinder on top of that
 			if (graph != null) AddChild(new NodeLabelDrawer(graph)); //node label display on top of that
 			if (agent != null) AddChild(agent); //and last but not least the agent itself

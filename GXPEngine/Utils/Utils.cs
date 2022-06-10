@@ -1,6 +1,6 @@
 using System;
 
-namespace GXPEngine
+namespace Saxion.CMGT.Algorithms.GXPEngine.Utils
 {
 	/// <summary>
 	/// The Utils class contains a number of useful functions.
