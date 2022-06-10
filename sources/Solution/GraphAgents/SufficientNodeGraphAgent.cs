@@ -36,6 +36,8 @@ internal sealed class SufficientNodeGraphAgent : NodeGraphAgent
 	{
 		if (currentTarget == null)
 		{
+			if (currentNode.connections.Count == 0) return;
+			
 			if (queue.Count > 0)
 			{
 				if (queue[0].connections.Contains(currentNode))

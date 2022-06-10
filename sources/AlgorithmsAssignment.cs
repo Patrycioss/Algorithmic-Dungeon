@@ -137,7 +137,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleDungeonNodeGraph class and try it out below
 			//TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
-			graph = new SufficientDungeonNodeGraph(dungeon);
+			graph = new ExcellentDungeonNodeGraphV1(dungeon);
 			//_graph = new HighLevelDungeonNodeGraph(_dungeon);
 			//_graph = new LowLevelDungeonNodeGraph(_dungeon);
 
@@ -170,7 +170,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//
 			//TODO: Comment out the OnGraphWayPointAgent above, implement a RandomWayPointAgent class and uncomment it below
 
-			agent = new GoodNodeGraphAgent(graph);	
+			agent = new ExcellentNodeGraphAgent(graph);	
 
 			//////////////////////////////////////////////////////////////
 			//Assignment 2.3 Excellent (Optional) LowLevelDungeonNodeGraph

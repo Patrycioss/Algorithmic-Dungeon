@@ -56,6 +56,8 @@ internal sealed class GoodNodeGraphAgent : NodeGraphAgent
 		{
 			if (currentTarget == null)
 			{
+				if (currentNode.connections.Count == 0) return;
+				
 				List<Node> connections = currentNode.connections;
 
 				if (currentNode.connections.Contains(goal))
