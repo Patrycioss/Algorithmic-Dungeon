@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
@@ -18,6 +19,8 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 	private Node previousNode;
 
 	private readonly Random random;
+
+	private float currentSpeed;
 
 	public ExcellentNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
 	{
@@ -38,6 +41,8 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 		goal = null;
 
 		canReceiveNewGoal = true;
+
+		currentSpeed = 0.5f;
 	}
 	
 
@@ -52,6 +57,9 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 
 	protected override void Update()
 	{
+		if (Input.GetKeyDown(Key.PLUS)) currentSpeed += 0.1f;
+		else if (Input.GetKeyDown(Key.MINUS)) currentSpeed -= 0.1f;
+		
 		if (goal != null)
 		{
 			if (currentNode.connections.Count == 0) return;
@@ -60,10 +68,7 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 			{
 				List<Node> connections = currentNode.connections;
 
-				if (currentNode.connections.Contains(goal))
-				{
-					currentTarget = goal;
-				}
+				if (currentNode.connections.Contains(goal)) currentTarget = goal;
 				else
 				{
 					connections.Remove(previousNode);
@@ -73,7 +78,7 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 			}
 			else
 			{
-				MoveTowardsNode(currentTarget, 0.5f);
+				MoveTowardsNode(currentTarget, currentSpeed);
 
 				float distance = DistanceFromPointToNode(new Point((int) x, (int) y), currentTarget);
 

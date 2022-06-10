@@ -157,7 +157,7 @@
     <Compile Include="sources\Solution\GraphAgents\ExcellentNodeGraphAgent.cs" />
     <Compile Include="sources\Solution\GraphAgents\GoodNodeGraphAgent.cs" />
     <Compile Include="sources\Solution\GraphAgents\SufficientNodeGraphAgent.cs" />
-    <Compile Include="sources\Solution\NodeGraphGenerators\ExcellentDungeonNodeGraphV1.cs" />
+    <Compile Include="sources\Solution\NodeGraphGenerators\ExcellentDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\NodeGraphGenerators\GoodDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\NodeGraphGenerators\SufficientDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\TiledViewers\TiledDungeonView.cs" />

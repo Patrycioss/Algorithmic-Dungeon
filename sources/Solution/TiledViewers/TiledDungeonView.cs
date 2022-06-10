@@ -17,6 +17,7 @@ internal class TiledDungeonView : TiledView
 	{
 		foreach (Room room in dungeon.rooms)
 		{
+			//Add walls
 			for (int i = room.topLeft.X; i <= room.topRight.X; i++)
 			{
 				for (int j = room.topLeft.Y; j <= room.bottomLeft.Y; j++)
@@ -29,6 +30,7 @@ internal class TiledDungeonView : TiledView
 				}
 			}
 
+			//Add floor
 			for (int i = room.topRight.X + 1; i < room.topRight.X - 1; i++)
 			{
 				for (int j = room.topRight.Y + 1; i < room.bottomLeft.Y - 1; i++)
@@ -39,9 +41,23 @@ internal class TiledDungeonView : TiledView
 
 		}
 
+		//Making the doors/hallways
 		foreach (Door door in dungeon.doors)
 		{
 			SetTileType(door.location.X,door.location.Y,TileType.Ground);
+
+			
+			//Adds the walls to hallways
+			if (door.orientation == Door.Orientation.Horizontal)
+			{
+				SetTileType(door.location.X -1, door.location.Y,TileType.Wall);
+				SetTileType(door.location.X + 1, door.location.Y, TileType.Wall);
+			}
+			else
+			{
+				SetTileType(door.location.X,door.location.Y - 1, TileType.Wall);
+				SetTileType(door.location.X,door.location.Y + 1, TileType.Wall);
+			}
 		}
 	}
 }

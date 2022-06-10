@@ -68,19 +68,19 @@ internal abstract class NodeGraph : Canvas
 	/// Trigger the node graph generation process, do not override this method,
 	/// but override generate (note the lower case) instead, calling AddConnection as required.
 	/// </summary>
-	public void Generate()
+	public void InternalGenerate()
 	{
 		Console.WriteLine(GetType().Name + ".Generate: Generating graph...");
 
 		//always remove all nodes before generating the graph, as it might have been generated previously
 		nodes.Clear();
-		ActualGenerate();
+		Generate();
 		Draw();
 
 		Console.WriteLine(GetType().Name + ".Generate: Graph generated.");
 	}
 
-	protected abstract void ActualGenerate();
+	protected abstract void Generate();
 
 	//NodeGraph visualization helper methods
 	protected virtual void Draw()

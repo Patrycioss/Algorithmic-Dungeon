@@ -67,7 +67,7 @@ internal class ExcellentDungeon : Dungeon
 		//Downsize the rooms
 		foreach (Room room in roomsToBeAdded)
 		{
-			room.area.Inflate(random.Next(-3,-1),random.Next(-3,-1));
+			room.area.Inflate(random.Next(-2,-1),random.Next(-2,-1));
 		}
 		
 		//Add doors
@@ -76,7 +76,7 @@ internal class ExcellentDungeon : Dungeon
 			Generator.AddDoorsOfRoomToListExcellent(room, roomsToBeAdded, doorsToBeAdded, random);
 		}
 		
-		//Make doors into corridors
+		//Make doors into corridors based on orientation
 		List<Door> corridorDoors = new List<Door>();
 
 		foreach (Door door in doorsToBeAdded)

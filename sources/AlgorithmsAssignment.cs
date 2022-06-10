@@ -45,7 +45,7 @@ namespace Saxion.CMGT.Algorithms.sources
 
 		//common settings
 		private const int SCALE = 15;				
-		public const int MIN_ROOM_SIZE = 7;		
+		public const int MIN_ROOM_SIZE = 10;		
 
 		public AlgorithmsAssignment() : base(800, 600, false, true, -1, -1, false)
 		{
@@ -106,7 +106,8 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study assignment 1.2 on blackboard
 			//TODO: Comment out SufficientDungeon above, implement a GoodDungeon class, and uncomment it below
 
-			dungeon = new BetterDungeon(size);
+			// dungeon = new BetterDungeon(size);
+			dungeon = new ExcellentDungeon(size);
 
 			//////////////////////////////////////
 			//Assignment 1.3 Excellent (optional)
@@ -137,11 +138,11 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleDungeonNodeGraph class and try it out below
 			//TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
-			graph = new ExcellentDungeonNodeGraphV1(dungeon);
+			graph = new ExcellentDungeonNodeGraph(dungeon);
 			//_graph = new HighLevelDungeonNodeGraph(_dungeon);
 			//_graph = new LowLevelDungeonNodeGraph(_dungeon);
 
-			if (graph != null) graph.Generate();
+			if (graph != null) graph.InternalGenerate();
 
 			/////////////////////////////////////////////////////////////
 			//Assignment 2.1 Sufficient (Mandatory) OnGraphWayPointAgent

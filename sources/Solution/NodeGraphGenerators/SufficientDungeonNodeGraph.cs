@@ -23,7 +23,7 @@ internal class SufficientDungeonNodeGraph : NodeGraph
 		doorNodes = new Dictionary<Door, Node>();
 	}
 
-	protected override void ActualGenerate()
+	protected override void Generate()
 	{
 		foreach (Door door in doors)
 		{

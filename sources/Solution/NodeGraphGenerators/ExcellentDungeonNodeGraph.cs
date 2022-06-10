@@ -5,17 +5,18 @@ using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
 
-internal class ExcellentDungeonNodeGraphV1 : NodeGraph
+internal class ExcellentDungeonNodeGraph : NodeGraph
 {
 	private readonly Dungeon dungeon;
 
-	public ExcellentDungeonNodeGraphV1(Dungeon pDungeon) : base((int)(pDungeon.size.Width * pDungeon.scale), (int)(pDungeon.size.Height * pDungeon.scale), (int)pDungeon.scale/3)
+	public ExcellentDungeonNodeGraph(Dungeon pDungeon) : base((int)(pDungeon.size.Width * pDungeon.scale), (int)(pDungeon.size.Height * pDungeon.scale), (int)pDungeon.scale/3)
 	{
 		dungeon = pDungeon;
 	}
 
-	protected override void ActualGenerate()
+	protected override void Generate()
 	{
+		//Add nodes to all tiles in the rooms
 		foreach (Room room in dungeon.rooms)
 		{
 			Console.WriteLine($"TL: {room.topLeft},TR: {room.topRight}, BL: {room.bottomLeft}, BR: {room.bottomRight}");
@@ -30,6 +31,7 @@ internal class ExcellentDungeonNodeGraphV1 : NodeGraph
 			}
 		}
 
+		//Add nodes to doors
 		foreach (Door door in dungeon.doors)
 		{
 			Node node = new(GetDoorCenter(door));
@@ -38,6 +40,7 @@ internal class ExcellentDungeonNodeGraphV1 : NodeGraph
 
 		int o = (int)dungeon.scale;
 
+		//Add connections when nodes are next to each other
 		for (int i = nodes.Count-1; i >= 0; i--)
 		{
 			Node nodeA = nodes[i];
@@ -68,7 +71,37 @@ internal class ExcellentDungeonNodeGraphV1 : NodeGraph
 				if (nodeA.location.X == nodeB.location.X && nodeA.location.Y + o == nodeB.location.Y)
 				{
 					AddConnection(nodeA,nodeB);
+					continue;
 				}
+				
+				//NW
+				if (nodeA.location.X == nodeB.location.X - o && nodeA.location.Y == nodeB.location.Y - o)
+				{
+					AddConnection(nodeA,nodeB);
+					continue;
+				}
+				
+				//NE
+				if (nodeA.location.X == nodeB.location.X + o && nodeA.location.Y == nodeB.location.Y - o)
+				{
+					AddConnection(nodeA,nodeB);
+					continue;
+				}
+				
+				//SW
+				if (nodeA.location.X == nodeB.location.X - o && nodeA.location.Y == nodeB.location.Y + o)
+				{
+					AddConnection(nodeA,nodeB);
+					continue;
+				}
+				
+				//SE
+				if (nodeA.location.X == nodeB.location.X + o && nodeA.location.Y == nodeB.location.Y + o)
+				{
+					AddConnection(nodeA,nodeB);
+					continue;
+				}
+				
 			}
 		}
 	}

@@ -27,7 +27,7 @@ internal class SampleDungeonNodeGraph : NodeGraph
 		dungeon = pDungeon;
 	}
 
-	protected override void ActualGenerate ()
+	protected override void Generate ()
 	{
 		//Generate nodes, in this sample node graph we just add to nodes manually
 		//of course in a REAL nodeGraph (read:yours), node placement should 
