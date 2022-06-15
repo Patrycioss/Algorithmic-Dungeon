@@ -6,10 +6,10 @@ using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution.GraphAgents;
+namespace Saxion.CMGT.Algorithms.sources.Solution.Agents;
 
 
-internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
+internal sealed class PathFinderAgent : NodeGraphAgent
 {
 	private Node currentTarget;
 	private Node goal;
@@ -22,7 +22,7 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 
 	private float currentSpeed;
 
-	public ExcellentNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
+	public PathFinderAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
 	{
 		random = new Random();
 		
@@ -52,6 +52,7 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 		{
 			goal = pNode;
 			canReceiveNewGoal = false;
+			
 		}
 	}
 
@@ -66,20 +67,14 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 			
 			if (currentTarget == null)
 			{
-				List<Node> connections = new List<Node>(currentNode.connections);
+				List<Node> connections = currentNode.connections;
 
 				if (currentNode.connections.Contains(goal)) currentTarget = goal;
 				else
 				{
-					if (connections.Count > 1)
-					{
-						connections.Remove(previousNode);
-					}
-					else if (previousNode == null) Console.WriteLine("?");
-					
+					connections.Remove(previousNode);
 					int i = random.Next(0, connections.Count);
 					currentTarget = connections[i];	
-					if (connections[i] == previousNode) Console.WriteLine("?");
 				}
 			}
 			else

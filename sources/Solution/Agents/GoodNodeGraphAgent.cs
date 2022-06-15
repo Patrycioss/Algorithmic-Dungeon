@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
-using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution.GraphAgents;
+namespace Saxion.CMGT.Algorithms.sources.Solution.Agents;
 
 
-internal sealed class PathFinderAgent : NodeGraphAgent
+internal sealed class GoodNodeGraphAgent : NodeGraphAgent
 {
 	private Node currentTarget;
 	private Node goal;
@@ -20,9 +19,7 @@ internal sealed class PathFinderAgent : NodeGraphAgent
 
 	private readonly Random random;
 
-	private float currentSpeed;
-
-	public PathFinderAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
+	public GoodNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
 	{
 		random = new Random();
 		
@@ -41,8 +38,6 @@ internal sealed class PathFinderAgent : NodeGraphAgent
 		goal = null;
 
 		canReceiveNewGoal = true;
-
-		currentSpeed = 0.5f;
 	}
 	
 
@@ -52,24 +47,23 @@ internal sealed class PathFinderAgent : NodeGraphAgent
 		{
 			goal = pNode;
 			canReceiveNewGoal = false;
-			
 		}
 	}
 
 	protected override void Update()
 	{
-		if (Input.GetKeyDown(Key.PLUS)) currentSpeed += 0.1f;
-		else if (Input.GetKeyDown(Key.MINUS)) currentSpeed -= 0.1f;
-		
 		if (goal != null)
 		{
-			if (currentNode.connections.Count == 0) return;
-			
 			if (currentTarget == null)
 			{
+				if (currentNode.connections.Count == 0) return;
+				
 				List<Node> connections = currentNode.connections;
 
-				if (currentNode.connections.Contains(goal)) currentTarget = goal;
+				if (currentNode.connections.Contains(goal))
+				{
+					currentTarget = goal;
+				}
 				else
 				{
 					connections.Remove(previousNode);
@@ -79,7 +73,7 @@ internal sealed class PathFinderAgent : NodeGraphAgent
 			}
 			else
 			{
-				MoveTowardsNode(currentTarget, currentSpeed);
+				MoveTowardsNode(currentTarget, 0.5f);
 
 				float distance = DistanceFromPointToNode(new Point((int) x, (int) y), currentTarget);
 

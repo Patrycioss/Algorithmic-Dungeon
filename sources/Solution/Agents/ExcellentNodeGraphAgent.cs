@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution.GraphAgents;
+namespace Saxion.CMGT.Algorithms.sources.Solution.Agents;
 
 
-internal sealed class GoodNodeGraphAgent : NodeGraphAgent
+internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 {
 	private Node currentTarget;
 	private Node goal;
@@ -19,7 +20,9 @@ internal sealed class GoodNodeGraphAgent : NodeGraphAgent
 
 	private readonly Random random;
 
-	public GoodNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
+	private float currentSpeed;
+
+	public ExcellentNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
 	{
 		random = new Random();
 		
@@ -38,6 +41,8 @@ internal sealed class GoodNodeGraphAgent : NodeGraphAgent
 		goal = null;
 
 		canReceiveNewGoal = true;
+
+		currentSpeed = 0.5f;
 	}
 	
 
@@ -52,28 +57,34 @@ internal sealed class GoodNodeGraphAgent : NodeGraphAgent
 
 	protected override void Update()
 	{
+		if (Input.GetKeyDown(Key.PLUS)) currentSpeed += 0.1f;
+		else if (Input.GetKeyDown(Key.MINUS)) currentSpeed -= 0.1f;
+		
 		if (goal != null)
 		{
+			if (currentNode.connections.Count == 0) return;
+			
 			if (currentTarget == null)
 			{
-				if (currentNode.connections.Count == 0) return;
-				
-				List<Node> connections = currentNode.connections;
+				List<Node> connections = new List<Node>(currentNode.connections);
 
-				if (currentNode.connections.Contains(goal))
-				{
-					currentTarget = goal;
-				}
+				if (currentNode.connections.Contains(goal)) currentTarget = goal;
 				else
 				{
-					connections.Remove(previousNode);
+					if (connections.Count > 1)
+					{
+						connections.Remove(previousNode);
+					}
+					else if (previousNode == null) Console.WriteLine("?");
+					
 					int i = random.Next(0, connections.Count);
 					currentTarget = connections[i];	
+					if (connections[i] == previousNode) Console.WriteLine("?");
 				}
 			}
 			else
 			{
-				MoveTowardsNode(currentTarget, 0.5f);
+				MoveTowardsNode(currentTarget, currentSpeed);
 
 				float distance = DistanceFromPointToNode(new Point((int) x, (int) y), currentTarget);
 

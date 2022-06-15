@@ -12,8 +12,8 @@ using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 using Saxion.CMGT.Algorithms.sources.Assignment.Tiles;
 using Saxion.CMGT.Algorithms.sources.Solution;
+using Saxion.CMGT.Algorithms.sources.Solution.Agents;
 using Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
-using Saxion.CMGT.Algorithms.sources.Solution.GraphAgents;
 using Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
 using Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
 using Saxion.CMGT.Algorithms.sources.Solution.TiledViewers;
@@ -45,8 +45,8 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder;
 
 		//common settings
-		private const int SCALE = 30;				
-		public const int MIN_ROOM_SIZE = 5;		
+		private const int SCALE = 15;				
+		public const int MIN_ROOM_SIZE = 10;		
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false)
 		{
@@ -108,7 +108,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Comment out SufficientDungeon above, implement a GoodDungeon class, and uncomment it below
 
 			// dungeon = new BetterDungeon(size);
-			dungeon = new BetterDungeon(size);
+			dungeon = new ExcellentDungeon(size);
 
 			//////////////////////////////////////
 			//Assignment 1.3 Excellent (optional)
@@ -172,7 +172,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//
 			//TODO: Comment out the OnGraphWayPointAgent above, implement a RandomWayPointAgent class and uncomment it below
 
-			agent = new ExcellentNodeGraphAgent(graph);	
+			// agent = new ExcellentNodeGraphAgent(graph);	
 
 			//////////////////////////////////////////////////////////////
 			//Assignment 2.3 Excellent (Optional) LowLevelDungeonNodeGraph
@@ -202,7 +202,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			// pathFinder = new BreadthFirstPathFinder(graph);
 
 			//TODO: Implement a PathFindingAgent that uses one of your pathfinder implementations (should work with any pathfinder implementation)
-			//_agent = new PathFindingAgent(_graph, _pathFinder);
+			agent = new PathFindingAgent(graph, pathFinder);
 
 			/////////////////////////////////////////////////
 			//Assignment 3.2 Good & 3.3 Excellent (Optional)

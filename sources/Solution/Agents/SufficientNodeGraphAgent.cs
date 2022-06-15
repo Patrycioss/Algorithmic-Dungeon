@@ -5,7 +5,7 @@ using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
-namespace Saxion.CMGT.Algorithms.sources.Solution.GraphAgents;
+namespace Saxion.CMGT.Algorithms.sources.Solution.Agents;
 
 internal sealed class SufficientNodeGraphAgent : NodeGraphAgent
 {

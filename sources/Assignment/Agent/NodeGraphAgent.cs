@@ -44,12 +44,11 @@ internal abstract class NodeGraphAgent : AnimationSprite
 		if (pSpeed == 0) speed = Input.GetKey(SPEED_UP_KEY) ? FAST_TRAVEL_SPEED : REGULAR_SPEED;
 		else speed = pSpeed;
 		
-		//increase our current frame based on time passed and current speed
-		SetFrame((int)(speed * (Time.time / 100f)) % frameCount);
+		
 
 		//standard vector math as you had during the Physics course
-		Vec2 targetPosition = new Vec2(pTarget.location.X, pTarget.location.Y);
-		Vec2 currentPosition = new Vec2(x, y);
+		Vec2 targetPosition = new(pTarget.location.X, pTarget.location.Y);
+		Vec2 currentPosition = new(x, y);
 		Vec2 delta = targetPosition.Sub(currentPosition);
 
 		if (delta.Length() < speed)
@@ -57,12 +56,15 @@ internal abstract class NodeGraphAgent : AnimationSprite
 			JumpToNode(pTarget);
 			return true;
 		}
+		
+		//increase our current frame based on time passed and current speed
+		SetFrame((int)(speed * (Time.time / 100f)) % frameCount);
 
 		Vec2 velocity = delta.Normalize().Scale(speed);
 		x += velocity.x;
 		y += velocity.y;
 
-		scaleX = (velocity.x >= 0) ? 1 : -1;
+		scaleX = velocity.x >= 0 ? 1 : -1;
 
 		return false;
 	}
