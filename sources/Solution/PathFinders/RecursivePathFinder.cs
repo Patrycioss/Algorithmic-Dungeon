@@ -9,7 +9,7 @@ namespace Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
 internal class RecursivePathFinder : PathFinder
 {
 	private Dictionary<Node, Node> childParents;
-	private List<List<Node>> paths;
+	private List<Node> shortestPath;
 
 	private Node start;
 	private Node end;
@@ -20,8 +20,8 @@ internal class RecursivePathFinder : PathFinder
 	{
 		start = pFrom;
 		end = pTo;
-		
-		paths = new List<List<Node>>();
+
+		shortestPath = null;
 		childParents = new Dictionary<Node, Node> {{start, end}};
 		
 		CheckConnections(start, new[]{$"{start.id}"});
@@ -31,7 +31,7 @@ internal class RecursivePathFinder : PathFinder
 		// 	Console.WriteLine($"Child: {node.id}, Parent{childParents[node].id}");
 		// }
 		
-		return GetShortestPath();
+		return shortestPath;
 	}
 
 
@@ -55,8 +55,9 @@ internal class RecursivePathFinder : PathFinder
 				// {
 				// 	Console.WriteLine($"Child: {node.id}, Parent{childParents[node].id}");
 				// }
-				
-				paths.Add(MakePath(from));
+
+				List<Node> path = MakePath(from);
+				if (shortestPath == null || path.Count < shortestPath.Count) shortestPath = path;
 				continue;
 			}
 
@@ -90,20 +91,5 @@ internal class RecursivePathFinder : PathFinder
 			}
 		}
 		return path;
-	}
-
-	private List<Node> GetShortestPath()
-	{
-		List<Node> shortestPath = null;
-
-		foreach (List<Node> path in paths)
-		{
-			if (shortestPath == null || path.Count < shortestPath.Count)
-			{
-				shortestPath = path;
-			}
-		}
-		
-		return shortestPath;
 	}
 }

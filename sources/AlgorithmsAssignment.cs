@@ -45,7 +45,7 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder;
 
 		//common settings
-		private const int SCALE = 15;				
+		private const int SCALE = 30;				
 		public const int MIN_ROOM_SIZE = 5;		
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false)
@@ -139,7 +139,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleDungeonNodeGraph class and try it out below
 			//TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
-			graph = new GoodDungeonNodeGraph(dungeon);
+			graph = new ExcellentDungeonNodeGraph(dungeon);
 			//_graph = new HighLevelDungeonNodeGraph(_dungeon);
 			//_graph = new LowLevelDungeonNodeGraph(_dungeon);
 
@@ -193,13 +193,13 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Comment out the SamplePathFinder, implement a RecursivePathFinder and uncomment it below
 
 			// pathFinder = new SamplePathFinder(graph);
-			pathFinder = new RecursivePathFinder(graph);
+			pathFinder = new BreadthFirstPathFinder(graph);
 
 			//////////////////////////////////////////////////////////////////////////
 			//Assignment 3.1 Sufficient (Mandatory) - BreadthFirst Pathfinding
 			//
 			//TODO: Comment out the RecursivePathFinder above, implement a BreadthFirstPathFinder and uncomment it below
-			//_pathFinder = new BreadthFirstPathFinder(_graph);
+			// pathFinder = new BreadthFirstPathFinder(graph);
 
 			//TODO: Implement a PathFindingAgent that uses one of your pathfinder implementations (should work with any pathfinder implementation)
 			//_agent = new PathFindingAgent(_graph, _pathFinder);

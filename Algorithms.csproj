@@ -161,6 +161,7 @@
     <Compile Include="sources\Solution\NodeGraphGenerators\ExcellentDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\NodeGraphGenerators\GoodDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\NodeGraphGenerators\SufficientDungeonNodeGraph.cs" />
+    <Compile Include="sources\Solution\PathFinders\BreadthFirstPathFinder.cs" />
     <Compile Include="sources\Solution\PathFinders\RecursivePathFinder.cs" />
     <Compile Include="sources\Solution\TiledViewers\TiledDungeonView.cs" />
     <Compile Include="sources\Util\Grid.cs" />
