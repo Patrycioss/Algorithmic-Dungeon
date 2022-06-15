@@ -13,7 +13,7 @@ class SamplePathFinder : PathFinder	{
 
 	public SamplePathFinder(NodeGraph.NodeGraph pGraph) : base(pGraph) {}
 
-	protected override List<Node> generate(Node pFrom, Node pTo)
+	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
 		//at this point you know the FROM and TO node and you have to write an 
 		//algorithm which finds the path between them

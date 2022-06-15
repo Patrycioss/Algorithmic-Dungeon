@@ -15,6 +15,7 @@ using Saxion.CMGT.Algorithms.sources.Solution;
 using Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 using Saxion.CMGT.Algorithms.sources.Solution.GraphAgents;
 using Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
+using Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
 using Saxion.CMGT.Algorithms.sources.Solution.TiledViewers;
 using Saxion.CMGT.Algorithms.sources.Util;
 
@@ -33,21 +34,21 @@ namespace Saxion.CMGT.Algorithms.sources
 	public class AlgorithmsAssignment : Game
 	{
 		//Required for assignment 1
-		private Dungeon dungeon = null;
+		private Dungeon dungeon;
 
 		//Required for assignment 2
-		private NodeGraph graph = null;
-		private TiledView tiledView = null;
-		private NodeGraphAgent agent = null;
+		private NodeGraph graph;
+		private TiledView tiledView;
+		private NodeGraphAgent agent;
 
 		//Required for assignment 3
-		private PathFinder pathFinder = null;
+		private PathFinder pathFinder;
 
 		//common settings
 		private const int SCALE = 15;				
-		public const int MIN_ROOM_SIZE = 10;		
+		public const int MIN_ROOM_SIZE = 5;		
 
-		public AlgorithmsAssignment() : base(800, 600, false, true, -1, -1, false)
+		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false)
 		{
 			Create();
 		}
@@ -107,7 +108,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Comment out SufficientDungeon above, implement a GoodDungeon class, and uncomment it below
 
 			// dungeon = new BetterDungeon(size);
-			dungeon = new ExcellentDungeon(size);
+			dungeon = new BetterDungeon(size);
 
 			//////////////////////////////////////
 			//Assignment 1.3 Excellent (optional)
@@ -138,7 +139,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SampleDungeonNodeGraph class and try it out below
 			//TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
-			graph = new ExcellentDungeonNodeGraph(dungeon);
+			graph = new GoodDungeonNodeGraph(dungeon);
 			//_graph = new HighLevelDungeonNodeGraph(_dungeon);
 			//_graph = new LowLevelDungeonNodeGraph(_dungeon);
 
@@ -191,8 +192,8 @@ namespace Saxion.CMGT.Algorithms.sources
 			//TODO: Study the SamplePathFinder class and try it out
 			//TODO: Comment out the SamplePathFinder, implement a RecursivePathFinder and uncomment it below
 
-			//_pathFinder = new SamplePathFinder(_graph);
-			//_pathFinder = new RecursivePathFinder(_graph);
+			// pathFinder = new SamplePathFinder(graph);
+			pathFinder = new RecursivePathFinder(graph);
 
 			//////////////////////////////////////////////////////////////////////////
 			//Assignment 3.1 Sufficient (Mandatory) - BreadthFirst Pathfinding
