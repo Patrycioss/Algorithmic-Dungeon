@@ -17,7 +17,8 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 
 	private readonly PathFinder pathFinder;
 
-	private Queue<Node> pathQueue;
+	private Queue<Node> nodeQueue;
+	private Queue<Queue<Node>> pathQueue;
 
 	public PathFindingAgent(NodeGraph pNodeGraph, PathFinder pPathFinder) : base(pNodeGraph)
 	{
@@ -46,8 +47,9 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 		{
 			List<Node> path = pathFinder.InternalGenerate(currentTarget, pNode);
 			path.Reverse();
-			pathQueue = new Queue<Node>(path);
-			currentTarget = pathQueue.Dequeue();
+			nodeQueue = new Queue<Node>(path);
+			currentTarget = nodeQueue.Dequeue();
+			isMoving = true;
 		}
 	}
 
@@ -56,15 +58,18 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 		//Speed controls
 		if (Input.GetKeyDown(Key.PLUS)) currentSpeed += 0.1f;
 		else if (Input.GetKeyDown(Key.MINUS)) currentSpeed -= 0.1f;
-
-		if (pathQueue == null || pathQueue.Count == 0 || currentTarget == null) return;
-
-		isMoving = MoveTowardsNode(currentTarget, currentSpeed);
 		
-		if (isMoving)
+
+		if (nodeQueue == null || nodeQueue.Count == 0 || currentTarget == null) return;
+
+		if (MoveTowardsNode(currentTarget, currentSpeed))
 		{
-			if (pathQueue.Count == 1) pathFinder.graphics.Clear(Color.Transparent);
-			else currentTarget = pathQueue.Dequeue();
+			if (nodeQueue.Count == 1)
+			{
+				pathFinder.graphics.Clear(Color.Transparent);
+				isMoving = false;
+			}
+			else currentTarget = nodeQueue.Dequeue();
 		}
 	}
 }
