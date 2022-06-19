@@ -49,8 +49,8 @@ abstract class PathFinder : Canvas
 		nodeGraph = pGraph;
 		nodeGraph.onNodeShiftLeftClicked += (node) => { startNode = node; Draw(); };
 		nodeGraph.onNodeShiftRightClicked += (node) => { endNode = node; Draw(); };
-		nodeGraph.onNodeControlLeftClicked += (node) => { excludedNodes.Add(node); Draw(); CheckIfDungeonIsConnected(); };
-		nodeGraph.onNodeControlRightClicked += (node) => { excludedNodes.Remove(node); Draw(); CheckIfDungeonIsConnected(); };
+		nodeGraph.onNodeControlLeftClicked += (node) => { excludedNodes.Add(node); Draw(); ConnectedCheck(); };
+		nodeGraph.onNodeControlRightClicked += (node) => { excludedNodes.Remove(node); Draw(); ConnectedCheck(); };
 
 		Console.WriteLine("\n-----------------------------------------------------------------------------");
 		Console.WriteLine(this.GetType().Name + " created.");
@@ -60,9 +60,16 @@ abstract class PathFinder : Canvas
 		Console.WriteLine("* G to generate the Path.");
 		Console.WriteLine("* C to clear the Path.");
 		Console.WriteLine("-----------------------------------------------------------------------------");
-		
-		CheckIfDungeonIsConnected();
+
+
+		ConnectedCheck();
 		Draw();
+
+		
+		void ConnectedCheck()
+		{
+			if (AlgorithmsAssignment.checkIfCompletelyConnected) CheckIfDungeonIsConnected();
+		}
 	}
 
 	protected void CheckIfDungeonIsConnected()

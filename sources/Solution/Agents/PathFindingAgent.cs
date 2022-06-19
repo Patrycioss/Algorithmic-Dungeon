@@ -45,7 +45,7 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 			
 			nodeQueue = new Queue<Node>(path);
 
-			Console.WriteLine(nodeQueue.Count);
+			// Console.WriteLine(nodeQueue.Count);
 
 			if (nodeQueue.Count == 0)
 			{

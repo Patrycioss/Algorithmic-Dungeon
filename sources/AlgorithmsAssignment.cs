@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
@@ -32,8 +31,9 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder;
 
 		//common settings
-		private const int SCALE = 30;				
-		public const int MIN_ROOM_SIZE = 7;		
+		public static int SCALE = 20;				
+		public static int MIN_ROOM_SIZE = 7;
+		public static bool checkIfCompletelyConnected = false;
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false)
 		{
@@ -62,20 +62,19 @@ namespace Saxion.CMGT.Algorithms.sources
 
 			//NodeGraph
 			graph = new ExcellentDungeonNodeGraph(dungeon);
-			
-			if (graph != null) graph.InternalGenerate();
+
+			graph?.InternalGenerate();
 
 			//TiledView
-			tiledView = new TiledDungeonView(dungeon); 
-			
-			if (tiledView != null) tiledView.InternalGenerate();
+			tiledView = new TiledDungeonView(dungeon);
+
+			tiledView?.InternalGenerate();
 
 			//PathFinder
 			pathFinder = new AStarPathFinder(graph, dungeon);
 
 			//Agent
 			agent = new PathFindingAgent(graph, pathFinder);
-
 			
 			//Adding stuff
 			if (grid != null) AddChild(grid);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
@@ -13,8 +12,6 @@ internal class AStarPathFinder : PathFinder
 	private List<Node> nodesToCheck;
 	private Dictionary<Node, (float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent)> nodeInformation;
 	
-
-
 	public AStarPathFinder(NodeGraph pNodeGraph, Dungeon pDungeon) : base(pNodeGraph, pDungeon) { }
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
@@ -42,7 +39,8 @@ internal class AStarPathFinder : PathFinder
 		while (nodesToCheck.Count > 0)
 		{
 			Node node = nodesToCheck[0];
-			nodesToCheck.Remove(node);
+			nodesToCheck.RemoveAt(0);
+			// nodesToCheck.Remove(node);
 
 			//Update node information to say it's been visited
 			(float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent) previousInformation = nodeInformation[node];
@@ -84,7 +82,7 @@ internal class AStarPathFinder : PathFinder
 
 				//Updates node information
 				DetermineNewNodeInformation(connection,node);
-				
+
 				if (!nodeInformation[connection].visited) nodesToCheck.Add(connection);
 			}
 			
@@ -126,6 +124,7 @@ internal class AStarPathFinder : PathFinder
 		{
 			if (nodeInformation[nodesToCheck[i]].visited)
 			{
+				Console.WriteLine("jawel");
 				nodesToCheck.Remove(nodesToCheck[i]);
 				continue;
 			}
@@ -139,6 +138,17 @@ internal class AStarPathFinder : PathFinder
 				{
 					nodesToCheck[i] = nodesToCheck[j];
 					nodesToCheck[j] = tempI;
+				}
+				else if (Math.Abs(iHeuristic - jHeuristic) < 0.001f)
+				{
+					float iDistanceToEnd = nodeInformation[nodesToCheck[i]].distanceToEnd;
+					float jDistanceToEnd = nodeInformation[nodesToCheck[j]].distanceToEnd;
+
+					if (iDistanceToEnd < jDistanceToEnd)
+					{
+						nodesToCheck[i] = nodesToCheck[j];
+						nodesToCheck[j] = tempI;
+					}
 				}
 			}
 		}

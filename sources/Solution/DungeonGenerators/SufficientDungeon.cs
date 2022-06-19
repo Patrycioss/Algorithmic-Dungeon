@@ -10,7 +10,6 @@ namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 
 internal class SufficientDungeon : Dungeon
 {
-	private List<Room> roomsToBeAdded;
 	private List<Door> doorsToBeAdded;
 	private Random random;
 	public SufficientDungeon(Size pSize) : base(pSize){}
@@ -33,14 +32,10 @@ internal class SufficientDungeon : Dungeon
 	{
 		random = new Random(seed);
 		doorsToBeAdded = new List<Door>();
-		roomsToBeAdded = new List<Room>();
 			
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
 		
-		rooms.AddRange(roomsToBeAdded);
-		roomsToBeAdded.Clear();
-
 		//Add doors and fix them if bad
 		foreach (Door door in doorsToBeAdded)
 		{
