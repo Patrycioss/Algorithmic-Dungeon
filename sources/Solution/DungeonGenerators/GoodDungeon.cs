@@ -78,16 +78,16 @@ internal class GoodDungeon : Dungeon
 		}
 
 		//Debug purposes
-		foreach (Room room in roomsToBeAdded)
-		{
-			string doorPositions = $"Room: {room.topLeft} with {room.doors.Count} doors";
-			
-			foreach (Door door in room.doors)
-			{
-				doorPositions += $" ,{door.location} (rooms: {door.roomA}, {door.roomB}";
-			}
-			Console.WriteLine(doorPositions);
-		}
+		// foreach (Room room in roomsToBeAdded)
+		// {
+		// 	string doorPositions = $"Room: {room.topLeft} with {room.doors.Count} doors";
+		// 	
+		// 	foreach (Door door in room.doors)
+		// 	{
+		// 		doorPositions += $" ,{door.location} (rooms: {door.roomA}, {door.roomB}";
+		// 	}
+		// 	Console.WriteLine(doorPositions);
+		// }
 		
 
 

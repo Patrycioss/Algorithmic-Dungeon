@@ -50,7 +50,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			Size size = new(width / SCALE, height / SCALE);
 
 			//Dungeon
-			dungeon = new GoodDungeon(size);
+			dungeon = new BetterDungeon(size);
 
 			if (dungeon != null)
 			{
