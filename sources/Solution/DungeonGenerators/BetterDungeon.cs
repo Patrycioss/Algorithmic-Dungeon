@@ -197,7 +197,7 @@ internal class BetterDungeon : Dungeon
 	
 	
 	/// <summary>
-	/// Adds doors to an existing room
+	/// Adds doors to an existing room by working from the topLeft room to the bottomRight one
 	/// </summary>
 	/// <param name="room"></param>
 	private void AddDoorsOfRoom(Room room)
@@ -207,45 +207,50 @@ internal class BetterDungeon : Dungeon
 			if (room.Equals(otherRoom)) continue;
 			Door door = null;
 
+			
+			//If rooms overlap on the horizontal axis
 			if (otherRoom.area.Top + 1 == room.area.Bottom && 
 			    ((otherRoom.area.X < room.area.Right && otherRoom.area.X >= room.area.X) 
 			     || (otherRoom.area.Right <= room.area.Right && otherRoom.area.Right > room.area.X)))
 			{
+				//Calculate the boundaries of where the door can be
 				Point boundaries = new()
 				{
 					X = room.area.X > otherRoom.area.X ? room.area.X + 1 : otherRoom.area.X + 1,
 					Y = room.area.Right < otherRoom.area.Right ? room.area.Right - 1 : otherRoom.area.Right - 1
 				};
 
-				if (boundaries.X >= boundaries.Y)
+				//If something goes wrong with the boundaries continue to prevent a crash
+				if (boundaries.X >= boundaries.Y) continue;
+
+				door = new Door(new Point(random.Next(boundaries.X, boundaries.Y), otherRoom.area.Top), Horizontal, boundaries)
 				{
-					Console.WriteLine(boundaries + ", horizontal");
-				}
-				else 
-				{
-					door = new Door(new Point(random.Next(boundaries.X, boundaries.Y), otherRoom.area.Top), Horizontal, boundaries);
-					door.roomA = room;
-					door.roomB = otherRoom;
-					doors.Add(door);
-				}
+					roomA = room,
+					roomB = otherRoom
+				};
+				doors.Add(door);
 			}
 			
+			//if rooms overlap on the vertical axis
 			else if (otherRoom.area.Left + 1 == room.area.Right && 
 			         ((otherRoom.area.Y < room.area.Bottom && otherRoom.area.Y >= room.area.Top) 
 			          || (otherRoom.area.Bottom <= room.area.Bottom && otherRoom.area.Bottom > room.area.Top)))
 			{
-				
+				//Calculate the boundaries of where the door can be
 				Point boundaries = new()
 				{
 					X = room.area.Y > otherRoom.area.Y ? room.area.Y + 1 : otherRoom.area.Y + 1,
 					Y = room.area.Bottom < otherRoom.area.Bottom ? room.area.Bottom - 1 : otherRoom.area.Bottom - 1
 				};
 
+				//If something goes wrong with the boundaries continue to prevent a crash
 				if (boundaries.X >= boundaries.Y) continue;
 				
-				door = new Door(new Point(otherRoom.area.Left, random.Next(boundaries.X, boundaries.Y)), Vertical, boundaries);
-				door.roomA = room;
-				door.roomB = otherRoom;
+				door = new Door(new Point(otherRoom.area.Left, random.Next(boundaries.X, boundaries.Y)), Vertical, boundaries)
+				{
+					roomA = room,
+					roomB = otherRoom
+				};
 				doors.Add(door);
 			}
 
@@ -255,6 +260,5 @@ internal class BetterDungeon : Dungeon
 				otherRoom.doors.Add(door);
 			}
 		}
-		
 	}
 }
