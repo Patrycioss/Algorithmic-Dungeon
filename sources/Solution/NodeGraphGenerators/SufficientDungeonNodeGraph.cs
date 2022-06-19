@@ -37,7 +37,8 @@ internal class SufficientDungeonNodeGraph : NodeGraph
 		{
 			Node roomNode = new(GetRoomCenter(room));
 			nodes.Add(roomNode);
-			
+			room.node ??= roomNode;
+
 			foreach (Door door in room.doors)
 			{
 				AddConnection(roomNode,doorNodes[door]);

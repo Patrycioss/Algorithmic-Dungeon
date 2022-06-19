@@ -16,14 +16,14 @@ internal class SufficientDungeon : Dungeon
 	{
 		if (Input.GetKeyDown(Key.A))
 		{
-			Generate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
+			InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
 		}
 
 		Generator.RegenerateRooms(this);
 		Generator.DrawDebugLines(rooms, size, game);
 	}
 		
-	protected override void Make(int pMinimumRoomSize, int seed)
+	protected override void Generate(int pMinimumRoomSize, int seed)
 	{
 		random = new Random(seed);
 		doorsToBeAdded = new List<Door>();

@@ -22,7 +22,7 @@ namespace Saxion.CMGT.Algorithms.sources.Util
 			Console.WriteLine("* L key to toggle node label display.");
 			Console.WriteLine("-----------------------------------------------------------------------------");
 
-			labelFont = new Font(SystemFonts.DefaultFont.FontFamily, pNodeGraph.nodeSize, FontStyle.Bold);
+			labelFont = new Font(SystemFonts.DefaultFont.FontFamily, pNodeGraph.nodeSize, FontStyle.Regular);
 			graph = pNodeGraph;
 		}
 

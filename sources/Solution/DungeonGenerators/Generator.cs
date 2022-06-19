@@ -252,7 +252,7 @@ public static class Generator
 		//Regenerate dungeon
 		if (Input.GetKeyDown(Key.SPACE))
 		{
-			dungeon.Generate(AlgorithmsAssignment.MIN_ROOM_SIZE, Utils.Random(int.MinValue, int.MaxValue));
+			dungeon.InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, Utils.Random(int.MinValue, int.MaxValue));
 		}
 	}
 

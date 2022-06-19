@@ -21,14 +21,14 @@ internal class BetterDungeon : Dungeon
 	{
 		if (Input.GetKeyDown(Key.A))
 		{
-			Generate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
+			InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
 		}
 
 		for (int i = 48; i <= 57; i++)
 		{
 			if (Input.GetKeyDown(i))
 			{
-				Generate(AlgorithmsAssignment.MIN_ROOM_SIZE,i * increment);
+				InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE,i * increment);
 			}
 		}
 
@@ -46,7 +46,7 @@ internal class BetterDungeon : Dungeon
 		Generator.RegenerateRooms(this);
 	}
 
-	protected override void Make(int pMinimumRoomSize, int seed)
+	protected override void Generate(int pMinimumRoomSize, int seed)
 	{
 		random = new Random(seed);
 		doorsToBeAdded = new List<Door>();

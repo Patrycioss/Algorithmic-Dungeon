@@ -22,7 +22,7 @@ internal class ExcellentDungeon : Dungeon
 	{
 		if (Input.GetKeyDown(Key.A))
 		{
-			Generate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
+			InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
 		}
 
 		
@@ -41,7 +41,7 @@ internal class ExcellentDungeon : Dungeon
 		Generator.RegenerateRooms(this);
 	}
 
-	protected override void Make(int pMinimumRoomSize, int seed)
+	protected override void Generate(int pMinimumRoomSize, int seed)
 	{
 		Console.Clear();
 		

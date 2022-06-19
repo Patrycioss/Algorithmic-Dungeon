@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 
@@ -7,7 +8,7 @@ namespace Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
 
 internal class BreadthFirstPathFinder : PathFinder
 {
-	public BreadthFirstPathFinder(NodeGraph nodeGraph) : base(nodeGraph) {}
+	public BreadthFirstPathFinder(NodeGraph nodeGraph, Dungeon pDungeon) : base(nodeGraph, pDungeon) {}
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{

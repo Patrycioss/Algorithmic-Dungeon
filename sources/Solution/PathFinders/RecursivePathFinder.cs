@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 
@@ -14,7 +15,7 @@ internal class RecursivePathFinder : PathFinder
 	private Node start;
 	private Node end;
 	
-	public RecursivePathFinder(NodeGraph pGraph) : base(pGraph) {}
+	public RecursivePathFinder(NodeGraph pGraph, Dungeon pDungeon) : base(pGraph, pDungeon) {}
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{

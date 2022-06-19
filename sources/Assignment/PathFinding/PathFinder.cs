@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Threading;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.GXPEngine.Utils;
+using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
+using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
@@ -18,11 +23,12 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
  */
 abstract class PathFinder : Canvas
 {
-	protected Node _startNode;							
-	protected Node _endNode;
-	protected List<Node> _lastCalculatedPath = null;
+	protected Node startNode;							
+	protected Node endNode;
+	protected List<Node> lastCalculatedPath = null;
 
-	protected NodeGraph.NodeGraph _nodeGraph;
+	protected NodeGraph.NodeGraph nodeGraph;
+	protected Dungeon.Dungeon dungeon;
 
 	//some values for drawing the path
 	private Pen _outlinePen = new Pen(Color.Black, 4);
@@ -32,20 +38,55 @@ abstract class PathFinder : Canvas
 	private Brush _startNodeColor = Brushes.Green;
 	private Brush _endNodeColor = Brushes.Red;
 	private Brush _pathNodeColor = Brushes.Yellow;
+	
+	//Custom
+	protected List<Node> excludedNodes = new();
+	protected bool connected;
 
-	public PathFinder (NodeGraph.NodeGraph pGraph) : base (pGraph.width, pGraph.height)
+	public PathFinder (NodeGraph.NodeGraph pGraph, Dungeon.Dungeon pDungeon) : base (pGraph.width, pGraph.height)
 	{
-		_nodeGraph = pGraph;
-		_nodeGraph.onNodeShiftLeftClicked += (node) => { _startNode = node; Draw(); };
-		_nodeGraph.onNodeShiftRightClicked += (node) => { _endNode = node; Draw(); };
+		dungeon = pDungeon;
+		nodeGraph = pGraph;
+		nodeGraph.onNodeShiftLeftClicked += (node) => { startNode = node; Draw(); };
+		nodeGraph.onNodeShiftRightClicked += (node) => { endNode = node; Draw(); };
+		nodeGraph.onNodeControlLeftClicked += (node) => { excludedNodes.Add(node); Draw(); CheckIfDungeonIsConnected(); };
+		nodeGraph.onNodeControlRightClicked += (node) => { excludedNodes.Remove(node); Draw(); CheckIfDungeonIsConnected(); };
 
 		Console.WriteLine("\n-----------------------------------------------------------------------------");
 		Console.WriteLine(this.GetType().Name + " created.");
 		Console.WriteLine("* Shift-LeftClick to set the starting node.");
 		Console.WriteLine("* Shift-RightClick to set the target node.");
+		Console.WriteLine("* CTRL-LeftClick to exclude node");
 		Console.WriteLine("* G to generate the Path.");
 		Console.WriteLine("* C to clear the Path.");
 		Console.WriteLine("-----------------------------------------------------------------------------");
+		
+		CheckIfDungeonIsConnected();
+		Draw();
+	}
+
+	protected void CheckIfDungeonIsConnected()
+	{
+		connected = true;
+		
+		List<Room> rooms = dungeon.rooms;
+
+		for (int i = rooms.Count - 1; i >= 0; i--)
+		{
+			for (int j = i - 1; j >= 0; j--)
+			{
+				Room roomA = rooms[i];
+				Room roomB = rooms[j];
+				
+				List<Node> path = Generate(roomA.node, roomB.node);
+				if (path.Count == 0)
+				{
+					Console.WriteLine("nope");
+					connected = false;
+					return;
+				}
+			}
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -55,23 +96,23 @@ abstract class PathFinder : Canvas
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate: Generating path...");
 
-		_lastCalculatedPath = null;
-		_startNode = pFrom;
-		_endNode = pTo;
+		lastCalculatedPath = null;
+		startNode = pFrom;
+		endNode = pTo;
 
-		if (_startNode == null || _endNode == null)
+		if (startNode == null || endNode == null)
 		{
 			Console.WriteLine("Please specify start and end node before trying to generate a path.");
 		}
 		else
 		{
-			_lastCalculatedPath = Generate(pFrom, pTo);
+			lastCalculatedPath = Generate(pFrom, pTo);
 		}
 
 		Draw();
 
 		System.Console.WriteLine(this.GetType().Name + ".Generate: Path generated.");
-		return _lastCalculatedPath;
+		return lastCalculatedPath;
 	}
 
 	/**
@@ -93,27 +134,41 @@ abstract class PathFinder : Canvas
 		graphics.Clear(Color.Transparent);
 
 		//draw path if we have one
-		if (_lastCalculatedPath != null) DrawPath();
+		if (lastCalculatedPath != null) DrawPath();
 
 		//draw start and end if we have one
-		if (_startNode != null) DrawNode(_startNode, _startNodeColor);
-		if (_endNode != null) DrawNode(_endNode, _endNodeColor);
+		if (startNode != null) DrawNode(startNode, _startNodeColor);
+		if (endNode != null) DrawNode(endNode, _endNodeColor);
 
+		foreach (Node node in excludedNodes)
+		{
+			DrawNode(node, Brushes.Orange);
+		}
+
+		if (connected)
+		{
+			graphics.DrawString("Connected!", SystemFonts.DefaultFont, Brushes.Green, new Point(10,10));
+		}
+		else
+		{
+			graphics.DrawString("Not connected!", SystemFonts.DefaultFont,Brushes.Red, new Point(10,10));
+		}
+		
 		//TODO: you could override this method and draw your own additional stuff for debugging
 	}
 
 	protected virtual void DrawPath()
 	{
 		//draw all lines
-		for (int i = 0; i < _lastCalculatedPath.Count - 1; i++)
+		for (int i = 0; i < lastCalculatedPath.Count - 1; i++)
 		{
-			DrawConnection(_lastCalculatedPath[i], _lastCalculatedPath[i + 1]);
+			DrawConnection(lastCalculatedPath[i], lastCalculatedPath[i + 1]);
 		}
 
 		//draw all nodes between start and end
-		for (int i = 1; i < _lastCalculatedPath.Count - 1; i++)
+		for (int i = 1; i < lastCalculatedPath.Count - 1; i++)
 		{
-			DrawNode(_lastCalculatedPath[i], _pathNodeColor);
+			DrawNode(lastCalculatedPath[i], _pathNodeColor);
 		}
 	}
 
@@ -124,7 +179,7 @@ abstract class PathFinder : Canvas
 
 	protected virtual void DrawNode(Node pNode, Brush pColor)
 	{
-		int nodeSize = _nodeGraph.nodeSize+2;
+		int nodeSize = nodeGraph.nodeSize+2;
 
 		//colored fill
 		graphics.FillEllipse(
@@ -167,15 +222,15 @@ abstract class PathFinder : Canvas
 		{
 			//clear everything
 			graphics.Clear(Color.Transparent);
-			_startNode = _endNode = null;
-			_lastCalculatedPath = null;
+			startNode = endNode = null;
+			lastCalculatedPath = null;
 		}
 
 		if (Input.GetKeyDown(Key.G))
 		{
-			if (_startNode != null && _endNode != null)
+			if (startNode != null && endNode != null)
 			{
-				InternalGenerate(_startNode, _endNode);
+				InternalGenerate(startNode, endNode);
 			}
 		}
 	}

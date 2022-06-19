@@ -27,7 +27,11 @@ internal abstract class NodeGraph : Canvas
 	public Action<Node> onNodeRightClicked = delegate { };
 	public Action<Node> onNodeShiftLeftClicked = delegate { };
 	public Action<Node> onNodeShiftRightClicked = delegate { };
-
+	
+	//Custom
+	public Action<Node> onNodeControlLeftClicked = delegate { };
+	public Action<Node> onNodeControlRightClicked = delegate { };
+	
 	//required for node highlighting on mouse over
 	private Node nodeUnderMouse;
 
@@ -76,7 +80,7 @@ internal abstract class NodeGraph : Canvas
 		nodes.Clear();
 		Generate();
 		Draw();
-
+		
 		Console.WriteLine(GetType().Name + ".Generate: Graph generated.");
 	}
 
@@ -183,6 +187,11 @@ internal abstract class NodeGraph : Canvas
 		{
 			if (Input.GetMouseButtonUp(0)) onNodeShiftLeftClicked(nodeUnderMouse);
 			if (Input.GetMouseButtonUp(1)) onNodeShiftRightClicked(nodeUnderMouse);
+		}
+		else if (Input.GetKey(Key.LEFT_CTRL) || Input.GetKey(Key.RIGHT_CTRL))
+		{
+			if (Input.GetMouseButtonUp(0)) onNodeControlLeftClicked(nodeUnderMouse);
+			if (Input.GetMouseButtonUp(1)) onNodeControlRightClicked(nodeUnderMouse);
 		}
 		else
 		{

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
 {
@@ -29,6 +30,7 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
 		
 		public Point bottomRight => new Point(area.Right - 1, area.Bottom - 1);
 
+		public Node node; 
 
 
 

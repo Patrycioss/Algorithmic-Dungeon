@@ -35,6 +35,8 @@ internal class GoodDungeonNodeGraph : NodeGraph
 		{
 			Node roomNode = new(GetRoomCenter(room));
 			nodes.Add(roomNode);
+			room.node ??= roomNode;
+
 			
 			foreach (Door door in room.doors)
 			{

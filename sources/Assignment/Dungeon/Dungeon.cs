@@ -66,7 +66,7 @@ public abstract class Dungeon : Canvas
 	 * 
 	 * @param pMinimumRoomSize the minimum size that a room should have
 	 */
-	public void Generate(int pMinimumRoomSize, int seed)
+	public void InternalGenerate(int pMinimumRoomSize, int seed)
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Generating dungeon...");
 
@@ -74,7 +74,7 @@ public abstract class Dungeon : Canvas
 		doors.Clear();
 
 		minimumRoomSize = pMinimumRoomSize;
-		Make(pMinimumRoomSize, seed);
+		Generate(pMinimumRoomSize, seed);
 
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Dungeon generated.");
 
@@ -82,7 +82,7 @@ public abstract class Dungeon : Canvas
 	}
 
 	//TODO: Override this method in your subclass to make a dungeon as described in assignment 1
-	protected abstract void Make(int pMinimumRoomSize, int seed);
+	protected abstract void Generate(int pMinimumRoomSize, int seed);
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	///	This section contains helper methods to draw all or specific doors/rooms

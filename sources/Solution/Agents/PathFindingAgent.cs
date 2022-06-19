@@ -1,24 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
 using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.Agents;
-
-
 internal sealed class PathFindingAgent : NodeGraphAgent
 {
 	private Node currentTarget;
-	
 	private float currentSpeed;
 	private bool isMoving;
-
 	private readonly PathFinder pathFinder;
-
 	private Queue<Node> nodeQueue;
-	private Queue<Queue<Node>> pathQueue;
 
 	public PathFindingAgent(NodeGraph pNodeGraph, PathFinder pPathFinder) : base(pNodeGraph)
 	{
@@ -40,14 +34,25 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 		currentSpeed = 0.5f;
 	}
 	
-
 	private void OnNodeClickHandler(Node pNode)
 	{
 		if (!isMoving)
 		{
 			List<Node> path = pathFinder.InternalGenerate(currentTarget, pNode);
 			path.Reverse();
+
+			if (path.Contains(currentTarget)) path.Remove(currentTarget);
+			
 			nodeQueue = new Queue<Node>(path);
+
+			Console.WriteLine(nodeQueue.Count);
+
+			if (nodeQueue.Count == 0)
+			{
+				Console.WriteLine("No path!");
+				return;
+			}
+			
 			currentTarget = nodeQueue.Dequeue();
 			isMoving = true;
 		}
@@ -59,14 +64,12 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 		if (Input.GetKeyDown(Key.PLUS)) currentSpeed += 0.1f;
 		else if (Input.GetKeyDown(Key.MINUS)) currentSpeed -= 0.1f;
 		
-
-		if (nodeQueue == null || nodeQueue.Count == 0 || currentTarget == null) return;
+		if (nodeQueue == null || currentTarget == null) return;
 
 		if (MoveTowardsNode(currentTarget, currentSpeed))
 		{
-			if (nodeQueue.Count == 1)
+			if (nodeQueue.Count == 0)
 			{
-				pathFinder.graphics.Clear(Color.Transparent);
 				isMoving = false;
 			}
 			else currentTarget = nodeQueue.Dequeue();

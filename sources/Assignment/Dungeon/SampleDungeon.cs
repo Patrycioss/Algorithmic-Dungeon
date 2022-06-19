@@ -20,7 +20,7 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.Dungeon
 	 * - playing/experiment freely is the key to all success
 	 * - this problem can be solved both iteratively or recursively
 	 */
-		protected override void Make(int pMinimumRoomSize, int seed)
+		protected override void Generate(int pMinimumRoomSize, int seed)
 		{
 			//left room from 0 to half of screen + 1 (so that the walls overlap with the right room)
 			//(TODO: experiment with removing the +1 below to see what happens with the walls)

@@ -27,15 +27,33 @@ internal class ExcellentDungeonNodeGraph : NodeGraph
 				{
 					Node node = new(GetPointCenter(new Point(i,j)));
 					nodes.Add(node);
+					room.node ??= node;
 				}
 			}
 		}
+		
+		
 
 		//Add nodes to doors
 		foreach (Door door in dungeon.doors)
 		{
 			Node node = new(GetDoorCenter(door));
 			nodes.Add(node);
+		}
+		
+		
+		//check for overlapping nodes, just in case
+		for (int i = 0; i < nodes.Count; i++)
+		{
+			for (int j = i + 1; j < nodes.Count; j++)
+			{
+				if (nodes[i].location.X != nodes[j].location.X || nodes[i].location.Y != nodes[j].location.Y) continue;
+
+				//if they're overlapping, remove the second one
+				nodes.RemoveAt(j);
+				Console.WriteLine($"Removed overlapping node at with id {nodes[i].id} at {nodes[i].location}");
+				j--;
+			}
 		}
 
 		int o = (int)dungeon.scale;
