@@ -16,27 +16,13 @@ internal class BetterDungeon : Dungeon
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(Key.A))
-		{
-			InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
-		}
-
-		for (int i = 48; i <= 57; i++)
-		{
-			if (Input.GetKeyDown(i))
-			{
-				InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE,i * seedIncrement);
-			}
-		}
-
-		if (Input.GetKeyDown(Key.PLUS))
-		{
-			seedIncrement *= 10;
-		}
-		else if (Input.GetKeyDown(Key.MINUS) && seedIncrement > 1)
-		{
-			seedIncrement /= 10;
-		}
+		//Test inputs
+		if (Input.GetKeyDown(Key.A)) InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
+		
+		for (int i = 48; i <= 57; i++) if (Input.GetKeyDown(i)) InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, i * seedIncrement);
+		
+		if (Input.GetKeyDown(Key.PLUS)) seedIncrement *= 10;
+		else if (Input.GetKeyDown(Key.MINUS) && seedIncrement > 1) seedIncrement /= 10;
 	}
 
 	protected override void Generate(int pMinimumRoomSize, int seed)

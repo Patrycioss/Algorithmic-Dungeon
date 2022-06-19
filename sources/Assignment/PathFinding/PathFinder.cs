@@ -76,24 +76,32 @@ abstract class PathFinder : Canvas
 	{
 		connected = true;
 		
-		List<Room> rooms = dungeon.rooms;
 
-		for (int i = rooms.Count - 1; i >= 0; i--)
+		for (int i = 1; i < dungeon.rooms.Count; i++)
 		{
-			for (int j = i - 1; j >= 0; j--)
+			if (Generate(dungeon.rooms[0].node, dungeon.rooms[i].node).Count == 0)
 			{
-				Room roomA = rooms[i];
-				Room roomB = rooms[j];
-				
-				List<Node> path = Generate(roomA.node, roomB.node);
-				if (path.Count == 0)
-				{
-					Console.WriteLine("nope");
-					connected = false;
-					return;
-				}
+				connected = false;
+				break;
 			}
 		}
+
+		// for (int i = rooms.Count - 1; i >= 0; i--)
+		// {
+		// 	for (int j = i - 1; j >= 0; j--)
+		// 	{
+		// 		Room roomA = rooms[i];
+		// 		Room roomB = rooms[j];
+		// 		
+		// 		List<Node> path = Generate(roomA.node, roomB.node);
+		// 		if (path.Count == 0)
+		// 		{
+		// 			Console.WriteLine("nope");
+		// 			connected = false;
+		// 			return;
+		// 		}
+		// 	}
+		// }
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////

@@ -32,13 +32,10 @@ namespace Saxion.CMGT.Algorithms.sources
 
 		//common settings
 		public static int SCALE = 20;				
-		public static int MIN_ROOM_SIZE = 7;
-		public static bool checkIfCompletelyConnected = false;
+		public static int MIN_ROOM_SIZE = 10;
+		public static bool checkIfCompletelyConnected = true;
 
-		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false)
-		{
-			Create();
-		}
+		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false) => Create();
 
 		private void Create(int seed = 1)
 		{
@@ -50,7 +47,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			Size size = new(width / SCALE, height / SCALE);
 
 			//Dungeon
-			dungeon = new BetterDungeon(size);
+			dungeon = new ExcellentDungeon(size);
 
 			if (dungeon != null)
 			{
@@ -67,7 +64,7 @@ namespace Saxion.CMGT.Algorithms.sources
 
 			//TiledView
 			
-			// tiledView = new TiledDungeonView(dungeon);
+			tiledView = new TiledDungeonView(dungeon);
 			tiledView?.InternalGenerate();
 
 			//PathFinder
