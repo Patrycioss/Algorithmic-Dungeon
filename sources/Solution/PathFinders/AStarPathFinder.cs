@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
@@ -25,15 +26,18 @@ internal class AStarPathFinder : PathFinder
 
 		foreach (Node node in nodeGraph.nodes)
 		{ 
-			nodeInformation.Add(node,(float.MaxValue,0,0,false, null));
+			nodeInformation.Add(node,(float.MaxValue,GetDistanceFromNodeToNode(node,pTo),float.MaxValue,false, null));
 		}
-		
-		nodeInformation[pFrom] = (0,0,0,false,null);
+
+		float distanceFromStartToEnd = GetDistanceFromNodeToNode(pFrom, pTo);
+		nodeInformation[pFrom] = (0,distanceFromStartToEnd,distanceFromStartToEnd,false,null);
 		
 		nodesToCheck.Add(pFrom);
 		Console.WriteLine($"StartId: {pFrom.id}");
 
 		SortNodesToCheck();
+
+		int nodesExpanded = 0;
 		
 		while (nodesToCheck.Count > 0)
 		{
@@ -47,10 +51,12 @@ internal class AStarPathFinder : PathFinder
 
 			Console.WriteLine($"Node: {node.id} with fValue: {nodeInformation[node].fCost}");
 
+			nodesExpanded++;
+
 			//Make a path if it reaches the end
 			if (node.connections.Contains(pTo))
 			{
-				DetermineNewNodeInformation(pTo,node,pTo);
+				DetermineNewNodeInformation(pTo,node);
 				AddParent(pTo);
 				
 				void AddParent(Node child)
@@ -77,7 +83,7 @@ internal class AStarPathFinder : PathFinder
 				if (excludedNodes.Contains(connection)) continue;
 
 				//Updates node information
-				DetermineNewNodeInformation(connection,node,pTo);
+				DetermineNewNodeInformation(connection,node);
 				
 				if (!nodeInformation[connection].visited) nodesToCheck.Add(connection);
 			}
@@ -87,22 +93,19 @@ internal class AStarPathFinder : PathFinder
 		
 
 		Console.WriteLine($"PathLength: {path.Count}");
+		Console.WriteLine($"NodesExpanded: {nodesExpanded}");
 		return path;
 	}
 
 	private static float GetDistanceFromNodeToNode(Node nodeA, Node nodeB)
 	{
-		float distance = Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2)); 
-
-		return distance;
+		return Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2));
 	}
 
-	private void DetermineNewNodeInformation(Node node, Node newParent, Node goal)
+	private void DetermineNewNodeInformation(Node node, Node newParent)
 	{
 		(float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent) previousInformation = nodeInformation[node];
 		
-		previousInformation.distanceToEnd = GetDistanceFromNodeToNode(node, goal);
-				
 		float newDistanceToStart = nodeInformation[newParent].distanceToStart + GetDistanceFromNodeToNode(node, newParent);
 		if (previousInformation.distanceToStart > newDistanceToStart) previousInformation.distanceToStart = newDistanceToStart;
 				
@@ -128,7 +131,6 @@ internal class AStarPathFinder : PathFinder
 			}
 			for (int j = i - 1; j >= 0; j--)
 			{
-
 				float iHeuristic = nodeInformation[nodesToCheck[i]].fCost;
 				float jHeuristic = nodeInformation[nodesToCheck[j]].fCost;
 				Node tempI = nodesToCheck[i];

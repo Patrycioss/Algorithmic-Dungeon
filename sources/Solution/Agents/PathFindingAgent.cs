@@ -31,7 +31,7 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 		//listen to node clicks
 		pNodeGraph.onNodeLeftClicked += OnNodeClickHandler;
 
-		currentSpeed = 0.5f;
+		currentSpeed = 10;
 	}
 	
 	private void OnNodeClickHandler(Node pNode)

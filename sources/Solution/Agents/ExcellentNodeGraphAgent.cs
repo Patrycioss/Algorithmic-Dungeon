@@ -42,7 +42,7 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 
 		canReceiveNewGoal = true;
 
-		currentSpeed = 0.5f;
+		currentSpeed = 10;
 	}
 	
 

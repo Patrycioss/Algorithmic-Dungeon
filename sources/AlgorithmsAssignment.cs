@@ -40,10 +40,8 @@ namespace Saxion.CMGT.Algorithms.sources
 			Create();
 		}
 
-		private void Create(int seed = int.MaxValue)
+		private void Create(int seed = 1)
 		{
-			if (seed == int.MaxValue) seed = new Random().Next();
-			
 			//set our default background color and title
 			GL.ClearColor(1, 1, 1, 1);
 			GL.glfwSetWindowTitle("Algorithms Game");
@@ -52,7 +50,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			Size size = new Size(width / SCALE, height / SCALE);
 
 			//Dungeon
-			dungeon = new BetterDungeon(size);
+			dungeon = new SufficientDungeon(size);
 
 			if (dungeon != null)
 			{
@@ -94,7 +92,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			if (Input.GetKeyDown(Key.SPACE))
 			{
 				ClearScreen();
-				Create();
+				Create(Utils.Random(int.MinValue, int.MaxValue));
 			}
 			
 			for (int i = 48; i <= 57; i++)

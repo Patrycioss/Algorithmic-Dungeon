@@ -14,8 +14,9 @@ internal class DijkstraPathFinder : PathFinder
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
 		List<Node> shortestPath = new List<Node>();
-		
-		
+
+		int nodesExpanded = 0;
+
 		if (pFrom.connections.Contains(pTo))
 		{
 			shortestPath = new List<Node> {pFrom, pTo};
@@ -42,6 +43,8 @@ internal class DijkstraPathFinder : PathFinder
 			while (nodesToCheck.Count > 0)
 			{
 				Node node = nodesToCheck.Dequeue();
+
+				nodesExpanded++;
 
 				Console.WriteLine($"{node.id} has value: {nodeDistances[node]}");
 
@@ -102,8 +105,9 @@ internal class DijkstraPathFinder : PathFinder
 				}
 			}
 		}
-
+		
 		Console.WriteLine($"PathLength: {shortestPath.Count}");
+		Console.WriteLine($"NodesExpanded: {nodesExpanded}");
 		return shortestPath;
 	}
 
