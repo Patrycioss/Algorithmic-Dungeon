@@ -40,10 +40,6 @@ internal class BetterDungeon : Dungeon
 		{
 			increment /= 10;
 		}
-		
-		
-
-		Generator.RegenerateRooms(this);
 	}
 
 	protected override void Generate(int pMinimumRoomSize, int seed)

@@ -55,6 +55,7 @@ internal class AStarPathFinder : PathFinder
 			if (node.connections.Contains(pTo))
 			{
 				DetermineNewNodeInformation(pTo,node);
+				
 				AddParent(pTo);
 				
 				void AddParent(Node child)
@@ -63,14 +64,8 @@ internal class AStarPathFinder : PathFinder
 				
 					Node tempParent = nodeInformation[child].parent;
 
-					if (tempParent == pFrom)
-					{
-						path.Add(pFrom);
-					}
-					else
-					{
-						AddParent(tempParent);
-					}
+					if (tempParent == pFrom) path.Add(pFrom);
+					else AddParent(tempParent);
 				}
 				break;
 			}

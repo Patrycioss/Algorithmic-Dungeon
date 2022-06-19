@@ -46,11 +46,11 @@ namespace Saxion.CMGT.Algorithms.sources
 			GL.ClearColor(1, 1, 1, 1);
 			GL.glfwSetWindowTitle("Algorithms Game");
 
-			Grid grid = new Grid(width, height, SCALE);
-			Size size = new Size(width / SCALE, height / SCALE);
+			Grid grid = new(width, height, SCALE);
+			Size size = new(width / SCALE, height / SCALE);
 
 			//Dungeon
-			dungeon = new SufficientDungeon(size);
+			dungeon = new GoodDungeon(size);
 
 			if (dungeon != null)
 			{
@@ -66,8 +66,8 @@ namespace Saxion.CMGT.Algorithms.sources
 			graph?.InternalGenerate();
 
 			//TiledView
-			tiledView = new TiledDungeonView(dungeon);
-
+			
+			// tiledView = new TiledDungeonView(dungeon);
 			tiledView?.InternalGenerate();
 
 			//PathFinder
