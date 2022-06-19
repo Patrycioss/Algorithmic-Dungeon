@@ -16,19 +16,9 @@ internal class ExcellentDungeon : Dungeon
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(Key.A))
-		{
-			InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
-		}
-		
-		if (Input.GetKeyDown(Key.PLUS))
-		{
-			seedIncrement *= 10;
-		}
-		else if (Input.GetKeyDown(Key.MINUS) && seedIncrement > 1)
-		{
-			seedIncrement /= 10;
-		} 
+		if (Input.GetKeyDown(Key.A)) InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
+		if (Input.GetKeyDown(Key.PLUS)) seedIncrement *= 10;
+		else if (Input.GetKeyDown(Key.MINUS) && seedIncrement > 1) seedIncrement /= 10;
 	}
 
 	protected override void Generate(int pMinimumRoomSize, int seed)
@@ -88,12 +78,8 @@ internal class ExcellentDungeon : Dungeon
 					break;
 			}
 
-			void UseBrush(Brush brush)
-			{
-				DrawRoom(room,Pens.Black,brush);
-			}
+			void UseBrush(Brush brush) => DrawRoom(room,Pens.Black,brush);
 		}
-		
 		DrawDoors(doors, Pens.GreenYellow);
 	}
 	
@@ -109,7 +95,6 @@ internal class ExcellentDungeon : Dungeon
 		Point newPoint = new(0, 0);
 		
 		if (room.area.Height > room.area.Width) goto horizontal;
-
 		
 		if (room.area.Width >= minimumRoomSize * 2)
 		{
@@ -141,10 +126,7 @@ internal class ExcellentDungeon : Dungeon
 
 		else rooms.Add(room);
 
-		void Redo(Room roomToBeRedone)
-		{
-			DivideRoom(roomToBeRedone);
-		}
+		void Redo(Room roomToBeRedone) => DivideRoom(roomToBeRedone);
 	}
 
 	/// <param name="surface">The specified surface)</param>
@@ -152,15 +134,7 @@ internal class ExcellentDungeon : Dungeon
 	private List<Room> GetRoomsWithSurface(int surface)
 	{
 		List<Room> roomsWithSurface = new List<Room>();
-
-		for (int i = rooms.Count - 1; i >= 0; i--)
-		{
-			Room room = rooms[i];
-			if (room.surface == surface)
-			{
-				roomsWithSurface.Add(room);
-			}
-		}
+		for (int i = rooms.Count - 1; i >= 0; i--) if (rooms[i].surface == surface) roomsWithSurface.Add(rooms[i]);
 		return roomsWithSurface;
 	}
 
@@ -168,14 +142,7 @@ internal class ExcellentDungeon : Dungeon
 	private int GetBiggestSurface()
 	{
 		int biggestSurface = int.MinValue;
-
-		foreach (Room room in rooms)
-		{
-			if (room.surface > biggestSurface)
-			{
-				biggestSurface = room.surface;
-			}
-		}
+		foreach (Room room in rooms) if (room.surface > biggestSurface) biggestSurface = room.surface;
 		return biggestSurface;
 	}
 
@@ -183,14 +150,7 @@ internal class ExcellentDungeon : Dungeon
 	private int GetSmallestSurface()
 	{
 		int smallestSurface = int.MaxValue;
-
-		foreach (Room room in rooms)
-		{
-			if (room.surface < smallestSurface)
-			{
-				smallestSurface = room.surface;
-			}
-		}
+		foreach (Room room in rooms) if (room.surface < smallestSurface) smallestSurface = room.surface;
 		return smallestSurface;
 	}
 
@@ -199,7 +159,6 @@ internal class ExcellentDungeon : Dungeon
 		if (door.roomA == null || door.roomB == null) return;
 
 		Room roomB = door.roomB;
-			
 		Door lastDoor = null;
 			
 		if (door.orientation == Horizontal)
@@ -212,14 +171,9 @@ internal class ExcellentDungeon : Dungeon
 					Door newDoor = new (door.location with{Y = door.location.Y + i}, Horizontal);
 					doors.Add(newDoor);
 						
-					if (i == distance + 1)
-					{
-						lastDoor = newDoor;
-					}
+					if (i == distance + 1) lastDoor = newDoor;
 				}
-					
 				door.roomB = null;
-
 			}
 		}
 		else
@@ -232,23 +186,12 @@ internal class ExcellentDungeon : Dungeon
 					Door newDoor = new(door.location with {X = door.location.X + i}, Vertical);
 					doors.Add(newDoor);
 
-					if (i == distance + 1)
-					{
-						lastDoor = newDoor;
-					}
+					if (i == distance + 1) lastDoor = newDoor;
 				}
-					
 				door.roomB = null;
-
 			}
 		}
-			
-			
-		if (lastDoor != null)
-		{
-			lastDoor.roomB = roomB;
-		}
-
+		if (lastDoor != null) lastDoor.roomB = roomB;
 	}
 
 	private void AddDoorsOfRoom(Room room)
@@ -322,10 +265,7 @@ internal class ExcellentDungeon : Dungeon
 				Y = room.area.Bottom < viableRoom.area.Bottom ? room.area.Bottom - 1 : viableRoom.area.Bottom - 1
 			};
 
-			if (boundaries.X >= boundaries.Y)
-			{
-				return;
-			}
+			if (boundaries.X >= boundaries.Y) return;
 
 			Door door = new(new Point(room.area.Right - 1, random.Next(boundaries.X, boundaries.Y)), Vertical, boundaries);
 			doors.Add(door);
