@@ -12,62 +12,53 @@ internal class BreadthFirstPathFinder : PathFinder
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
+		if (pFrom == pTo) return null;
+		if (pFrom.connections.Contains(pTo)) return new List<Node> {pTo};
+		
 		List<Node> shortestPath = new List<Node>();
 		Queue<Node> nodesToCheck = new Queue<Node>();
 		List<Node> checkedNodes = new List<Node>();
 		Dictionary<Node,Node> childParents = new Dictionary<Node,Node>();
-
-
+		
 		nodesToCheck.Enqueue(pFrom);
 		
-		if (pFrom.connections.Contains(pTo))
+		while (nodesToCheck.Count > 0)
 		{
-			shortestPath = new List<Node> {pFrom, pTo};
-		}
-		else
-		{
-			while (nodesToCheck.Count > 0)
+			Node node = nodesToCheck.Dequeue();
+			checkedNodes.Add(node);
+
+			Console.WriteLine($"Checking Node: {node.id}");
+
+			foreach (Node connection in node.connections)
 			{
-				Node node = nodesToCheck.Dequeue();
-				checkedNodes.Add(node);
-
-				Console.WriteLine($"Checking Node: {node.id}");
-			
-				foreach (Node connection in node.connections)
-				{
-					if (checkedNodes.Contains(connection)) continue;
-					if (nodesToCheck.Contains(connection)) continue;
-					
-					if (connection == pTo)
-					{
-						childParents.Add(pTo,node);
-						
-						List<Node> path = new List<Node>{pTo};
-
-						GetParent(connection);
-
-						void GetParent(Node child)
-						{
-							if (childParents.ContainsKey(child))
-							{
-								path.Add(child);
-								GetParent(childParents[child]);
-							}
-							else
-							{
-								path.Add(pFrom);
-							}
-						}
-						shortestPath = path;
-					}
-					nodesToCheck.Enqueue(connection);
+				if (checkedNodes.Contains(connection)) continue;
 				
-					if (childParents.ContainsKey(connection)) childParents[connection] = node;
-					else childParents.Add(connection,node);
+				if (connection == pTo)
+				{
+					if (childParents.ContainsKey(pTo)) childParents[pTo] = node;
+					else childParents.Add(pTo, node);
+
+					List<Node> path = new List<Node> {pTo};
+					GetParent(connection);
+
+					void GetParent(Node child)
+					{
+						if (childParents.ContainsKey(child))
+						{
+							path.Add(child);
+							GetParent(childParents[child]);
+						}
+						else path.Add(pFrom);
+					}
+					shortestPath = path;
 				}
+
+				nodesToCheck.Enqueue(connection);
+
+				if (childParents.ContainsKey(connection)) childParents[connection] = node;
+				else childParents.Add(connection, node);
 			}
 		}
-
 		return shortestPath;
 	}
 }
