@@ -13,9 +13,9 @@ internal class BreadthFirstPathFinder : PathFinder
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
 		if (pFrom == pTo) return null;
-		if (pFrom.connections.Contains(pTo)) return new List<Node> {pTo};
-		
-		List<Node> shortestPath = new List<Node>();
+		if (pFrom.connections.Contains(pTo)) return new List<Node> {pTo, pFrom};
+
+		List<Node> shortestPath = null;
 		Queue<Node> nodesToCheck = new Queue<Node>();
 		List<Node> checkedNodes = new List<Node>();
 		Dictionary<Node,Node> childParents = new Dictionary<Node,Node>();

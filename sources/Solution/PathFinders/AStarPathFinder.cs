@@ -16,21 +16,20 @@ internal class AStarPathFinder : PathFinder
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
-		List<Node> path = new List<Node>();
-		
+		if (pFrom == pTo) return null;
+		if (pFrom.connections.Contains(pTo)) return new List<Node> {pFrom, pTo};
+
+		List<Node> shortestPath = new List<Node>();
 		nodesToCheck = new List<Node>();
 		nodeInformation = new Dictionary<Node, (float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent)>();
 
-		foreach (Node node in nodeGraph.nodes)
-		{ 
-			nodeInformation.Add(node,(float.MaxValue,GetDistanceFromNodeToNode(node,pTo),float.MaxValue,false, null));
-		}
+		//Preset information to all nodes
+		foreach (Node node in nodeGraph.nodes) nodeInformation.Add(node, (float.MaxValue, GetDistanceFromNodeToNode(node, pTo), float.MaxValue, false, null));
 
 		float distanceFromStartToEnd = GetDistanceFromNodeToNode(pFrom, pTo);
 		nodeInformation[pFrom] = (0,distanceFromStartToEnd,distanceFromStartToEnd,false,null);
 		
 		nodesToCheck.Add(pFrom);
-		Console.WriteLine($"StartId: {pFrom.id}");
 
 		SortNodesToCheck();
 
@@ -40,16 +39,16 @@ internal class AStarPathFinder : PathFinder
 		{
 			Node node = nodesToCheck[0];
 			nodesToCheck.RemoveAt(0);
-			// nodesToCheck.Remove(node);
 
 			//Update node information to say it's been visited
 			(float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent) previousInformation = nodeInformation[node];
 			previousInformation.visited = true;
 			nodeInformation[node] = previousInformation;
 
+			//Info
 			Console.WriteLine($"Node: {node.id} with fValue: {nodeInformation[node].fCost}");
-
 			nodesExpanded++;
+			//
 
 			//Make a path if it reaches the end
 			if (node.connections.Contains(pTo))
@@ -60,11 +59,11 @@ internal class AStarPathFinder : PathFinder
 				
 				void AddParent(Node child)
 				{
-					path.Add(child);
+					shortestPath.Add(child);
 				
 					Node tempParent = nodeInformation[child].parent;
 
-					if (tempParent == pFrom) path.Add(pFrom);
+					if (tempParent == pFrom) shortestPath.Add(pFrom);
 					else AddParent(tempParent);
 				}
 				break;
@@ -85,15 +84,12 @@ internal class AStarPathFinder : PathFinder
 		}
 		
 
-		Console.WriteLine($"PathLength: {path.Count}");
+		Console.WriteLine($"PathLength: {shortestPath.Count}");
 		Console.WriteLine($"NodesExpanded: {nodesExpanded}");
-		return path;
+		return shortestPath;
 	}
 
-	private static float GetDistanceFromNodeToNode(Node nodeA, Node nodeB)
-	{
-		return Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2));
-	}
+	private static float GetDistanceFromNodeToNode(Node nodeA, Node nodeB) => Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2));
 
 	private void DetermineNewNodeInformation(Node node, Node newParent)
 	{

@@ -40,21 +40,10 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 		{
 			List<Node> path = pathFinder.InternalGenerate(currentTarget, pNode);
 
-			if (path == null) return;
+			if (path == null || path.Count == 0) return;
 			if (path[0] != currentTarget) path.Reverse();
-
-			if (path.Contains(currentTarget)) path.Remove(currentTarget);
 			
 			nodeQueue = new Queue<Node>(path);
-
-			// Console.WriteLine(nodeQueue.Count);
-
-			if (nodeQueue.Count == 0)
-			{
-				Console.WriteLine("No path!");
-				return;
-			}
-			
 			currentTarget = nodeQueue.Dequeue();
 			isMoving = true;
 		}

@@ -13,108 +13,84 @@ internal class DijkstraPathFinder : PathFinder
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
-		List<Node> shortestPath = new List<Node>();
+		if (pTo == pFrom) return null;
+		if (pFrom.connections.Contains(pTo)) return new List<Node> {pTo, pFrom};
 
+		
+		List<Node> shortestPath = null;
+		Queue<Node> nodesToCheck = new Queue<Node>();
+		List<Node> checkedNodes = new List<Node>();
+		Dictionary<Node, Node> childParents = new Dictionary<Node, Node>();
+		Dictionary<Node, float> nodeDistances = new Dictionary<Node, float>();
+		
 		int nodesExpanded = 0;
+		
+		//Set everything to max except start
+		foreach (Node existingNode in nodeGraph.nodes) nodeDistances.Add(existingNode, float.MaxValue);
+		nodeDistances[pFrom] = 0;
+		checkedNodes.Add(pFrom);
 
-		if (pFrom.connections.Contains(pTo))
+		//Start with pFrom
+		nodesToCheck.Enqueue(pFrom);
+		
+		while (nodesToCheck.Count > 0)
 		{
-			shortestPath = new List<Node> {pFrom, pTo};
-		}
-		else
-		{
-			Queue<Node> nodesToCheck = new Queue<Node>();
-			List<Node> checkedNodes = new List<Node>();
-			Dictionary<Node,Node> childParents = new Dictionary<Node,Node>();
-			Dictionary<Node,float> nodeDistances = new Dictionary<Node,float>();
-
+			Node node = nodesToCheck.Dequeue();
 			
-			//Set everything to max except start
-			foreach (Node existingNode in nodeGraph.nodes) nodeDistances.Add(existingNode,float.MaxValue);
-			nodeDistances[pFrom] = 0;
-			checkedNodes.Add(pFrom);
-
-
-			//Start with pFrom
-			nodesToCheck.Enqueue(pFrom);
+			//Info
+			nodesExpanded++;
+			Console.WriteLine($"{node.id} has value: {nodeDistances[node]}");
+			//
 			
-			
-			
-			while (nodesToCheck.Count > 0)
+			foreach (Node connection in node.connections)
 			{
-				Node node = nodesToCheck.Dequeue();
+				if (excludedNodes.Contains(connection)) continue;
 
-				nodesExpanded++;
+				float value = GetDistanceFromNodeToNode(node, connection) + nodeDistances[node];
+				if (value < nodeDistances[connection]) nodeDistances[connection] = value;
 
-				Console.WriteLine($"{node.id} has value: {nodeDistances[node]}");
+				if (checkedNodes.Contains(connection)) continue;
+				if (!childParents.ContainsKey(connection)) childParents.Add(connection, node);
 
+				checkedNodes.Add(connection);
 
-				foreach (Node connection in node.connections)
+				if (connection == pTo)
 				{
-					if (excludedNodes.Contains(connection)) continue;
+					shortestPath = new List<Node>();
 					
-					float value = GetDistanceFromNodeToNode(node, connection) + nodeDistances[node];
-					if (value < nodeDistances[connection]) nodeDistances[connection] = value;
-					
-					if (checkedNodes.Contains(connection)) continue;
-					
-					if (!childParents.ContainsKey(connection)) childParents.Add(connection,node);
+					GetParent(pTo);
 
-					checkedNodes.Add(connection);
-
-					if (connection == pTo)
+					void GetParent(Node child)
 					{
-						GetParent(pTo);
-					
-						void GetParent(Node child)
+						Node bestConnection = null;
+
+						Console.WriteLine($"Child: {child.id}, value: {nodeDistances[child]}");
+						shortestPath.Add(child);
+
+						foreach (Node newConnection in child.connections)
 						{
-							Node bestConnection = null;
-
-							Console.WriteLine($"Child: {child.id}, value: {nodeDistances[child]}");
-							shortestPath.Add(child);
-
-							foreach (Node newConnection in child.connections)
+							if (newConnection == pFrom)
 							{
-								if (excludedNodes.Contains(node)) continue;
-								if (shortestPath.Contains(newConnection)) continue;
-							
-								if (newConnection == pFrom)
-								{
-									shortestPath.Add(pFrom);
-									return;
-								}
-								
-								if (nodeDistances.ContainsKey(newConnection))
-								{
-									if (bestConnection == null || nodeDistances[newConnection] < nodeDistances[bestConnection])
-									{
-										bestConnection = newConnection;
-									}
-								}
+								shortestPath.Add(pFrom);
+								return;
 							}
-
-							if (bestConnection != null) GetParent(bestConnection);
+							if (nodeDistances.ContainsKey(newConnection) && (bestConnection == null || nodeDistances[newConnection] < nodeDistances[bestConnection])) 
+								bestConnection = newConnection;
 						}
-						
-						nodesToCheck.Clear();
-					}
-					else
-					{
-						nodesToCheck.Enqueue(connection);
+						if (bestConnection != null) GetParent(bestConnection);
 					}
 				}
+				else nodesToCheck.Enqueue(connection);
 			}
 		}
-		
-		Console.WriteLine($"PathLength: {shortestPath.Count}");
+
+		if (shortestPath != null) Console.WriteLine($"PathLength: {shortestPath.Count}");
 		Console.WriteLine($"NodesExpanded: {nodesExpanded}");
 		return shortestPath;
 	}
 
-	private float GetDistanceFromNodeToNode(Node nodeA, Node nodeB)
+	private static float GetDistanceFromNodeToNode(Node nodeA, Node nodeB)
 	{
-		float distance = Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2)); 
-
-		return distance;
+		return Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2));
 	}
 }

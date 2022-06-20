@@ -68,7 +68,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			tiledView?.InternalGenerate();
 
 			//PathFinder
-			pathFinder = new BreadthFirstPathFinder(graph, dungeon);
+			pathFinder = new DijkstraPathFinder(graph, dungeon);
 
 			//Agent
 			//agent = new BetterNodeGraphAgent(graph);

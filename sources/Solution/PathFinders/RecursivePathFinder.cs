@@ -16,7 +16,7 @@ internal class RecursivePathFinder : PathFinder
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
 		if (pFrom == pTo) return null;
-		if (pFrom.connections.Contains(pTo)) return new List<Node>{pTo};
+		if (pFrom.connections.Contains(pTo)) return new List<Node>{pTo, pFrom};
 
 		start = pFrom;
 		end = pTo;
