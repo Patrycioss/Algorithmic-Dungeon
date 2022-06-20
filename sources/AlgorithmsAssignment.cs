@@ -31,8 +31,8 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder;
 
 		//common settings
-		public const int SCALE = 20;
-		public const int MIN_ROOM_SIZE = 10;
+		public const int SCALE = 30;
+		public const int MIN_ROOM_SIZE = 7;
 		public const bool CHECK_IF_COMPLETELY_CONNECTED = false;
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false) => Create();
@@ -47,7 +47,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			Size size = new(width / SCALE, height / SCALE);
 
 			//Dungeon
-			dungeon = new ExcellentDungeon(size);
+			dungeon = new BetterDungeon(size);
 
 			if (dungeon != null)
 			{
@@ -58,7 +58,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			}
 
 			//NodeGraph
-			graph = new LowLevelNodeGraph(dungeon);
+			graph = new HighLevelNodeGraph(dungeon);
 
 			graph?.InternalGenerate();
 

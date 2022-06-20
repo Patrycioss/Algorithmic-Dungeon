@@ -39,7 +39,9 @@ internal sealed class PathFindingAgent : NodeGraphAgent
 		if (!isMoving)
 		{
 			List<Node> path = pathFinder.InternalGenerate(currentTarget, pNode);
-			path.Reverse();
+
+			if (path == null) return;
+			if (path[0] != currentTarget) path.Reverse();
 
 			if (path.Contains(currentTarget)) path.Remove(currentTarget);
 			
