@@ -9,7 +9,7 @@ using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 namespace Saxion.CMGT.Algorithms.sources.Solution.Agents;
 
 
-internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
+internal sealed class BetterNodeGraphAgent : NodeGraphAgent
 {
 	private Node currentTarget;
 	private Node goal;
@@ -22,7 +22,7 @@ internal sealed class ExcellentNodeGraphAgent : NodeGraphAgent
 
 	private float currentSpeed;
 
-	public ExcellentNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
+	public BetterNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
 	{
 		random = new Random();
 		

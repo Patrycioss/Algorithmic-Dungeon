@@ -31,9 +31,9 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder;
 
 		//common settings
-		public static int SCALE = 20;				
-		public static int MIN_ROOM_SIZE = 10;
-		public static bool checkIfCompletelyConnected = true;
+		public const int SCALE = 20;
+		public const int MIN_ROOM_SIZE = 10;
+		public const bool CHECK_IF_COMPLETELY_CONNECTED = false;
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false) => Create();
 
@@ -58,7 +58,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			}
 
 			//NodeGraph
-			graph = new ExcellentDungeonNodeGraph(dungeon);
+			graph = new LowLevelNodeGraph(dungeon);
 
 			graph?.InternalGenerate();
 
@@ -68,9 +68,10 @@ namespace Saxion.CMGT.Algorithms.sources
 			tiledView?.InternalGenerate();
 
 			//PathFinder
-			pathFinder = new AStarPathFinder(graph, dungeon);
+			pathFinder = new BreadthFirstPathFinder(graph, dungeon);
 
 			//Agent
+			//agent = new BetterNodeGraphAgent(graph);
 			agent = new PathFindingAgent(graph, pathFinder);
 			
 			//Adding stuff

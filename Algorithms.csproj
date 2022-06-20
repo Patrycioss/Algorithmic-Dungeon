@@ -155,12 +155,10 @@
     <Compile Include="sources\Solution\DungeonGenerators\Generator.cs" />
     <Compile Include="sources\Solution\DungeonGenerators\GoodDungeon.cs" />
     <Compile Include="sources\Solution\DungeonGenerators\SufficientDungeon.cs" />
-    <Compile Include="sources\Solution\Agents\ExcellentNodeGraphAgent.cs" />
-    <Compile Include="sources\Solution\Agents\GoodNodeGraphAgent.cs" />
+    <Compile Include="sources\Solution\Agents\BetterNodeGraphAgent.cs" />
     <Compile Include="sources\Solution\Agents\SufficientNodeGraphAgent.cs" />
-    <Compile Include="sources\Solution\NodeGraphGenerators\ExcellentDungeonNodeGraph.cs" />
-    <Compile Include="sources\Solution\NodeGraphGenerators\GoodDungeonNodeGraph.cs" />
-    <Compile Include="sources\Solution\NodeGraphGenerators\SufficientDungeonNodeGraph.cs" />
+    <Compile Include="sources\Solution\NodeGraphGenerators\LowLevelNodeGraph.cs" />
+    <Compile Include="sources\Solution\NodeGraphGenerators\HighLevelNodeGraph.cs" />
     <Compile Include="sources\Solution\PathFinders\AStarPathFinder.cs" />
     <Compile Include="sources\Solution\PathFinders\BreadthFirstPathFinder.cs" />
     <Compile Include="sources\Solution\PathFinders\DijkstraPathFinder.cs" />

@@ -68,7 +68,7 @@ abstract class PathFinder : Canvas
 		
 		void ConnectedCheck()
 		{
-			if (AlgorithmsAssignment.checkIfCompletelyConnected) CheckIfDungeonIsConnected();
+			if (AlgorithmsAssignment.CHECK_IF_COMPLETELY_CONNECTED) CheckIfDungeonIsConnected();
 		}
 	}
 
@@ -85,25 +85,8 @@ abstract class PathFinder : Canvas
 				break;
 			}
 		}
-
-		// for (int i = rooms.Count - 1; i >= 0; i--)
-		// {
-		// 	for (int j = i - 1; j >= 0; j--)
-		// 	{
-		// 		Room roomA = rooms[i];
-		// 		Room roomB = rooms[j];
-		// 		
-		// 		List<Node> path = Generate(roomA.node, roomB.node);
-		// 		if (path.Count == 0)
-		// 		{
-		// 			Console.WriteLine("nope");
-		// 			connected = false;
-		// 			return;
-		// 		}
-		// 	}
-		// }
 	}
-
+	
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/// Core PathFinding methods
 

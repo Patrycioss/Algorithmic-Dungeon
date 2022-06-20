@@ -8,12 +8,7 @@ public class Node
 	public readonly List<Node> connections = new();
 	public readonly Point location;
 	public readonly string id;
-	private static int lastId = 0;
-
-	public float distanceToStart;
-	public float distanceToEnd;
-	public float fValue;
-	public bool visited;
+	private static int lastId;
 
 
 	public Node(Point pLocation)
@@ -21,20 +16,6 @@ public class Node
 		location = pLocation;
 		id = ""+lastId++;
 		System.Console.WriteLine(id);
-
-		Reset();
 	}
-
-	public void Reset()
-	{
-		distanceToEnd = float.MaxValue;
-		distanceToStart = float.MaxValue;
-		fValue = float.MaxValue;
-		visited = false;
-	}
-	
-	public override string ToString()
-	{
-		return id;
-	}
+	public override string ToString() => id;
 }

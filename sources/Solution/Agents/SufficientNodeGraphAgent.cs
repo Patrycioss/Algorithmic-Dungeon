@@ -27,10 +27,7 @@ internal sealed class SufficientNodeGraphAgent : NodeGraphAgent
 		queue = new List<Node>();
 	}
 
-	private void OnNodeClickHandler(Node pNode)
-	{
-		queue.Add(pNode);
-	}
+	private void OnNodeClickHandler(Node pNode) => queue.Add(pNode);
 
 	protected override void Update()
 	{
@@ -45,10 +42,7 @@ internal sealed class SufficientNodeGraphAgent : NodeGraphAgent
 					currentTarget = queue[0];
 					queue.Remove(queue[0]);
 				}
-				else
-				{
-					queue.Remove(queue[0]);
-				}
+				else queue.Remove(queue[0]);
 			} 	
 		}
 		else

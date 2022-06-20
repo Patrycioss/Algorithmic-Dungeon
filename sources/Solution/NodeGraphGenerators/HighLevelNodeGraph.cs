@@ -5,7 +5,7 @@ using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
 
-internal class SufficientDungeonNodeGraph : NodeGraph
+internal class HighLevelNodeGraph : NodeGraph
 {
 	private readonly Dungeon dungeon;
 	private readonly List<Room> rooms;
@@ -13,7 +13,7 @@ internal class SufficientDungeonNodeGraph : NodeGraph
 
 	private Dictionary<Door, Node> doorNodes;
 
-	public SufficientDungeonNodeGraph(Dungeon pDungeon) : base((int)(pDungeon.size.Width * pDungeon.scale), (int)(pDungeon.size.Height * pDungeon.scale), (int)pDungeon.scale/3)
+	public HighLevelNodeGraph(Dungeon pDungeon) : base((int)(pDungeon.size.Width * pDungeon.scale), (int)(pDungeon.size.Height * pDungeon.scale), (int)pDungeon.scale/3)
 	{
 		dungeon = pDungeon;
 
@@ -39,10 +39,7 @@ internal class SufficientDungeonNodeGraph : NodeGraph
 			nodes.Add(roomNode);
 			room.node ??= roomNode;
 
-			foreach (Door door in room.doors)
-			{
-				AddConnection(roomNode,doorNodes[door]);
-			}
+			foreach (Door door in room.doors) AddConnection(roomNode, doorNodes[door]);
 		}
 	}
 
