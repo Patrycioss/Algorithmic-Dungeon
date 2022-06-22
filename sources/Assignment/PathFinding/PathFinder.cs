@@ -75,7 +75,6 @@ abstract class PathFinder : Canvas
 	protected void CheckIfDungeonIsConnected()
 	{
 		connected = true;
-		
 
 		for (int i = 1; i < dungeon.rooms.Count; i++)
 		{
@@ -113,12 +112,7 @@ abstract class PathFinder : Canvas
 		return lastCalculatedPath;
 	}
 
-	/**
-	 * @return the last found path. 
-	 *	-> 'null'		means	'Not completed.'
-	 *	-> Count == 0	means	'Completed but empty (no path found).'
-	 *	-> Count > 0	means	'Yolo let's go!'
-	 */
+
 	protected abstract List<Node> Generate(Node pFrom, Node pTo);
 
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -138,20 +132,11 @@ abstract class PathFinder : Canvas
 		if (startNode != null) DrawNode(startNode, _startNodeColor);
 		if (endNode != null) DrawNode(endNode, _endNodeColor);
 
-		foreach (Node node in excludedNodes)
-		{
-			DrawNode(node, Brushes.Orange);
-		}
+		foreach (Node node in excludedNodes) DrawNode(node, Brushes.Orange);
 
-		if (connected)
-		{
-			graphics.DrawString("Connected!", SystemFonts.DefaultFont, Brushes.Green, new Point(10,10));
-		}
-		else
-		{
-			graphics.DrawString("Not connected!", SystemFonts.DefaultFont,Brushes.Red, new Point(10,10));
-		}
-		
+		if (connected) graphics.DrawString("Connected!", SystemFonts.DefaultFont, Brushes.Green, new Point(10, 10));
+		else graphics.DrawString("Not connected!", SystemFonts.DefaultFont, Brushes.Red, new Point(10, 10));
+
 		//TODO: you could override this method and draw your own additional stuff for debugging
 	}
 

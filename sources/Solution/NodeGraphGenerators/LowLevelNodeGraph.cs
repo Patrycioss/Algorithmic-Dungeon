@@ -36,18 +36,19 @@ internal class LowLevelNodeGraph : NodeGraph
 			nodes.Add(node);
 		}
 
+		//Fixed so this is unnecessary
 		//check for overlapping nodes, just in case
-		for (int i = nodes.Count-1; i >= 0; i--)
-		{
-			for (int j = i -1; j >= 0; j--)
-			{
-				if (nodes[i].location.X != nodes[j].location.X || nodes[i].location.Y != nodes[j].location.Y) continue;
-		
-				//if they're overlapping, remove the second one
-				nodes.RemoveAt(j);
-				Console.WriteLine($"Removed overlapping node at with id {nodes[i].id} at {nodes[i].location}");
-			}
-		}
+		// for (int i = nodes.Count-1; i >= 0; i--)
+		// {
+		// 	for (int j = i -1; j >= 0; j--)
+		// 	{
+		// 		if (nodes[i].location.X != nodes[j].location.X || nodes[i].location.Y != nodes[j].location.Y) continue;
+		//
+		// 		//if they're overlapping, remove the second one
+		// 		nodes.RemoveAt(j);
+		// 		Console.WriteLine($"Removed overlapping node at with id {nodes[i].id} at {nodes[i].location}");
+		// 	}
+		// }
 
 		int dScale = (int)dungeon.scale;
 
@@ -129,10 +130,7 @@ internal class LowLevelNodeGraph : NodeGraph
 		}
 	}
 
-	private Point GetDoorCenter(Door pDoor)
-	{
-		return GetPointCenter(pDoor.location);
-	}
+	private Point GetDoorCenter(Door pDoor) => GetPointCenter(pDoor.location);
 
 	private Point GetPointCenter(Point pLocation)
 	{

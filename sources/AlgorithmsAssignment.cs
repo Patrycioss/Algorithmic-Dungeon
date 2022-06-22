@@ -47,7 +47,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			Size size = new(width / SCALE, height / SCALE);
 
 			//Dungeon
-			dungeon = new BetterDungeon(size);
+			dungeon = new ExcellentDungeon(size);
 
 			if (dungeon != null)
 			{
@@ -58,7 +58,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			}
 
 			//NodeGraph
-			graph = new HighLevelNodeGraph(dungeon);
+			graph = new LowLevelNodeGraph(dungeon);
 
 			graph?.InternalGenerate();
 
@@ -68,7 +68,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			tiledView?.InternalGenerate();
 
 			//PathFinder
-			pathFinder = new DijkstraPathFinder(graph, dungeon);
+			pathFinder = new AStarPathFinder(graph, dungeon);
 
 			//Agent
 			//agent = new BetterNodeGraphAgent(graph);

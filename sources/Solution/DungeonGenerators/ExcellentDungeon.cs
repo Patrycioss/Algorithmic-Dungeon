@@ -166,7 +166,7 @@ internal class ExcellentDungeon : Dungeon
 			int distance = roomB.area.Y - door.roomA.area.Bottom;
 			if (distance > 0)
 			{
-				for (int i = 0; i < distance + 2; i++)
+				for (int i = 1; i < distance + 2; i++)
 				{
 					Door newDoor = new (door.location with{Y = door.location.Y + i}, Horizontal);
 					doors.Add(newDoor);
@@ -181,7 +181,7 @@ internal class ExcellentDungeon : Dungeon
 			int distance = roomB.area.X - door.roomA.area.Right;
 			if (distance > 0)
 			{
-				for (int i = 0; i < distance + 2; i++)
+				for (int i = 1; i < distance + 2; i++)
 				{
 					Door newDoor = new(door.location with {X = door.location.X + i}, Vertical);
 					doors.Add(newDoor);
