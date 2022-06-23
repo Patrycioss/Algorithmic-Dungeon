@@ -8,11 +8,7 @@ using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 using Saxion.CMGT.Algorithms.sources.Assignment.Tiles;
-using Saxion.CMGT.Algorithms.sources.Solution.Agents;
 using Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
-using Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
-using Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
-using Saxion.CMGT.Algorithms.sources.Solution.TiledViewers;
 using Saxion.CMGT.Algorithms.sources.Util;
 
 namespace Saxion.CMGT.Algorithms.sources
@@ -32,8 +28,10 @@ namespace Saxion.CMGT.Algorithms.sources
 
 		//common settings
 		public const int SCALE = 30;
-		public const int MIN_ROOM_SIZE = 7;
-		public const bool CHECK_IF_COMPLETELY_CONNECTED = false;
+		public const int MIN_ROOM_SIZE = 10;
+		public const bool CHECK_IF_COMPLETELY_CONNECTED = true;
+		public const bool DEBUG_MODE = true;
+		
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false) => Create();
 
@@ -46,6 +44,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			Grid grid = new(width, height, SCALE);
 			Size size = new(width / SCALE, height / SCALE);
 
+			
 			//Dungeon
 			dungeon = new ExcellentDungeon(size);
 
@@ -53,26 +52,29 @@ namespace Saxion.CMGT.Algorithms.sources
 			{
 				//assign the SCALE we talked about above, so that it no longer looks like a tinietiny stamp:
 				dungeon.scale = SCALE;
+				
 				//Tell the dungeon to generate rooms and doors with the given MIN_ROOM_SIZE
-				dungeon.InternalGenerate(MIN_ROOM_SIZE, seed);
+				dungeon.InternalGenerate(MIN_ROOM_SIZE,seed);
 			}
 
 			//NodeGraph
-			graph = new LowLevelNodeGraph(dungeon);
+			//graph = new LowLevelNodeGraph(dungeon);
 
 			graph?.InternalGenerate();
 
 			//TiledView
 			
-			tiledView = new TiledDungeonView(dungeon);
+			// tiledView = new TiledDungeonView(dungeon);
+
+
 			tiledView?.InternalGenerate();
 
 			//PathFinder
-			pathFinder = new AStarPathFinder(graph, dungeon);
+			//pathFinder = new AStarPathFinder(graph, dungeon);
 
 			//Agent
-			//agent = new BetterNodeGraphAgent(graph);
-			agent = new PathFindingAgent(graph, pathFinder);
+			// agent = new SufficientNodeGraphAgent(graph);
+			//agent = new PathFindingAgent(graph, pathFinder);
 			
 			//Adding stuff
 			if (grid != null) AddChild(grid);
@@ -83,6 +85,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			if (graph != null) AddChild(new NodeLabelDrawer(graph)); //node label display on top of that
 			if (agent != null) AddChild(agent); //and last but not least the agent itself
 		}
+
 
 		private void Update()
 		{
@@ -100,7 +103,7 @@ namespace Saxion.CMGT.Algorithms.sources
 					Create(i);
 				}
 			}
-
+		
 			void ClearScreen()
 			{
 				List<GameObject> list = GetChildren();

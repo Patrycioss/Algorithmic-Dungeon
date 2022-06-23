@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
+using static Saxion.CMGT.Algorithms.sources.AlgorithmsAssignment;
 using static Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Door.Orientation;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
@@ -14,35 +15,8 @@ internal class GoodDungeon : Dungeon
 	private List<Door> doorsToBeAdded;
 	private List<Door> doorsToBeTested;
 	private Random random;
-
-	private int increment = 1;
-
+	
 	public GoodDungeon(Size pSize) : base(pSize) { autoDrawAfterGenerate = false; }
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(Key.A))
-		{
-			InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
-		}
-
-		for (int i = 48; i <= 57; i++)
-		{
-			if (Input.GetKeyDown(i))
-			{
-				InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE,i * increment);
-			}
-		}
-
-		if (Input.GetKeyDown(Key.PLUS))
-		{
-			increment *= 10;
-		}
-		else if (Input.GetKeyDown(Key.MINUS) && increment > 1)
-		{
-			increment /= 10;
-		}
-	}
 
 	protected override void Generate(int pMinimumRoomSize, int seed)
 	{
@@ -53,29 +27,47 @@ internal class GoodDungeon : Dungeon
 			
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
 		
 		//Remove smallest rooms
-		foreach (Room room in GetRoomsWithSurface(GetSmallestSurface())) roomsToBeAdded.Remove(room);
+		foreach (Room room in GetRoomsWithSurface(GetSmallestSurface()))
+		{
+			roomsToBeAdded.Remove(room);
+			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+		}
 
 		//Remove biggest rooms
-		foreach (Room room in GetRoomsWithSurface(GetBiggestSurface())) roomsToBeAdded.Remove(room);
+		foreach (Room room in GetRoomsWithSurface(GetBiggestSurface()))
+		{
+			roomsToBeAdded.Remove(room);
+			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+		}
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
 
 		//Move doors to another random position if they are placed on the corner of a room
 		foreach (Door door in doorsToBeTested) TestDoor(door);
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
 		
 		//Assign the doors to the rooms, if the door doesn't have any rooms to get assigned to it gets deleted
 		for (int index = doorsToBeAdded.Count - 1; index >= 0; index--)
 		{
 			Door door = doorsToBeAdded[index];
 			AssignDoor(door);
-			
-			if (door.roomB == null || door.roomA == null) doorsToBeAdded.Remove(door);
+
+			if (door.roomB == null || door.roomA == null)
+			{
+				doorsToBeAdded.Remove(door);
+				if (DEBUG_MODE) Console.WriteLine($"Removed door {index} in doorsToBeAdded");
+			}
 			else
 			{
 				door.roomA?.doors.Add(door);
 				door.roomB?.doors.Add(door);
+				
+				if (DEBUG_MODE) Console.WriteLine($"Assigned door {index} in doorsToBeAdded to roomA at {door.roomA?.topLeft} and roomB at {door.roomB?.topLeft}");
 			}
 		}
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
 
 		//Debug purposes
 		// foreach (Room room in roomsToBeAdded)
@@ -94,10 +86,11 @@ internal class GoodDungeon : Dungeon
 		//Draw everything
 		graphics.Clear(Color.Transparent);
 		
-		foreach (Room room in roomsToBeAdded)
+		rooms.AddRange(roomsToBeAdded);
+		doors.AddRange(doorsToBeAdded);
+		
+		foreach (Room room in rooms)
 		{
-			Console.WriteLine(room.doors.Count);
-			
 			switch (room.doors.Count)
 			{
 				case 0:
@@ -121,6 +114,9 @@ internal class GoodDungeon : Dungeon
 		}
 		
 		DrawDoors(doorsToBeAdded, Pens.White);
+		
+		doors.AddRange(doors);
+		
 	}
 	
 	/// <summary>
@@ -139,7 +135,9 @@ internal class GoodDungeon : Dungeon
 			minimum = room.area.X + minimumRoomSize;
 			maximum = room.area.Right - minimumRoomSize;
 			newPoint.X = random.Next(minimum, maximum);
-
+			
+			if (DEBUG_MODE) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
+			
 			//Room1 (Left)
 			Redo(new Room(room.area with {Width = newPoint.X - room.area.X + 1}));
 
@@ -157,6 +155,8 @@ internal class GoodDungeon : Dungeon
 			maximum = room.area.Bottom - minimumRoomSize;
 			newPoint.Y = random.Next(minimum, maximum);
 
+			if (DEBUG_MODE) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
+
 			//Room1 (Top)
 			Redo(new Room(room.area with {Height = newPoint.Y - room.area.Y + 1}));
 
@@ -168,7 +168,11 @@ internal class GoodDungeon : Dungeon
 			doorsToBeTested.Add(new Door(newPoint with {X = random.Next(boundaries.X, boundaries.Y)}, Horizontal, boundaries));
 		}
 
-		else roomsToBeAdded.Add(room);
+		else
+		{
+			roomsToBeAdded.Add(room);
+			if (DEBUG_MODE) Console.WriteLine($"Created room at {room.topLeft} corner");
+		}
 
 		void Redo(Room roomToBeRedone)
 		{
@@ -205,6 +209,7 @@ internal class GoodDungeon : Dungeon
 				biggestSurface = room.surface;
 			}
 		}
+		if (DEBUG_MODE) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
 		return biggestSurface;
 	}
 	
@@ -220,6 +225,8 @@ internal class GoodDungeon : Dungeon
 				smallestSurface = room.surface;
 			}
 		}
+
+		if (DEBUG_MODE) Console.WriteLine($"SmallestSurface is: {smallestSurface}");
 		return smallestSurface;
 	}
 	
@@ -237,6 +244,7 @@ internal class GoodDungeon : Dungeon
 		else
 		{
 			doorsToBeAdded.Add(door);
+			if (DEBUG_MODE) Console.WriteLine($"Tested door number {doorsToBeAdded.Count-1} in doorsToBeAdded at {door.location}");
 		}
 	}
 	

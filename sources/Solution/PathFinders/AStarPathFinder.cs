@@ -46,7 +46,7 @@ internal class AStarPathFinder : PathFinder
 			nodeInformation[node] = previousInformation;
 
 			//Info
-			Console.WriteLine($"Node: {node.id} with fValue: {nodeInformation[node].fCost}");
+			// Console.WriteLine($"Node: {node.id} with fValue: {nodeInformation[node].fCost}");
 			nodesExpanded++;
 			//
 
@@ -115,7 +115,6 @@ internal class AStarPathFinder : PathFinder
 		{
 			if (nodeInformation[nodesToCheck[i]].visited)
 			{
-				Console.WriteLine("jawel");
 				nodesToCheck.Remove(nodesToCheck[i]);
 				continue;
 			}

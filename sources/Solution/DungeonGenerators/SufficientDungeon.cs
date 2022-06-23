@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
+using static Saxion.CMGT.Algorithms.sources.AlgorithmsAssignment;
 using static Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Door.Orientation;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
@@ -12,22 +12,9 @@ internal class SufficientDungeon : Dungeon
 {
 	private List<Door> doorsToBeAdded;
 	private Random random;
-	public SufficientDungeon(Size pSize) : base(pSize){}
-	private void Update()
-	{
-		if (Input.GetKeyDown(Key.A))
-		{
-			InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
-		}
 
-		//Obsolete
-		// //Generate a random room when pressing space
-		// if (Input.GetKeyDown(Key.SPACE))
-		// {
-		// 	InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, Utils.Random(int.MinValue, int.MaxValue));
-		// }
-	}
-		
+	public SufficientDungeon(Size pSize) : base(pSize){}
+
 	protected override void Generate(int pMinimumRoomSize, int seed)
 	{
 		random = new Random(seed);
@@ -35,13 +22,36 @@ internal class SufficientDungeon : Dungeon
 			
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
-		
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+
+
 		//Add doors and fix them if bad
-		foreach (Door door in doorsToBeAdded)
-		{
-			TestDoor(door);
-		}
+		foreach (Door door in doorsToBeAdded) TestDoor(door);
 		doorsToBeAdded.Clear();
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+
+		
+		//Assign the doors to the rooms, if the door doesn't have any rooms to get assigned to it gets deleted
+		for (int index = doors.Count - 1; index >= 0; index--)
+		{
+			Door door = doors[index];
+			AssignDoor(door);
+
+			if (door.roomB == null || door.roomA == null)
+			{
+				doorsToBeAdded.Remove(door);
+				if (DEBUG_MODE) Console.WriteLine($"Removed door {index} in doors");
+			}
+			else
+			{
+				door.roomA?.doors.Add(door);
+				door.roomB?.doors.Add(door);
+
+				if (DEBUG_MODE) Console.WriteLine($"Assigned door {index} in doors to roomA at {door.roomA?.topLeft} and roomB at {door.roomB?.topLeft}");
+			}
+		}
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+
 	}
 	
 	/// <summary>
@@ -58,6 +68,7 @@ internal class SufficientDungeon : Dungeon
 		else
 		{
 			doors.Add(door);
+			if (DEBUG_MODE) Console.WriteLine($"Tested door number {doors.Count-1} in doors at {door.location}");
 		}
 	}
 
@@ -96,6 +107,8 @@ internal class SufficientDungeon : Dungeon
 			maximum = room.area.Right - minimumRoomSize;
 			newPoint.X = random.Next(minimum, maximum);
 
+			if (DEBUG_MODE) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
+			
 			//Room1 (Left)
 			Redo(new Room(room.area with {Width = newPoint.X - room.area.X + 1}));
 
@@ -113,22 +126,41 @@ internal class SufficientDungeon : Dungeon
 			maximum = room.area.Bottom - minimumRoomSize;
 			newPoint.Y = random.Next(minimum, maximum);
 
+			if (DEBUG_MODE) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
+			
 			//Room1 (Top)
 			Redo(new Room(room.area with {Height = newPoint.Y - room.area.Y + 1}));
-
+			
 			//Room2 (Bottom)
 			Redo(new Room(room.area with {Y = newPoint.Y, Height = room.area.Height - (newPoint.Y - room.area.Y)}));
-
+			
 			Point boundaries = new(room.area.X + 1, room.area.Right - 1);
 			
 			doorsToBeAdded.Add(new Door(newPoint with {X = random.Next(boundaries.X, boundaries.Y)}, Horizontal, boundaries));
 		}
-
-		else rooms.Add(room);
-
-		void Redo(Room roomToBeRedone)
+		else
 		{
-			DivideRoom(roomToBeRedone);
+			rooms.Add(room);
+			if (DEBUG_MODE) Console.WriteLine($"Created room at {room.topLeft} corner");
+		}
+
+		void Redo(Room roomToBeRedone) => DivideRoom(roomToBeRedone);
+	}
+	
+	/// <summary>
+	/// Assign a door to its rooms
+	/// </summary>
+	/// <param name="door"></param>
+	private void AssignDoor(Door door)
+	{
+		foreach (Room room in rooms)
+		{
+			if (door.location.X < room.area.Right && door.location.X >= room.area.Left && door.location.Y >= room.area.Top &&
+			    door.location.Y < room.area.Bottom)
+			{
+				if (door.roomA == null) door.roomA = room;
+				else door.roomB = room;
+			}
 		}
 	}
 }

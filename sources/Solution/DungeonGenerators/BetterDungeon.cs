@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
+using static Saxion.CMGT.Algorithms.sources.AlgorithmsAssignment;
 using static Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Door.Orientation;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
@@ -14,32 +14,35 @@ internal class BetterDungeon : Dungeon
 
 	public BetterDungeon(Size pSize) : base(pSize) { autoDrawAfterGenerate = false; }
 
-	private void Update()
-	{
-		//Test inputs
-		if (Input.GetKeyDown(Key.A)) InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, 50);
-		
-		for (int i = 48; i <= 57; i++) if (Input.GetKeyDown(i)) InternalGenerate(AlgorithmsAssignment.MIN_ROOM_SIZE, i * seedIncrement);
-		
-		if (Input.GetKeyDown(Key.PLUS)) seedIncrement *= 10;
-		else if (Input.GetKeyDown(Key.MINUS) && seedIncrement > 1) seedIncrement /= 10;
-	}
-
 	protected override void Generate(int pMinimumRoomSize, int seed)
 	{
 		random = new Random(seed);
 
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
+		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+
 		
 		//Remove smallest rooms
-		foreach (Room room in GetRoomsWithSurface(GetSmallestSurface())) rooms.Remove(room);
+		foreach (Room room in GetRoomsWithSurface(GetSmallestSurface()))
+		{
+			rooms.Remove(room);
+			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+		}
 
 		//Remove biggest rooms
-		foreach (Room room in GetRoomsWithSurface(GetBiggestSurface())) rooms.Remove(room);
+		foreach (Room room in GetRoomsWithSurface(GetBiggestSurface()))
+		{
+			rooms.Remove(room);
+			if (DEBUG_MODE)Console.WriteLine($"Removed room at {room.topLeft}");
+		}
+		if (DEBUG_MODE)Console.WriteLine("------------------------------------------------------");
+
 
 		//Add doors to rooms
 		foreach (Room room in rooms) AddDoorsOfRoom(room);
+		if (DEBUG_MODE)Console.WriteLine("------------------------------------------------------");
+
 
 		//Debug purposes
 		// foreach (Room room in rooms)
@@ -104,6 +107,8 @@ internal class BetterDungeon : Dungeon
 			maximum = room.area.Right - minimumRoomSize;
 			newPoint.X = random.Next(minimum, maximum);
 
+			if (DEBUG_MODE)Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
+			
 			//Room1 (Left)
 			Redo(new Room(room.area with {Width = newPoint.X - room.area.X + 1}));
 
@@ -118,6 +123,8 @@ internal class BetterDungeon : Dungeon
 			minimum = room.area.Y + minimumRoomSize;
 			maximum = room.area.Bottom - minimumRoomSize;
 			newPoint.Y = random.Next(minimum, maximum);
+			
+			if (DEBUG_MODE)Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 
 			//Room1 (Top)
 			Redo(new Room(room.area with {Height = newPoint.Y - room.area.Y + 1}));
@@ -126,7 +133,11 @@ internal class BetterDungeon : Dungeon
 			Redo(new Room(room.area with {Y = newPoint.Y, Height = room.area.Height - (newPoint.Y - room.area.Y)}));
 		}
 
-		else rooms.Add(room);
+		else
+		{
+			rooms.Add(room);
+			if (DEBUG_MODE)Console.WriteLine($"Created room at {room.topLeft} corner");
+		}
 
 		void Redo(Room roomToBeRedone)
 		{
@@ -163,6 +174,7 @@ internal class BetterDungeon : Dungeon
 				biggestSurface = room.surface;
 			}
 		}
+		if (DEBUG_MODE) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
 		return biggestSurface;
 	}
 
@@ -178,6 +190,7 @@ internal class BetterDungeon : Dungeon
 				smallestSurface = room.surface;
 			}
 		}
+		if (DEBUG_MODE)Console.WriteLine($"SmallestSurface is: {smallestSurface}");
 		return smallestSurface;
 	}
 	
@@ -215,6 +228,7 @@ internal class BetterDungeon : Dungeon
 					roomB = otherRoom
 				};
 				doors.Add(door);
+				if (DEBUG_MODE)Console.WriteLine($"Added door {doors.Count-1} in doors at {door.location} with roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
 			}
 			
 			//if rooms overlap on the vertical axis
@@ -238,6 +252,7 @@ internal class BetterDungeon : Dungeon
 					roomB = otherRoom
 				};
 				doors.Add(door);
+				if (DEBUG_MODE)Console.WriteLine($"Added door {doors.Count-1} in doors at {door.location} with roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
 			}
 
 			if (door != null)

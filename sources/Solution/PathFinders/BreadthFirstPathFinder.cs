@@ -31,7 +31,7 @@ internal class BreadthFirstPathFinder : PathFinder
 
 			foreach (Node connection in node.connections)
 			{
-				if (checkedNodes.Contains(connection)) continue;
+				if (checkedNodes.Contains(connection) || nodesToCheck.Contains(connection)) continue;
 				
 				if (connection == pTo)
 				{

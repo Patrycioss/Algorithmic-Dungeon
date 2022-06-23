@@ -49,8 +49,14 @@ abstract class PathFinder : Canvas
 		nodeGraph = pGraph;
 		nodeGraph.onNodeShiftLeftClicked += (node) => { startNode = node; Draw(); };
 		nodeGraph.onNodeShiftRightClicked += (node) => { endNode = node; Draw(); };
-		nodeGraph.onNodeControlLeftClicked += (node) => { excludedNodes.Add(node); Draw(); ConnectedCheck(); };
-		nodeGraph.onNodeControlRightClicked += (node) => { excludedNodes.Remove(node); Draw(); ConnectedCheck(); };
+		nodeGraph.onNodeControlLeftClicked += (node) =>
+		{
+			if (node.ownerType == Node.OwnerType.Door && !excludedNodes.Contains(node)) excludedNodes.Add(node);
+			ConnectedCheck();
+			Draw();
+		};
+		
+		nodeGraph.onNodeControlRightClicked += (node) => { excludedNodes.Remove(node); ConnectedCheck(); Draw(); };
 
 		Console.WriteLine("\n-----------------------------------------------------------------------------");
 		Console.WriteLine(this.GetType().Name + " created.");
@@ -68,7 +74,7 @@ abstract class PathFinder : Canvas
 		
 		void ConnectedCheck()
 		{
-			if (AlgorithmsAssignment.CHECK_IF_COMPLETELY_CONNECTED) CheckIfDungeonIsConnected();
+			CheckIfDungeonIsConnected();
 		}
 	}
 
@@ -78,7 +84,10 @@ abstract class PathFinder : Canvas
 
 		for (int i = 1; i < dungeon.rooms.Count; i++)
 		{
-			if (Generate(dungeon.rooms[0].node, dungeon.rooms[i].node).Count == 0)
+			List<Node> path = Generate(dungeon.rooms[0].node, dungeon.rooms[i].node);
+			
+			
+			if (path == null || path.Count == 0)
 			{
 				connected = false;
 				break;
@@ -97,14 +106,8 @@ abstract class PathFinder : Canvas
 		startNode = pFrom;
 		endNode = pTo;
 
-		if (startNode == null || endNode == null)
-		{
-			Console.WriteLine("Please specify start and end node before trying to generate a path.");
-		}
-		else
-		{
-			lastCalculatedPath = Generate(pFrom, pTo);
-		}
+		if (startNode == null || endNode == null) Console.WriteLine("Please specify start and end node before trying to generate a path.");
+		else lastCalculatedPath = Generate(pFrom, pTo);
 
 		Draw();
 

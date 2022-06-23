@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
+using System.Threading;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
 
@@ -39,7 +38,7 @@ public abstract class Dungeon : Canvas
 
 
 	protected int minimumRoomSize;
-
+	
 	/**
 	 * Create empty dungeon instance of the specified size.
 	 * It's empty because it doesn't contain any rooms yet.
@@ -47,6 +46,7 @@ public abstract class Dungeon : Canvas
 	protected Dungeon(Size pSize) : base(pSize.Width, pSize.Height)
 	{
 		size = pSize;
+		
 
 		/**/
 		//ignore lines below, this is for rendering scaled canvasses without blurring 
@@ -66,7 +66,7 @@ public abstract class Dungeon : Canvas
 	 * 
 	 * @param pMinimumRoomSize the minimum size that a room should have
 	 */
-	public void InternalGenerate(int pMinimumRoomSize, int seed)
+	public virtual void InternalGenerate(int pMinimumRoomSize, int seed)
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Generating dungeon...");
 
@@ -74,8 +74,9 @@ public abstract class Dungeon : Canvas
 		doors.Clear();
 
 		minimumRoomSize = pMinimumRoomSize;
-		Generate(pMinimumRoomSize, seed);
-
+		
+		Generate(pMinimumRoomSize,seed);
+		
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Dungeon generated.");
 
 		if (autoDrawAfterGenerate) Draw();
@@ -148,3 +149,4 @@ public abstract class Dungeon : Canvas
 		return "Dungeon: implement/override this method to print info about all rooms and doors";
 	}
 }
+

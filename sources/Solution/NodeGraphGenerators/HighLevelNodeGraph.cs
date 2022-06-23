@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
@@ -25,12 +27,14 @@ internal class HighLevelNodeGraph : NodeGraph
 
 	protected override void Generate()
 	{
+		Console.WriteLine($"{doors}");
+		
 		foreach (Door door in doors)
 		{
-			Node node = new(GetDoorCenter(door));
+			Node node = new(GetDoorCenter(door), Node.OwnerType.Door);
 			nodes.Add(node);
 			
-			doorNodes.Add(door,node);
+			if (!doorNodes.ContainsKey(door)) doorNodes.Add(door,node);
 		}
 
 		foreach (Room room in rooms)
@@ -50,10 +54,7 @@ internal class HighLevelNodeGraph : NodeGraph
 		return new Point((int)centerX, (int)centerY);
 	}
 	
-	private Point GetDoorCenter(Door pDoor)
-	{
-		return GetPointCenter(pDoor.location);
-	}
+	private Point GetDoorCenter(Door pDoor) => GetPointCenter(pDoor.location);
 
 	private Point GetPointCenter(Point pLocation)
 	{
