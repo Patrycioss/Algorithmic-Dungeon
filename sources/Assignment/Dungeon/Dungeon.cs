@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using Saxion.CMGT.Algorithms.GXPEngine;
@@ -40,15 +41,16 @@ public abstract class Dungeon : Canvas
 	protected int minimumRoomSize;
 
 	protected bool debugMode;
+	protected Random randomNumberGenerator;
 	
 	/**
 	 * Create empty dungeon instance of the specified size.
 	 * It's empty because it doesn't contain any rooms yet.
 	 */
-	protected Dungeon(Size pSize) : base(pSize.Width, pSize.Height)
+	protected Dungeon(Size pSize, int pScale) : base(pSize.Width, pSize.Height)
 	{
+		scale = pScale;
 		size = pSize;
-		
 
 		/**/
 		//ignore lines below, this is for rendering scaled canvasses without blurring 
@@ -70,6 +72,7 @@ public abstract class Dungeon : Canvas
 	 */
 	public virtual void InternalGenerate(int pMinimumRoomSize, int seed, bool debugging = false)
 	{
+		randomNumberGenerator = new Random(seed);
 		debugMode = debugging;
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Generating dungeon...");
 
@@ -78,7 +81,7 @@ public abstract class Dungeon : Canvas
 
 		minimumRoomSize = pMinimumRoomSize;
 		
-		Generate(pMinimumRoomSize,seed);
+		Generate(pMinimumRoomSize);
 		
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Dungeon generated.");
 
@@ -86,7 +89,7 @@ public abstract class Dungeon : Canvas
 	}
 
 	//TODO: Override this method in your subclass to make a dungeon as described in assignment 1
-	protected abstract void Generate(int pMinimumRoomSize, int seed);
+	protected abstract void Generate(int pMinimumRoomSize);
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	///	This section contains helper methods to draw all or specific doors/rooms

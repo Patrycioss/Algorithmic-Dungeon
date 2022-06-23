@@ -2,22 +2,16 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
-using static Saxion.CMGT.Algorithms.sources.AlgorithmsAssignment;
 using static Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Door.Orientation;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 
 internal class BetterDungeon : Dungeon
 {
-	private Random random;
-	private int seedIncrement = 1;
+	public BetterDungeon(Size pSize, int pScale) : base(pSize, pScale) { autoDrawAfterGenerate = false; }
 
-	public BetterDungeon(Size pSize) : base(pSize) { autoDrawAfterGenerate = false; }
-
-	protected override void Generate(int pMinimumRoomSize, int seed)
+	protected override void Generate(int pMinimumRoomSize)
 	{
-		random = new Random(seed);
-
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
 		if (debugMode) Console.WriteLine("------------------------------------------------------");
@@ -105,7 +99,7 @@ internal class BetterDungeon : Dungeon
 		{
 			minimum = room.area.X + minimumRoomSize;
 			maximum = room.area.Right - minimumRoomSize;
-			newPoint.X = random.Next(minimum, maximum);
+			newPoint.X = randomNumberGenerator.Next(minimum, maximum);
 
 			if (debugMode)Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
 			
@@ -122,7 +116,7 @@ internal class BetterDungeon : Dungeon
 		{
 			minimum = room.area.Y + minimumRoomSize;
 			maximum = room.area.Bottom - minimumRoomSize;
-			newPoint.Y = random.Next(minimum, maximum);
+			newPoint.Y = randomNumberGenerator.Next(minimum, maximum);
 			
 			if (debugMode)Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 
@@ -222,7 +216,7 @@ internal class BetterDungeon : Dungeon
 				//If something goes wrong with the boundaries continue to prevent a crash
 				if (boundaries.X >= boundaries.Y) continue;
 
-				door = new Door(new Point(random.Next(boundaries.X, boundaries.Y), otherRoom.area.Top), Horizontal, boundaries)
+				door = new Door(new Point(randomNumberGenerator.Next(boundaries.X, boundaries.Y), otherRoom.area.Top), Horizontal, boundaries)
 				{
 					roomA = room,
 					roomB = otherRoom
@@ -246,7 +240,7 @@ internal class BetterDungeon : Dungeon
 				//If something goes wrong with the boundaries continue to prevent a crash
 				if (boundaries.X >= boundaries.Y) continue;
 				
-				door = new Door(new Point(otherRoom.area.Left, random.Next(boundaries.X, boundaries.Y)), Vertical, boundaries)
+				door = new Door(new Point(otherRoom.area.Left, randomNumberGenerator.Next(boundaries.X, boundaries.Y)), Vertical, boundaries)
 				{
 					roomA = room,
 					roomB = otherRoom

@@ -8,15 +8,10 @@ namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 
 internal class ExcellentDungeon : Dungeon
 {
-	private Random random;
-	private int seedIncrement = 1;
+	public ExcellentDungeon(Size pSize, int pScale) : base(pSize, pScale) { autoDrawAfterGenerate = true; }
 
-	public ExcellentDungeon(Size pSize) : base(pSize) { autoDrawAfterGenerate = true; }
-
-	protected override void Generate(int pMinimumRoomSize, int seed)
+	protected override void Generate(int pMinimumRoomSize)
 	{
-		random = new Random(seed);
-			
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
 		if (debugMode) Console.WriteLine("------------------------------------------------------");
@@ -41,7 +36,7 @@ internal class ExcellentDungeon : Dungeon
 		foreach (Room room in rooms)
 		{
 			if (debugMode) Console.WriteLine($"Before deflation at: {room.topLeft} with width: {room.area.Width} and height: {room.area.Height}");
-			room.area.Inflate(random.Next(-2, -1), random.Next(-2, -1));
+			room.area.Inflate(randomNumberGenerator.Next(-2, -1), randomNumberGenerator.Next(-2, -1));
 			if (debugMode) Console.WriteLine($"After deflation at {room.topLeft} with width: {room.area.Width} and height: {room.area.Height}");
 		}
 		if (debugMode) Console.WriteLine("------------------------------------------------------");
@@ -113,7 +108,7 @@ internal class ExcellentDungeon : Dungeon
 		{
 			minimum = room.area.X + minimumRoomSize;
 			maximum = room.area.Right - minimumRoomSize;
-			newPoint.X = random.Next(minimum, maximum);
+			newPoint.X = randomNumberGenerator.Next(minimum, maximum);
 			
 			if (debugMode) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
 
@@ -130,7 +125,7 @@ internal class ExcellentDungeon : Dungeon
 		{
 			minimum = room.area.Y + minimumRoomSize;
 			maximum = room.area.Bottom - minimumRoomSize;
-			newPoint.Y = random.Next(minimum, maximum);
+			newPoint.Y = randomNumberGenerator.Next(minimum, maximum);
 			
 			if (debugMode) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 			
@@ -295,7 +290,7 @@ internal class ExcellentDungeon : Dungeon
 
 			if (boundaries.X >= boundaries.Y) return;
 
-			Door door = new(new Point(room.area.Right - 1, random.Next(boundaries.X, boundaries.Y)), Vertical, boundaries);
+			Door door = new(new Point(room.area.Right - 1, randomNumberGenerator.Next(boundaries.X, boundaries.Y)), Vertical, boundaries);
 			doors.Add(door);
 			room.doors.Add(door);
 			viableRoom.doors.Add(door);
@@ -320,7 +315,7 @@ internal class ExcellentDungeon : Dungeon
 				return;
 			}
 
-			Door door = new(new Point(random.Next(boundaries.X, boundaries.Y), room.area.Bottom - 1), Horizontal, boundaries);
+			Door door = new(new Point(randomNumberGenerator.Next(boundaries.X, boundaries.Y), room.area.Bottom - 1), Horizontal, boundaries);
 			doors.Add(door);
 			room.doors.Add(door);
 			viableRoom.doors.Add(door);

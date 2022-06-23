@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
-using static Saxion.CMGT.Algorithms.sources.AlgorithmsAssignment;
 using static Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Door.Orientation;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
@@ -11,13 +10,11 @@ namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 internal class SufficientDungeon : Dungeon
 {
 	private List<Door> doorsToBeAdded;
-	private Random random;
 
-	public SufficientDungeon(Size pSize) : base(pSize){}
+	public SufficientDungeon(Size pSize, int pScale) : base(pSize, pScale){}
 
-	protected override void Generate(int pMinimumRoomSize, int seed)
+	protected override void Generate(int pMinimumRoomSize)
 	{
-		random = new Random(seed);
 		doorsToBeAdded = new List<Door>();
 			
 		//Start room (Covers whole dungeon)
@@ -79,12 +76,12 @@ internal class SufficientDungeon : Dungeon
 	{
 		if (door.orientation == Horizontal)
 		{
-			door = new Door(door.location with {X = random.Next(door.boundaries.X, door.boundaries.Y)}, Horizontal,
+			door = new Door(door.location with {X = randomNumberGenerator.Next(door.boundaries.X, door.boundaries.Y)}, Horizontal,
 				door.boundaries);
 		}
 		else
 		{
-			door = new Door(door.location with {Y = random.Next(door.boundaries.X, door.boundaries.Y)},
+			door = new Door(door.location with {Y = randomNumberGenerator.Next(door.boundaries.X, door.boundaries.Y)},
 				Vertical, door.boundaries);
 		}
 		TestDoor(door);
@@ -105,7 +102,7 @@ internal class SufficientDungeon : Dungeon
 		{
 			minimum = room.area.X + minimumRoomSize;
 			maximum = room.area.Right - minimumRoomSize;
-			newPoint.X = random.Next(minimum, maximum);
+			newPoint.X = randomNumberGenerator.Next(minimum, maximum);
 
 			if (debugMode) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
 			
@@ -117,14 +114,14 @@ internal class SufficientDungeon : Dungeon
 			
 			Point boundaries = new(room.area.Y + 1, room.area.Bottom - 1);
 			
-			doorsToBeAdded.Add(new Door(newPoint with {Y = random.Next(boundaries.X, boundaries.Y)}, Vertical, boundaries));
+			doorsToBeAdded.Add(new Door(newPoint with {Y = randomNumberGenerator.Next(boundaries.X, boundaries.Y)}, Vertical, boundaries));
 		}
 
 		else if (room.area.Height >= minimumRoomSize * 2)
 		{
 			minimum = room.area.Y + minimumRoomSize;
 			maximum = room.area.Bottom - minimumRoomSize;
-			newPoint.Y = random.Next(minimum, maximum);
+			newPoint.Y = randomNumberGenerator.Next(minimum, maximum);
 
 			if (debugMode) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 			
@@ -136,7 +133,7 @@ internal class SufficientDungeon : Dungeon
 			
 			Point boundaries = new(room.area.X + 1, room.area.Right - 1);
 			
-			doorsToBeAdded.Add(new Door(newPoint with {X = random.Next(boundaries.X, boundaries.Y)}, Horizontal, boundaries));
+			doorsToBeAdded.Add(new Door(newPoint with {X = randomNumberGenerator.Next(boundaries.X, boundaries.Y)}, Horizontal, boundaries));
 		}
 		else
 		{

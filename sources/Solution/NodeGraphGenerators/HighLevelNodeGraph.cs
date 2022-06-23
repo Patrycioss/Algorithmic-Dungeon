@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
