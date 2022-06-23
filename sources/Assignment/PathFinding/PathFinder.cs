@@ -42,6 +42,7 @@ abstract class PathFinder : Canvas
 	//Custom
 	protected List<Node> excludedNodes = new();
 	protected bool connected;
+	protected bool debugMode;
 
 	public PathFinder (NodeGraph.NodeGraph pGraph, Dungeon.Dungeon pDungeon) : base (pGraph.width, pGraph.height)
 	{
@@ -98,9 +99,10 @@ abstract class PathFinder : Canvas
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/// Core PathFinding methods
 
-	public List<Node> InternalGenerate(Node pFrom, Node pTo)
+	public List<Node> InternalGenerate(Node pFrom, Node pTo, bool debugging = false)
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate: Generating path...");
+		debugMode = debugging;
 
 		lastCalculatedPath = null;
 		startNode = pFrom;

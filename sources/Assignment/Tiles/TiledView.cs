@@ -23,6 +23,8 @@ abstract class TiledView : GameObject
 	//single sprite, used for rendering all tiles
 	private AnimationSprite _tileSet;
 
+	protected bool debugMode;
+
 	public TiledView(int pColumns, int pRows, int pTileSize, TileType pDefaultTileType) {
 		Debug.Assert(pColumns > 0, "Invalid amount of columns passed in: " + pColumns);
 		Debug.Assert(pRows > 0, "Invalid amount of rows passed in: " + pRows);
@@ -95,8 +97,9 @@ abstract class TiledView : GameObject
 	 * Trigger the tile view generation process, do not override this method, 
 	 * but override generate (note the lower case) instead.
 	 */
-	public void InternalGenerate()
+	public void InternalGenerate(bool debugging = false)
 	{
+		debugMode = debugging;
 		System.Console.WriteLine(GetType().Name + ".Generate: Generating tile view...");
 		Generate();
 		System.Console.WriteLine(GetType().Name + ".Generate: tile view generated.");

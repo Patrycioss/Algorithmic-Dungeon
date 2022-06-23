@@ -10,6 +10,7 @@ using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 using Saxion.CMGT.Algorithms.sources.Assignment.Tiles;
 using Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 using Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
+using Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
 using Saxion.CMGT.Algorithms.sources.Solution.TiledViewers;
 using Saxion.CMGT.Algorithms.sources.Util;
 
@@ -54,10 +55,10 @@ namespace Saxion.CMGT.Algorithms.sources
 
 			//TiledView
 			tiledView = new TiledDungeonView(dungeon);
-			tiledView?.InternalGenerate();
+			tiledView?.InternalGenerate(false);
 
 			//PathFinder
-			//pathFinder = new AStarPathFinder(graph, dungeon);
+			pathFinder = new AStarPathFinder(graph, dungeon);
 
 			//Agent
 			// agent = new SufficientNodeGraphAgent(graph);
