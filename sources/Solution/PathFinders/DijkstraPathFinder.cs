@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
@@ -9,7 +11,7 @@ namespace Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
 
 internal class DijkstraPathFinder : PathFinder
 {
-	public DijkstraPathFinder(NodeGraph nodeGraph, Dungeon pDungeon) : base(nodeGraph, pDungeon) {}
+	public DijkstraPathFinder(NodeGraph nodeGraph, Dungeon pDungeon, bool debugging) : base(nodeGraph, pDungeon, debugging) {}
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
@@ -39,8 +41,14 @@ internal class DijkstraPathFinder : PathFinder
 			
 			//Info
 			nodesExpanded++;
-			Console.WriteLine($"{node.id} has value: {nodeDistances[node]}");
+			if (debugMode) Console.WriteLine($"{node.id} has value: {nodeDistances[node]}");
 			//
+
+			if (AlgorithmsAssignment.DO_WONKY_STEP_BY_STEP)
+			{
+				DrawNode(node,Brushes.Red);
+				Thread.Sleep(10);
+			}
 			
 			foreach (Node connection in node.connections)
 			{
@@ -64,7 +72,7 @@ internal class DijkstraPathFinder : PathFinder
 					{
 						Node bestConnection = null;
 
-						Console.WriteLine($"Child: {child.id}, value: {nodeDistances[child]}");
+						if (debugMode) Console.WriteLine($"Child: {child.id}, value: {nodeDistances[child]}");
 						shortestPath.Add(child);
 
 						foreach (Node newConnection in child.connections)
@@ -84,8 +92,11 @@ internal class DijkstraPathFinder : PathFinder
 			}
 		}
 
-		if (shortestPath != null) Console.WriteLine($"PathLength: {shortestPath.Count}");
-		Console.WriteLine($"NodesExpanded: {nodesExpanded}");
+		if (debugMode)
+		{
+			if (shortestPath != null) Console.WriteLine($"PathLength: {shortestPath.Count}");
+			Console.WriteLine($"NodesExpanded: {nodesExpanded}");
+		}
 		return shortestPath;
 	}
 

@@ -11,7 +11,7 @@ namespace Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
  */
 class SamplePathFinder : PathFinder	{
 
-	public SamplePathFinder(NodeGraph.NodeGraph pGraph, Dungeon.Dungeon pDungeon) : base(pGraph, pDungeon) {}
+	public SamplePathFinder(NodeGraph.NodeGraph pGraph, Dungeon.Dungeon pDungeon, bool debugging) : base(pGraph, pDungeon, debugging) {}
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{

@@ -8,6 +8,7 @@ using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 using Saxion.CMGT.Algorithms.sources.Assignment.Tiles;
+using Saxion.CMGT.Algorithms.sources.Solution.Agents;
 using Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
 using Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
 using Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
@@ -30,9 +31,10 @@ namespace Saxion.CMGT.Algorithms.sources
 		private PathFinder pathFinder;
 
 		//common settings
-		public const int SCALE = 30;
+		public const int SCALE = 15;
 		public const int MIN_ROOM_SIZE = 10;
-		public const bool CHECK_IF_COMPLETELY_CONNECTED = true;
+		public const bool CHECK_IF_COMPLETELY_CONNECTED = false;
+		public const bool DO_WONKY_STEP_BY_STEP = false;
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false) => Create();
 
@@ -46,11 +48,11 @@ namespace Saxion.CMGT.Algorithms.sources
 			Size size = new(width / SCALE, height / SCALE);
 			
 			//Dungeon
-			dungeon = new ExcellentDungeon(size, SCALE);
+			dungeon = new BetterDungeon(size, SCALE);
 			dungeon?.InternalGenerate(MIN_ROOM_SIZE,seed, false);
 
 			//NodeGraph
-			graph = new LowLevelNodeGraph(dungeon);
+			graph = new HighLevelNodeGraph(dungeon);
 			graph?.InternalGenerate(false);
 
 			//TiledView
@@ -58,14 +60,15 @@ namespace Saxion.CMGT.Algorithms.sources
 			tiledView?.InternalGenerate(false);
 
 			//PathFinder
-			pathFinder = new AStarPathFinder(graph, dungeon);
+			pathFinder = new AStarPathFinder(graph, dungeon, false);
+
 
 			//Agent
-			// agent = new SufficientNodeGraphAgent(graph);
-			//agent = new PathFindingAgent(graph, pathFinder);
+			// agent = new BetterNodeGraphAgent(graph);
+			agent = new PathFindingAgent(graph, pathFinder, false);
 			
 			//Adding stuff
-			if (grid != null) AddChild(grid);
+			// if (grid != null) AddChild(grid);
 			if (dungeon != null) AddChild(dungeon);
 			if (tiledView != null) AddChild(tiledView);
 			if (graph != null) AddChild(graph);
@@ -91,7 +94,7 @@ namespace Saxion.CMGT.Algorithms.sources
 					Create(i);
 				}
 			}
-		
+			
 			void ClearScreen()
 			{
 				List<GameObject> list = GetChildren();

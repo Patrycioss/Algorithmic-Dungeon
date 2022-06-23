@@ -18,9 +18,11 @@ internal abstract class NodeGraphAgent : AnimationSprite
 	protected const int REGULAR_SPEED = 1;
 	protected const int FAST_TRAVEL_SPEED = 10;
 	protected const int SPEED_UP_KEY = Key.LEFT_CTRL;
+	protected bool debugMode;
 
-	protected NodeGraphAgent(NodeGraph.NodeGraph pNodeGraph) : base("assets/orc.png", 4, 2, 7)
+	protected NodeGraphAgent(NodeGraph.NodeGraph pNodeGraph, bool debugging = false) : base("assets/orc.png", 4, 2, 7)
 	{
+		debugMode = debugging;
 		Debug.Assert(pNodeGraph != null, "Please pass in a node graph.");
 
 		SetOrigin(width / 2, height / 2);
@@ -39,10 +41,7 @@ internal abstract class NodeGraphAgent : AnimationSprite
  */
 	protected virtual bool MoveTowardsNode(Node pTarget, float pSpeed = 0)
 	{
-		float speed;
-
-		if (pSpeed == 0) speed = Input.GetKey(SPEED_UP_KEY) ? FAST_TRAVEL_SPEED : REGULAR_SPEED;
-		else speed = pSpeed;
+		float speed = pSpeed;
 		
 		
 

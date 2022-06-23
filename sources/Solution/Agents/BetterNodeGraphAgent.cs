@@ -42,7 +42,7 @@ internal sealed class BetterNodeGraphAgent : NodeGraphAgent
 
 		canReceiveNewGoal = true;
 
-		currentSpeed = 10;
+		currentSpeed = debugMode ? 0.0001f:10;
 	}
 	
 
@@ -75,11 +75,10 @@ internal sealed class BetterNodeGraphAgent : NodeGraphAgent
 					{
 						connections.Remove(previousNode);
 					}
-					else if (previousNode == null) Console.WriteLine("?");
 					
 					int i = random.Next(0, connections.Count);
-					currentTarget = connections[i];	
-					if (connections[i] == previousNode) Console.WriteLine("?");
+					currentTarget = connections[i];
+					Console.WriteLine($"CurrentTarget: {connections[i]}");
 				}
 			}
 			else

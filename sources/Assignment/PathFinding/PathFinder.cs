@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Threading;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.GXPEngine.Utils;
-using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
-using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 
 namespace Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
@@ -42,10 +38,13 @@ abstract class PathFinder : Canvas
 	//Custom
 	protected List<Node> excludedNodes = new();
 	protected bool connected;
+
+	private Thread thread;
 	protected bool debugMode;
 
-	public PathFinder (NodeGraph.NodeGraph pGraph, Dungeon.Dungeon pDungeon) : base (pGraph.width, pGraph.height)
+	public PathFinder (NodeGraph.NodeGraph pGraph, Dungeon.Dungeon pDungeon, bool debugging) : base (pGraph.width, pGraph.height)
 	{
+		debugMode = debugging;
 		dungeon = pDungeon;
 		nodeGraph = pGraph;
 		nodeGraph.onNodeShiftLeftClicked += (node) => { startNode = node; Draw(); };
@@ -53,11 +52,11 @@ abstract class PathFinder : Canvas
 		nodeGraph.onNodeControlLeftClicked += (node) =>
 		{
 			if (node.ownerType == Node.OwnerType.Door && !excludedNodes.Contains(node)) excludedNodes.Add(node);
-			ConnectedCheck();
+			CheckIfDungeonIsConnected();
 			Draw();
 		};
 		
-		nodeGraph.onNodeControlRightClicked += (node) => { excludedNodes.Remove(node); ConnectedCheck(); Draw(); };
+		nodeGraph.onNodeControlRightClicked += (node) => { excludedNodes.Remove(node); CheckIfDungeonIsConnected(); Draw(); };
 
 		Console.WriteLine("\n-----------------------------------------------------------------------------");
 		Console.WriteLine(this.GetType().Name + " created.");
@@ -69,15 +68,11 @@ abstract class PathFinder : Canvas
 		Console.WriteLine("-----------------------------------------------------------------------------");
 
 
-		ConnectedCheck();
+		if (AlgorithmsAssignment.CHECK_IF_COMPLETELY_CONNECTED)CheckIfDungeonIsConnected();
 		Draw();
-
-		
-		void ConnectedCheck()
-		{
-			CheckIfDungeonIsConnected();
-		}
 	}
+	
+	
 
 	protected void CheckIfDungeonIsConnected()
 	{
@@ -99,10 +94,9 @@ abstract class PathFinder : Canvas
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/// Core PathFinding methods
 
-	public List<Node> InternalGenerate(Node pFrom, Node pTo, bool debugging = false)
+	public List<Node> InternalGenerate(Node pFrom, Node pTo)
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate: Generating path...");
-		debugMode = debugging;
 
 		lastCalculatedPath = null;
 		startNode = pFrom;
@@ -110,7 +104,7 @@ abstract class PathFinder : Canvas
 
 		if (startNode == null || endNode == null) Console.WriteLine("Please specify start and end node before trying to generate a path.");
 		else lastCalculatedPath = Generate(pFrom, pTo);
-
+		
 		Draw();
 
 		System.Console.WriteLine(this.GetType().Name + ".Generate: Path generated.");
@@ -141,6 +135,8 @@ abstract class PathFinder : Canvas
 
 		if (connected) graphics.DrawString("Connected!", SystemFonts.DefaultFont, Brushes.Green, new Point(10, 10));
 		else graphics.DrawString("Not connected!", SystemFonts.DefaultFont, Brushes.Red, new Point(10, 10));
+		
+		// foreach (Node node in nodesToShow) DrawNode(node, Brushes.Red);
 
 		//TODO: you could override this method and draw your own additional stuff for debugging
 	}
@@ -148,16 +144,10 @@ abstract class PathFinder : Canvas
 	protected virtual void DrawPath()
 	{
 		//draw all lines
-		for (int i = 0; i < lastCalculatedPath.Count - 1; i++)
-		{
-			DrawConnection(lastCalculatedPath[i], lastCalculatedPath[i + 1]);
-		}
+		for (int i = 0; i < lastCalculatedPath.Count - 1; i++) DrawConnection(lastCalculatedPath[i], lastCalculatedPath[i + 1]);
 
 		//draw all nodes between start and end
-		for (int i = 1; i < lastCalculatedPath.Count - 1; i++)
-		{
-			DrawNode(lastCalculatedPath[i], _pathNodeColor);
-		}
+		for (int i = 1; i < lastCalculatedPath.Count - 1; i++) DrawNode(lastCalculatedPath[i], _pathNodeColor);
 	}
 
 	protected virtual void DrawNodes (IEnumerable<Node> pNodes, Brush pColor)

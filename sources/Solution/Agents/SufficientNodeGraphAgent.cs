@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.GXPEngine.Utils;
@@ -47,12 +48,14 @@ internal sealed class SufficientNodeGraphAgent : NodeGraphAgent
 		}
 		else
 		{
+			Console.WriteLine($"Moving towards node {currentTarget}");
 			MoveTowardsNode(currentTarget, 0.5f);
 			
 			float distance = DistanceFromPointToNode(new Point((int)x,(int)y),currentTarget);
 		
 			if (distance < 1)
 			{
+				if (debugMode) Console.WriteLine($"Arrived at: {currentTarget}");
 				currentNode = currentTarget;
 				currentTarget = null;
 			}

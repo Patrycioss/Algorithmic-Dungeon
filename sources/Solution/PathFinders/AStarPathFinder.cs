@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
 using Saxion.CMGT.Algorithms.GXPEngine;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
 using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
@@ -12,13 +14,14 @@ internal class AStarPathFinder : PathFinder
 	private List<Node> nodesToCheck;
 	private Dictionary<Node, (float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent)> nodeInformation;
 	
-	public AStarPathFinder(NodeGraph pNodeGraph, Dungeon pDungeon) : base(pNodeGraph, pDungeon) { }
+	public AStarPathFinder(NodeGraph pNodeGraph, Dungeon pDungeon, bool debugging) : base(pNodeGraph, pDungeon, debugging) { }
+
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
 	{
 		if (pFrom == pTo) return null;
 		if (pFrom.connections.Contains(pTo)) return new List<Node> {pFrom, pTo};
-
+		
 		List<Node> shortestPath = new List<Node>();
 		nodesToCheck = new List<Node>();
 		nodeInformation = new Dictionary<Node, (float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent)>();
@@ -40,13 +43,26 @@ internal class AStarPathFinder : PathFinder
 			Node node = nodesToCheck[0];
 			nodesToCheck.RemoveAt(0);
 
+			//Debug
+			if (debugMode)
+			{
+				Console.WriteLine($"---------------");
+				Console.WriteLine($"Checking Node: {node} with heuristic: {nodeInformation[node].fCost}");
+			}
+			
+			if (AlgorithmsAssignment.DO_WONKY_STEP_BY_STEP)
+			{
+				DrawNode(node,Brushes.Red);
+				Thread.Sleep(100);
+			}
+
+			
 			//Update node information to say it's been visited
 			(float distanceToStart, float distanceToEnd, float fCost, bool visited, Node parent) previousInformation = nodeInformation[node];
 			previousInformation.visited = true;
 			nodeInformation[node] = previousInformation;
 
 			//Info
-			// Console.WriteLine($"Node: {node.id} with fValue: {nodeInformation[node].fCost}");
 			nodesExpanded++;
 			//
 
@@ -76,6 +92,9 @@ internal class AStarPathFinder : PathFinder
 
 				//Updates node information
 				DetermineNewNodeInformation(connection,node);
+				
+				//Debug
+				if (debugMode) Console.WriteLine($"Connection with id: {connection} now has heuristic {nodeInformation[connection].fCost}");
 
 				if (!nodeInformation[connection].visited) nodesToCheck.Add(connection);
 			}
@@ -84,8 +103,12 @@ internal class AStarPathFinder : PathFinder
 		}
 		
 
-		Console.WriteLine($"PathLength: {shortestPath.Count}");
-		Console.WriteLine($"NodesExpanded: {nodesExpanded}");
+		//Debug
+		if (debugMode)
+		{
+			Console.WriteLine($"PathLength: {shortestPath.Count}");
+			Console.WriteLine($"NodesExpanded: {nodesExpanded}");
+		}
 		return shortestPath;
 	}
 
@@ -129,11 +152,33 @@ internal class AStarPathFinder : PathFinder
 					nodesToCheck[i] = nodesToCheck[j];
 					nodesToCheck[j] = tempI;
 				}
-				else if (Math.Abs(iHeuristic - jHeuristic) < 0.001f)
+				// else if (Math.Abs(iHeuristic - jHeuristic) < 0.001f)
+				// {
+				// 	float iDistanceToEnd = nodeInformation[nodesToCheck[i]].distanceToEnd;
+				// 	float jDistanceToEnd = nodeInformation[nodesToCheck[j]].distanceToEnd;
+				//
+				// 	if (iDistanceToEnd < jDistanceToEnd)
+				// 	{
+				// 		nodesToCheck[i] = nodesToCheck[j];
+				// 		nodesToCheck[j] = tempI;
+				// 	}
+				// }
+			}
+		}
+		
+		for (int i = nodesToCheck.Count - 1; i >= 0; i--)
+		{
+			for (int j = i - 1; j >= 0; j--)
+			{
+				float iHeuristic = nodeInformation[nodesToCheck[i]].fCost;
+				float jHeuristic = nodeInformation[nodesToCheck[j]].fCost;
+				Node tempI = nodesToCheck[i];
+				
+				if (Math.Abs(iHeuristic - jHeuristic) < 0.001f)
 				{
 					float iDistanceToEnd = nodeInformation[nodesToCheck[i]].distanceToEnd;
 					float jDistanceToEnd = nodeInformation[nodesToCheck[j]].distanceToEnd;
-
+				
 					if (iDistanceToEnd < jDistanceToEnd)
 					{
 						nodesToCheck[i] = nodesToCheck[j];
