@@ -27,26 +27,26 @@ internal class GoodDungeon : Dungeon
 			
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 		
 		//Remove smallest rooms
 		foreach (Room room in GetRoomsWithSurface(GetSmallestSurface()))
 		{
 			roomsToBeAdded.Remove(room);
-			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+			if (debugMode) Console.WriteLine($"Removed room at {room.topLeft}");
 		}
 
 		//Remove biggest rooms
 		foreach (Room room in GetRoomsWithSurface(GetBiggestSurface()))
 		{
 			roomsToBeAdded.Remove(room);
-			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+			if (debugMode) Console.WriteLine($"Removed room at {room.topLeft}");
 		}
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 		//Move doors to another random position if they are placed on the corner of a room
 		foreach (Door door in doorsToBeTested) TestDoor(door);
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 		
 		//Assign the doors to the rooms, if the door doesn't have any rooms to get assigned to it gets deleted
 		for (int index = doorsToBeAdded.Count - 1; index >= 0; index--)
@@ -57,17 +57,17 @@ internal class GoodDungeon : Dungeon
 			if (door.roomB == null || door.roomA == null)
 			{
 				doorsToBeAdded.Remove(door);
-				if (DEBUG_MODE) Console.WriteLine($"Removed door {index} in doorsToBeAdded");
+				if (debugMode) Console.WriteLine($"Removed door {index} in doorsToBeAdded");
 			}
 			else
 			{
 				door.roomA?.doors.Add(door);
 				door.roomB?.doors.Add(door);
 				
-				if (DEBUG_MODE) Console.WriteLine($"Assigned door {index} in doorsToBeAdded to roomA at {door.roomA?.topLeft} and roomB at {door.roomB?.topLeft}");
+				if (debugMode) Console.WriteLine($"Assigned door {index} in doorsToBeAdded to roomA at {door.roomA?.topLeft} and roomB at {door.roomB?.topLeft}");
 			}
 		}
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 		//Debug purposes
 		// foreach (Room room in roomsToBeAdded)
@@ -136,7 +136,7 @@ internal class GoodDungeon : Dungeon
 			maximum = room.area.Right - minimumRoomSize;
 			newPoint.X = random.Next(minimum, maximum);
 			
-			if (DEBUG_MODE) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
+			if (debugMode) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
 			
 			//Room1 (Left)
 			Redo(new Room(room.area with {Width = newPoint.X - room.area.X + 1}));
@@ -155,7 +155,7 @@ internal class GoodDungeon : Dungeon
 			maximum = room.area.Bottom - minimumRoomSize;
 			newPoint.Y = random.Next(minimum, maximum);
 
-			if (DEBUG_MODE) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
+			if (debugMode) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 
 			//Room1 (Top)
 			Redo(new Room(room.area with {Height = newPoint.Y - room.area.Y + 1}));
@@ -171,7 +171,7 @@ internal class GoodDungeon : Dungeon
 		else
 		{
 			roomsToBeAdded.Add(room);
-			if (DEBUG_MODE) Console.WriteLine($"Created room at {room.topLeft} corner");
+			if (debugMode) Console.WriteLine($"Created room at {room.topLeft} corner");
 		}
 
 		void Redo(Room roomToBeRedone)
@@ -209,7 +209,7 @@ internal class GoodDungeon : Dungeon
 				biggestSurface = room.surface;
 			}
 		}
-		if (DEBUG_MODE) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
+		if (debugMode) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
 		return biggestSurface;
 	}
 	
@@ -226,7 +226,7 @@ internal class GoodDungeon : Dungeon
 			}
 		}
 
-		if (DEBUG_MODE) Console.WriteLine($"SmallestSurface is: {smallestSurface}");
+		if (debugMode) Console.WriteLine($"SmallestSurface is: {smallestSurface}");
 		return smallestSurface;
 	}
 	
@@ -244,7 +244,7 @@ internal class GoodDungeon : Dungeon
 		else
 		{
 			doorsToBeAdded.Add(door);
-			if (DEBUG_MODE) Console.WriteLine($"Tested door number {doorsToBeAdded.Count-1} in doorsToBeAdded at {door.location}");
+			if (debugMode) Console.WriteLine($"Tested door number {doorsToBeAdded.Count-1} in doorsToBeAdded at {door.location}");
 		}
 	}
 	

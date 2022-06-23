@@ -27,7 +27,12 @@ internal class HighLevelNodeGraph : NodeGraph
 
 	protected override void Generate()
 	{
-		Console.WriteLine($"{doors}");
+		if (debugMode)
+		{
+			Console.WriteLine($"-------------------------");
+			Console.WriteLine($"Doing doors");
+			Console.WriteLine($"-------------------------");
+		}
 		
 		foreach (Door door in doors)
 		{
@@ -35,15 +40,32 @@ internal class HighLevelNodeGraph : NodeGraph
 			nodes.Add(node);
 			
 			if (!doorNodes.ContainsKey(door)) doorNodes.Add(door,node);
+
+			if (debugMode) Console.WriteLine($"Generated node {node} at {node.location}");
 		}
 
+		
+		if (debugMode)
+		{
+			Console.WriteLine($"-------------------------");
+			Console.WriteLine($"Doing rooms and connections");
+			Console.WriteLine($"-------------------------");
+		}
+		
 		foreach (Room room in rooms)
 		{
 			Node roomNode = new(GetRoomCenter(room));
 			nodes.Add(roomNode);
 			room.node ??= roomNode;
+			
+			if (debugMode) Console.WriteLine($"Generated node {roomNode} at {roomNode.location}");
 
-			foreach (Door door in room.doors) AddConnection(roomNode, doorNodes[door]);
+
+			foreach (Door door in room.doors)
+			{
+				AddConnection(roomNode, doorNodes[door]);
+				if (debugMode) Console.WriteLine($"Made connection between node {roomNode} and node {doorNodes[door]}");
+			}
 		}
 	}
 

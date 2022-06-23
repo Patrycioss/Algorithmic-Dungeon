@@ -20,28 +20,28 @@ internal class BetterDungeon : Dungeon
 
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 		
 		//Remove smallest rooms
 		foreach (Room room in GetRoomsWithSurface(GetSmallestSurface()))
 		{
 			rooms.Remove(room);
-			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+			if (debugMode) Console.WriteLine($"Removed room at {room.topLeft}");
 		}
 
 		//Remove biggest rooms
 		foreach (Room room in GetRoomsWithSurface(GetBiggestSurface()))
 		{
 			rooms.Remove(room);
-			if (DEBUG_MODE)Console.WriteLine($"Removed room at {room.topLeft}");
+			if (debugMode)Console.WriteLine($"Removed room at {room.topLeft}");
 		}
-		if (DEBUG_MODE)Console.WriteLine("------------------------------------------------------");
+		if (debugMode)Console.WriteLine("------------------------------------------------------");
 
 
 		//Add doors to rooms
 		foreach (Room room in rooms) AddDoorsOfRoom(room);
-		if (DEBUG_MODE)Console.WriteLine("------------------------------------------------------");
+		if (debugMode)Console.WriteLine("------------------------------------------------------");
 
 
 		//Debug purposes
@@ -107,7 +107,7 @@ internal class BetterDungeon : Dungeon
 			maximum = room.area.Right - minimumRoomSize;
 			newPoint.X = random.Next(minimum, maximum);
 
-			if (DEBUG_MODE)Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
+			if (debugMode)Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
 			
 			//Room1 (Left)
 			Redo(new Room(room.area with {Width = newPoint.X - room.area.X + 1}));
@@ -124,7 +124,7 @@ internal class BetterDungeon : Dungeon
 			maximum = room.area.Bottom - minimumRoomSize;
 			newPoint.Y = random.Next(minimum, maximum);
 			
-			if (DEBUG_MODE)Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
+			if (debugMode)Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 
 			//Room1 (Top)
 			Redo(new Room(room.area with {Height = newPoint.Y - room.area.Y + 1}));
@@ -136,7 +136,7 @@ internal class BetterDungeon : Dungeon
 		else
 		{
 			rooms.Add(room);
-			if (DEBUG_MODE)Console.WriteLine($"Created room at {room.topLeft} corner");
+			if (debugMode)Console.WriteLine($"Created room at {room.topLeft} corner");
 		}
 
 		void Redo(Room roomToBeRedone)
@@ -174,7 +174,7 @@ internal class BetterDungeon : Dungeon
 				biggestSurface = room.surface;
 			}
 		}
-		if (DEBUG_MODE) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
+		if (debugMode) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
 		return biggestSurface;
 	}
 
@@ -190,7 +190,7 @@ internal class BetterDungeon : Dungeon
 				smallestSurface = room.surface;
 			}
 		}
-		if (DEBUG_MODE)Console.WriteLine($"SmallestSurface is: {smallestSurface}");
+		if (debugMode)Console.WriteLine($"SmallestSurface is: {smallestSurface}");
 		return smallestSurface;
 	}
 	
@@ -228,7 +228,7 @@ internal class BetterDungeon : Dungeon
 					roomB = otherRoom
 				};
 				doors.Add(door);
-				if (DEBUG_MODE)Console.WriteLine($"Added door {doors.Count-1} in doors at {door.location} with roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
+				if (debugMode)Console.WriteLine($"Added door {doors.Count-1} in doors at {door.location} with roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
 			}
 			
 			//if rooms overlap on the vertical axis
@@ -252,7 +252,7 @@ internal class BetterDungeon : Dungeon
 					roomB = otherRoom
 				};
 				doors.Add(door);
-				if (DEBUG_MODE)Console.WriteLine($"Added door {doors.Count-1} in doors at {door.location} with roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
+				if (debugMode)Console.WriteLine($"Added door {doors.Count-1} in doors at {door.location} with roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
 			}
 
 			if (door != null)

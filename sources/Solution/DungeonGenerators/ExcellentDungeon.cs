@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.sources.Assignment.Dungeon;
-using static Saxion.CMGT.Algorithms.sources.AlgorithmsAssignment;
 using static Saxion.CMGT.Algorithms.sources.Assignment.Dungeon.Door.Orientation;
 
 namespace Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
@@ -20,42 +19,42 @@ internal class ExcellentDungeon : Dungeon
 			
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 		
 		//Remove smallest rooms
 		foreach (Room room in GetRoomsWithSurface(GetSmallestSurface()))
 		{
 			rooms.Remove(room);
-			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+			if (debugMode) Console.WriteLine($"Removed room at {room.topLeft}");
 		}
 
 		//Remove biggest rooms
 		foreach (Room room in GetRoomsWithSurface(GetBiggestSurface()))
 		{
 			rooms.Remove(room);
-			if (DEBUG_MODE) Console.WriteLine($"Removed room at {room.topLeft}");
+			if (debugMode) Console.WriteLine($"Removed room at {room.topLeft}");
 		}
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 
 		//Downsize the rooms
 		foreach (Room room in rooms)
 		{
-			if (DEBUG_MODE) Console.WriteLine($"Before deflation at: {room.topLeft} with width: {room.area.Width} and height: {room.area.Height}");
+			if (debugMode) Console.WriteLine($"Before deflation at: {room.topLeft} with width: {room.area.Width} and height: {room.area.Height}");
 			room.area.Inflate(random.Next(-2, -1), random.Next(-2, -1));
-			if (DEBUG_MODE) Console.WriteLine($"After deflation at {room.topLeft} with width: {room.area.Width} and height: {room.area.Height}");
+			if (debugMode) Console.WriteLine($"After deflation at {room.topLeft} with width: {room.area.Width} and height: {room.area.Height}");
 		}
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 
 		//Add doors
 		foreach (Room room in rooms) {AddDoorsOfRoom(room);}
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 		
 		
 		//Make doors into corridors based on orientation
 		for (int i = 0; i < doors.Count; i++) TurnDoorIntoCorridor(doors[i]);
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 		
 		//Debug purposes
@@ -116,7 +115,7 @@ internal class ExcellentDungeon : Dungeon
 			maximum = room.area.Right - minimumRoomSize;
 			newPoint.X = random.Next(minimum, maximum);
 			
-			if (DEBUG_MODE) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
+			if (debugMode) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
 
 			//Room1 (Left)
 			Redo(new Room(room.area with {Width = newPoint.X - room.area.X + 1}));
@@ -133,7 +132,7 @@ internal class ExcellentDungeon : Dungeon
 			maximum = room.area.Bottom - minimumRoomSize;
 			newPoint.Y = random.Next(minimum, maximum);
 			
-			if (DEBUG_MODE) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
+			if (debugMode) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 			
 			//Room1 (Top)
 			Redo(new Room(room.area with {Height = newPoint.Y - room.area.Y + 1}));
@@ -145,7 +144,7 @@ internal class ExcellentDungeon : Dungeon
 		else
 		{
 			rooms.Add(room);
-			if (DEBUG_MODE) Console.WriteLine($"Created room at {room.topLeft} corner");
+			if (debugMode) Console.WriteLine($"Created room at {room.topLeft} corner");
 		}
 
 		void Redo(Room roomToBeRedone) => DivideRoom(roomToBeRedone);
@@ -165,7 +164,7 @@ internal class ExcellentDungeon : Dungeon
 	{
 		int biggestSurface = int.MinValue;
 		foreach (Room room in rooms) if (room.surface > biggestSurface) biggestSurface = room.surface;
-		if (DEBUG_MODE) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
+		if (debugMode) Console.WriteLine($"BiggestSurface is: {biggestSurface}");
 		return biggestSurface;
 	}
 
@@ -174,7 +173,7 @@ internal class ExcellentDungeon : Dungeon
 	{
 		int smallestSurface = int.MaxValue;
 		foreach (Room room in rooms) if (room.surface < smallestSurface) smallestSurface = room.surface;
-		if (DEBUG_MODE) Console.WriteLine($"SmallestSurface is: {smallestSurface}");
+		if (debugMode) Console.WriteLine($"SmallestSurface is: {smallestSurface}");
 		return smallestSurface;
 	}
 
@@ -199,7 +198,7 @@ internal class ExcellentDungeon : Dungeon
 				}
 				door.roomB = null;
 			}
-			if (DEBUG_MODE) Console.WriteLine($"Added {distance} doors to make a hallway from roomA at {door.roomA.topLeft} to roomB at {roomB.topLeft}");
+			if (debugMode) Console.WriteLine($"Added {distance} doors to make a hallway from roomA at {door.roomA.topLeft} to roomB at {roomB.topLeft}");
 		}
 		else
 		{
@@ -216,7 +215,7 @@ internal class ExcellentDungeon : Dungeon
 				door.roomB = null;
 			}
 			
-			if (DEBUG_MODE) Console.WriteLine($"Added {distance} doors to make a hallway from roomA at {door.roomA.topLeft} to roomB at {roomB.topLeft}");
+			if (debugMode) Console.WriteLine($"Added {distance} doors to make a hallway from roomA at {door.roomA.topLeft} to roomB at {roomB.topLeft}");
 		}
 		if (lastDoor != null) lastDoor.roomB = roomB;
 	}
@@ -303,7 +302,7 @@ internal class ExcellentDungeon : Dungeon
 			door.roomA = room;
 			door.roomB = viableRoom;
 
-			if (DEBUG_MODE) Console.WriteLine($"Created horizontal door at {door.location} between roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
+			if (debugMode) Console.WriteLine($"Created horizontal door at {door.location} between roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
 		}
 
 		
@@ -328,7 +327,7 @@ internal class ExcellentDungeon : Dungeon
 			door.roomA = room;
 			door.roomB = viableRoom;
 			
-			if (DEBUG_MODE) Console.WriteLine($"Created vertical door at {door.location} between roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
+			if (debugMode) Console.WriteLine($"Created vertical door at {door.location} between roomA at {door.roomA.topLeft} and roomB at {door.roomB.topLeft}");
 		}
 	}
 }

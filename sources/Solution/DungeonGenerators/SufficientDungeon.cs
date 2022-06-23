@@ -22,13 +22,13 @@ internal class SufficientDungeon : Dungeon
 			
 		//Start room (Covers whole dungeon)
 		DivideRoom(new Room(new Rectangle(0, 0, size.Width, size.Height)));
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 
 		//Add doors and fix them if bad
 		foreach (Door door in doorsToBeAdded) TestDoor(door);
 		doorsToBeAdded.Clear();
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 		
 		//Assign the doors to the rooms, if the door doesn't have any rooms to get assigned to it gets deleted
@@ -40,17 +40,17 @@ internal class SufficientDungeon : Dungeon
 			if (door.roomB == null || door.roomA == null)
 			{
 				doorsToBeAdded.Remove(door);
-				if (DEBUG_MODE) Console.WriteLine($"Removed door {index} in doors");
+				if (debugMode) Console.WriteLine($"Removed door {index} in doors");
 			}
 			else
 			{
 				door.roomA?.doors.Add(door);
 				door.roomB?.doors.Add(door);
 
-				if (DEBUG_MODE) Console.WriteLine($"Assigned door {index} in doors to roomA at {door.roomA?.topLeft} and roomB at {door.roomB?.topLeft}");
+				if (debugMode) Console.WriteLine($"Assigned door {index} in doors to roomA at {door.roomA?.topLeft} and roomB at {door.roomB?.topLeft}");
 			}
 		}
-		if (DEBUG_MODE) Console.WriteLine("------------------------------------------------------");
+		if (debugMode) Console.WriteLine("------------------------------------------------------");
 
 	}
 	
@@ -68,7 +68,7 @@ internal class SufficientDungeon : Dungeon
 		else
 		{
 			doors.Add(door);
-			if (DEBUG_MODE) Console.WriteLine($"Tested door number {doors.Count-1} in doors at {door.location}");
+			if (debugMode) Console.WriteLine($"Tested door number {doors.Count-1} in doors at {door.location}");
 		}
 	}
 
@@ -107,7 +107,7 @@ internal class SufficientDungeon : Dungeon
 			maximum = room.area.Right - minimumRoomSize;
 			newPoint.X = random.Next(minimum, maximum);
 
-			if (DEBUG_MODE) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
+			if (debugMode) Console.WriteLine($"Dividing vertically at x = {newPoint.X}...");
 			
 			//Room1 (Left)
 			Redo(new Room(room.area with {Width = newPoint.X - room.area.X + 1}));
@@ -126,7 +126,7 @@ internal class SufficientDungeon : Dungeon
 			maximum = room.area.Bottom - minimumRoomSize;
 			newPoint.Y = random.Next(minimum, maximum);
 
-			if (DEBUG_MODE) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
+			if (debugMode) Console.WriteLine($"Dividing horizontally at y = {newPoint.Y}...");
 			
 			//Room1 (Top)
 			Redo(new Room(room.area with {Height = newPoint.Y - room.area.Y + 1}));
@@ -141,7 +141,7 @@ internal class SufficientDungeon : Dungeon
 		else
 		{
 			rooms.Add(room);
-			if (DEBUG_MODE) Console.WriteLine($"Created room at {room.topLeft} corner");
+			if (debugMode) Console.WriteLine($"Created room at {room.topLeft} corner");
 		}
 
 		void Redo(Room roomToBeRedone) => DivideRoom(roomToBeRedone);

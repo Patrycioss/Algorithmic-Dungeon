@@ -9,6 +9,7 @@ using Saxion.CMGT.Algorithms.sources.Assignment.NodeGraph;
 using Saxion.CMGT.Algorithms.sources.Assignment.PathFinding;
 using Saxion.CMGT.Algorithms.sources.Assignment.Tiles;
 using Saxion.CMGT.Algorithms.sources.Solution.DungeonGenerators;
+using Saxion.CMGT.Algorithms.sources.Solution.NodeGraphGenerators;
 using Saxion.CMGT.Algorithms.sources.Util;
 
 namespace Saxion.CMGT.Algorithms.sources
@@ -30,7 +31,7 @@ namespace Saxion.CMGT.Algorithms.sources
 		public const int SCALE = 30;
 		public const int MIN_ROOM_SIZE = 10;
 		public const bool CHECK_IF_COMPLETELY_CONNECTED = true;
-		public const bool DEBUG_MODE = true;
+		
 		
 
 		public AlgorithmsAssignment() : base(1080, 700, false, true, -1, -1, false) => Create();
@@ -54,13 +55,12 @@ namespace Saxion.CMGT.Algorithms.sources
 				dungeon.scale = SCALE;
 				
 				//Tell the dungeon to generate rooms and doors with the given MIN_ROOM_SIZE
-				dungeon.InternalGenerate(MIN_ROOM_SIZE,seed);
+				dungeon.InternalGenerate(MIN_ROOM_SIZE,seed, false);
 			}
 
 			//NodeGraph
-			//graph = new LowLevelNodeGraph(dungeon);
-
-			graph?.InternalGenerate();
+			graph = new HighLevelNodeGraph(dungeon);
+			graph?.InternalGenerate(true);
 
 			//TiledView
 			

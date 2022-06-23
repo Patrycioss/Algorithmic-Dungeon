@@ -41,6 +41,8 @@ internal abstract class NodeGraph : Canvas
 	private Pen _outlinePen = new Pen(Color.Black, 2.1f);
 	private Brush _defaultNodeColor = Brushes.CornflowerBlue;
 	private Brush _highlightedNodeColor = Brushes.Cyan;
+
+	protected bool debugMode;
 	
 	
 	/// <summary>
@@ -72,8 +74,9 @@ internal abstract class NodeGraph : Canvas
 	/// Trigger the node graph generation process, do not override this method,
 	/// but override generate (note the lower case) instead, calling AddConnection as required.
 	/// </summary>
-	public void InternalGenerate()
+	public void InternalGenerate(bool debugging = false)
 	{
+		debugMode = debugging;
 		Console.WriteLine(GetType().Name + ".Generate: Generating graph...");
 
 		//always remove all nodes before generating the graph, as it might have been generated previously

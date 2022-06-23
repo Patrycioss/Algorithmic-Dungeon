@@ -38,6 +38,8 @@ public abstract class Dungeon : Canvas
 
 
 	protected int minimumRoomSize;
+
+	protected bool debugMode;
 	
 	/**
 	 * Create empty dungeon instance of the specified size.
@@ -66,8 +68,9 @@ public abstract class Dungeon : Canvas
 	 * 
 	 * @param pMinimumRoomSize the minimum size that a room should have
 	 */
-	public virtual void InternalGenerate(int pMinimumRoomSize, int seed)
+	public virtual void InternalGenerate(int pMinimumRoomSize, int seed, bool debugging = false)
 	{
+		debugMode = debugging;
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Generating dungeon...");
 
 		rooms.Clear();

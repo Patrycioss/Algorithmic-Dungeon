@@ -13,10 +13,17 @@ internal class LowLevelNodeGraph : NodeGraph
 
 	protected override void Generate()
 	{
+		if (debugMode)
+		{
+			Console.WriteLine($"-------------------------");
+			Console.WriteLine($"Doing rooms");
+			Console.WriteLine($"-------------------------");
+		}
+		
 		//Add nodes to all tiles in the rooms
 		foreach (Room room in dungeon.rooms)
 		{
-			Console.WriteLine($"TL: {room.topLeft},TR: {room.topRight}, BL: {room.bottomLeft}, BR: {room.bottomRight}");
+			
 			
 			for (int i = room.topLeft.X + 1; i < room.topRight.X; i++)
 			{
@@ -24,13 +31,26 @@ internal class LowLevelNodeGraph : NodeGraph
 				{
 					Node node = new(GetPointCenter(new Point(i,j)));
 					nodes.Add(node);
+					if (debugMode) Console.WriteLine($"Generated node {node} at: {node.location}");
 					room.node ??= node;
 				}
 			}
 		}
 		
+		if (debugMode)
+		{
+			Console.WriteLine($"-------------------------");
+			Console.WriteLine($"Doing doors");
+			Console.WriteLine($"-------------------------");
+		}
+		
 		//Add nodes to doors
-		foreach (Door door in dungeon.doors) nodes.Add(new Node(GetDoorCenter(door), Node.OwnerType.Door));
+		foreach (Door door in dungeon.doors)
+		{
+			Node node = new Node(GetDoorCenter(door), Node.OwnerType.Door);
+			nodes.Add(node);
+			if (debugMode) Console.WriteLine($"Generated node {node} at {node.location}");
+		}
 
 		//Fixed so this is unnecessary
 		
@@ -48,6 +68,13 @@ internal class LowLevelNodeGraph : NodeGraph
 		 // }
 
 		int dScale = (int)dungeon.scale;
+		
+		if (debugMode)
+		{
+			Console.WriteLine($"-------------------------");
+			Console.WriteLine($"Adding connections");
+			Console.WriteLine($"-------------------------");
+		}
 
 		//Add connections when nodes are next to each other
 		for (int i = nodes.Count-1; i >= 0; i--)
@@ -65,6 +92,7 @@ internal class LowLevelNodeGraph : NodeGraph
 						if (nodeA.location.X + targetX * dScale == nodeB.location.X && nodeA.location.Y + targetY * dScale == nodeB.location.Y)
 						{
 							AddConnection(nodeA,nodeB);
+							if (debugMode) Console.WriteLine($"Made connection between node {nodeA} and node {nodeB}");
 						}
 					}
 				}
