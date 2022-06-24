@@ -34,4 +34,16 @@ The second version makes a node at every tile Morc should be able to walk. These
 ![LowLevelNodeGraph](https://user-images.githubusercontent.com/72610925/175546248-45a78ee0-c273-4998-a858-db3b2258e8b0.png)
 
 
+## Nodegraph Agents
+The nodegraph agents make Morc walk through the dungeon.
+
+The first version only allows Morc to walk to a node that's connected to his node.
+
+![ShittyAgent](https://user-images.githubusercontent.com/72610925/175547107-9401cf5f-1739-40be-ac7c-1b7a139503af.gif)
+
+The second version allows Morc to walk to any node he wants but he doesn't pathfind, he justs chooses a random node to go to each time that isn't the previous one.
+
+![RandomAgent](https://user-images.githubusercontent.com/72610925/175547256-2bffacf1-fca3-4776-8961-188afd63c563.gif)
+
+The third version handles Morcs movement by getting the path from a pathfinder...
 
