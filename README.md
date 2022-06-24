@@ -3,8 +3,7 @@
 This project was made for a course during my first year at University of Applied Sciences Saxion in Enschede for the algorithms course. 
 The code is based on the GXPEngine, an engine made by Saxion.
 
-
-This project features multiple versions of dungeon generators, nodegraph generators, nodegraph agents and pathfinders.
+###### (The imagery in this ReadME is all recorded by me)
 
 ## Dungeon Generators
 The dungeon gets generated through binary space partitioning, rooms get split up at random points until the rooms are too small to split up any further.
@@ -46,4 +45,32 @@ The second version allows Morc to walk to any node he wants but he doesn't pathf
 ![RandomAgent](https://user-images.githubusercontent.com/72610925/175547256-2bffacf1-fca3-4776-8961-188afd63c563.gif)
 
 The third version handles Morcs movement by getting the path from a pathfinder...
+
+
+## Pathfinders
+For pathfinding I implemented a couple of algorithms.
+
+The first one I implemented was DFS (depth first search) an algorithm that finds the shortest path by checking out all possible paths. Because of this it is really slow and doesn't work well with the second version of the nodegraph so for this one I switched to the first version. 
+
+![DFS path](https://user-images.githubusercontent.com/72610925/175549205-c2203a69-c882-4a3c-8b9f-accf16277a30.gif)
+![DFS pathfinding](https://user-images.githubusercontent.com/72610925/175549215-dbda743e-d076-4e97-85c6-3cb124e51f8e.gif)
+
+The second one is BFS (breadth first search) this algorithm is faster and stops checking when it reaches the end node which DFS doesn't. It searches by searching in an expanding circle around it until it finds the end node.
+
+![BFS path](https://user-images.githubusercontent.com/72610925/175550647-5c73918b-f0a0-45a2-a1bc-0d30d4df2c89.gif)
+![BFS pathfinding](https://user-images.githubusercontent.com/72610925/175550653-80dff6a6-5af0-4e3c-897c-c67295b69172.gif)
+
+The previous algorithms search for the shortest path in regards to the amount of nodes not the distance.
+This next algorithm does however, Dijkstra is an algorithm that generates a path based on the total physical distance from the start node to the end node.
+
+![Dijkstra path](https://user-images.githubusercontent.com/72610925/175552225-0bf48834-7d98-413c-b9f5-436c11ec45b9.gif)
+![Dijkstra pathfinding](https://user-images.githubusercontent.com/72610925/175552236-efb59334-2f8d-46ec-8c9a-5d12234620df.gif)
+
+The last and best algorithm is A* this is an algorithm that works like Dijkstra but instead of only taking the shortest route so far into account it also takes the distance to the end node in account which means a lot less nodes are checked in the process.
+
+![Astar path](https://user-images.githubusercontent.com/72610925/175553407-9fc896a9-3627-4777-a2cb-86c7dd3d1520.gif)
+![Astar pathfinding](https://user-images.githubusercontent.com/72610925/175553430-b47a6705-493d-4fe8-ba58-97ff5b1c1cfc.gif)
+
+
+
 
