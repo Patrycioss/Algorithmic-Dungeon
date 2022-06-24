@@ -33,7 +33,11 @@ internal class RecursivePathFinder : PathFinder
 	
 	private void CheckConnections(Node from, List<Node> prevNodes)
 	{
-		if (debugMode) Console.WriteLine($"CheckingNode: {from.id}");
+		if (debugMode)
+		{
+			AlgorithmsAssignment.DrawCross(from.location.X,from.location.Y);
+			Console.WriteLine($"CheckingNode: {from.id}");
+		}
 
 		if (AlgorithmsAssignment.DO_WONKY_STEP_BY_STEP)
 		{

@@ -164,7 +164,6 @@
     <Compile Include="sources\Solution\PathFinders\DijkstraPathFinder.cs" />
     <Compile Include="sources\Solution\PathFinders\RecursivePathFinder.cs" />
     <Compile Include="sources\Solution\TiledViewers\TiledDungeonView.cs" />
-    <Compile Include="sources\Solution\Timer.cs" />
     <Compile Include="sources\Util\Grid.cs" />
     <Compile Include="sources\Util\NodeLabelDrawer.cs" />
     <Compile Include="sources\Util\RectangleExtensions.cs" />

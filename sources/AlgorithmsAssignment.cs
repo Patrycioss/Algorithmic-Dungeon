@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Saxion.CMGT.Algorithms.GXPEngine;
+using Saxion.CMGT.Algorithms.GXPEngine.AddOns;
 using Saxion.CMGT.Algorithms.GXPEngine.OpenGL;
 using Saxion.CMGT.Algorithms.GXPEngine.Utils;
 using Saxion.CMGT.Algorithms.sources.Assignment.Agent;
@@ -29,6 +30,11 @@ namespace Saxion.CMGT.Algorithms.sources
 
 		//Required for assignment 3
 		private PathFinder pathFinder;
+		
+		
+		//Debug
+		private static readonly List<(Vec2, int)> Crosses = new();
+
 
 		//common settings
 		public const int SCALE = 15;
@@ -60,7 +66,7 @@ namespace Saxion.CMGT.Algorithms.sources
 			tiledView?.InternalGenerate(false);
 
 			//PathFinder
-			pathFinder = new AStarPathFinder(graph, dungeon, false);
+			pathFinder = new RecursivePathFinder(graph, dungeon, true);
 
 
 			//Agent
@@ -80,6 +86,19 @@ namespace Saxion.CMGT.Algorithms.sources
 
 		private void Update()
 		{
+			//Credit to Jelle :D
+			for (int i = 0; i < Crosses.Count; i++)
+			{
+				(Vec2 cross, int count) = Crosses[i];
+				Gizmos.DrawCross(cross.x, cross.y, 10, color: (uint) Color.Red.ToArgb());
+				if (count > currentFps*3)
+				{
+					Crosses.RemoveAt(i);
+					continue;
+				}
+				Crosses[i] = (cross, count + 1);
+			}
+		
 			if (Input.GetKeyDown(Key.SPACE))
 			{
 				ClearScreen();
@@ -104,6 +123,11 @@ namespace Saxion.CMGT.Algorithms.sources
 					gameObject.Destroy();
 				}	
 			}
+		}
+		
+		public static void DrawCross(float x, float y)
+		{
+			Crosses.Add((new Vec2(x, y), 0));
 		}
 	}
 }

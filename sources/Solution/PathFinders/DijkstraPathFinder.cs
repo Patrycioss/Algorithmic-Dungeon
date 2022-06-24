@@ -11,6 +11,12 @@ namespace Saxion.CMGT.Algorithms.sources.Solution.PathFinders;
 
 internal class DijkstraPathFinder : PathFinder
 {
+	private List<Node> nodesToCheck;
+	private List<Node> checkedNodes;
+	private Dictionary<Node, float> nodeDistances;
+
+
+	
 	public DijkstraPathFinder(NodeGraph nodeGraph, Dungeon pDungeon, bool debugging) : base(nodeGraph, pDungeon, debugging) {}
 
 	protected override List<Node> Generate(Node pFrom, Node pTo)
@@ -18,12 +24,11 @@ internal class DijkstraPathFinder : PathFinder
 		if (pTo == pFrom) return null;
 		if (pFrom.connections.Contains(pTo)) return new List<Node> {pTo, pFrom};
 
+		nodesToCheck = new List<Node>();
+		checkedNodes = new List<Node>();
+		nodeDistances = new Dictionary<Node, float>();
 		
 		List<Node> shortestPath = null;
-		Queue<Node> nodesToCheck = new Queue<Node>();
-		List<Node> checkedNodes = new List<Node>();
-		Dictionary<Node, Node> childParents = new Dictionary<Node, Node>();
-		Dictionary<Node, float> nodeDistances = new Dictionary<Node, float>();
 		
 		int nodesExpanded = 0;
 		
@@ -33,15 +38,20 @@ internal class DijkstraPathFinder : PathFinder
 		checkedNodes.Add(pFrom);
 
 		//Start with pFrom
-		nodesToCheck.Enqueue(pFrom);
+		nodesToCheck.Add(pFrom);
 		
 		while (nodesToCheck.Count > 0)
 		{
-			Node node = nodesToCheck.Dequeue();
+			Node node = nodesToCheck[0];
+			nodesToCheck.RemoveAt(0);
 			
 			//Info
 			nodesExpanded++;
-			if (debugMode) Console.WriteLine($"{node.id} has value: {nodeDistances[node]}");
+			if (debugMode)
+			{
+				Console.WriteLine($"{node.id} has value: {nodeDistances[node]}");
+				AlgorithmsAssignment.DrawCross(node.location.X,node.location.Y);
+			}
 			//
 
 			if (AlgorithmsAssignment.DO_WONKY_STEP_BY_STEP)
@@ -58,7 +68,7 @@ internal class DijkstraPathFinder : PathFinder
 				if (value < nodeDistances[connection]) nodeDistances[connection] = value;
 
 				if (checkedNodes.Contains(connection)) continue;
-				if (!childParents.ContainsKey(connection)) childParents.Add(connection, node);
+				if (!nodesToCheck.Contains(connection)) nodesToCheck.Add(connection);
 
 				checkedNodes.Add(connection);
 
@@ -74,7 +84,7 @@ internal class DijkstraPathFinder : PathFinder
 
 						if (debugMode) Console.WriteLine($"Child: {child.id}, value: {nodeDistances[child]}");
 						shortestPath.Add(child);
-
+						
 						foreach (Node newConnection in child.connections)
 						{
 							if (newConnection == pFrom)
@@ -87,8 +97,11 @@ internal class DijkstraPathFinder : PathFinder
 						}
 						if (bestConnection != null) GetParent(bestConnection);
 					}
+					nodesToCheck.Clear();
+					break;
 				}
-				else nodesToCheck.Enqueue(connection);
+				if (debugMode) Console.WriteLine(nodesToCheck.Count);
+				SortNodesToCheck();
 			}
 		}
 
@@ -100,8 +113,25 @@ internal class DijkstraPathFinder : PathFinder
 		return shortestPath;
 	}
 
-	private static float GetDistanceFromNodeToNode(Node nodeA, Node nodeB)
+	private static float GetDistanceFromNodeToNode(Node nodeA, Node nodeB) => 
+		Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2));
+
+	private void SortNodesToCheck()
 	{
-		return Mathf.Sqrt(Mathf.Pow(nodeA.location.X - nodeB.location.X, 2) + Mathf.Pow(nodeA.location.Y - nodeB.location.Y, 2));
+		for (int i = nodesToCheck.Count - 1; i >= 0; i--)
+		{
+			for (int j = i - 1; j >= 0; j--)
+			{
+				float iDistance = nodeDistances[nodesToCheck[i]];
+				float jDistance = nodeDistances[nodesToCheck[j]];
+				Node tempI = nodesToCheck[i];
+			
+				if (iDistance < jDistance)
+				{
+					nodesToCheck[i] = nodesToCheck[j];
+					nodesToCheck[j] = tempI;
+				}
+			}
+		}
 	}
 }

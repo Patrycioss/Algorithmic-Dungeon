@@ -48,6 +48,8 @@ internal class AStarPathFinder : PathFinder
 			{
 				Console.WriteLine($"---------------");
 				Console.WriteLine($"Checking Node: {node} with heuristic: {nodeInformation[node].fCost}");
+				
+				AlgorithmsAssignment.DrawCross(node.location.X,node.location.Y);
 			}
 			
 			if (AlgorithmsAssignment.DO_WONKY_STEP_BY_STEP)
@@ -96,7 +98,7 @@ internal class AStarPathFinder : PathFinder
 				//Debug
 				if (debugMode) Console.WriteLine($"Connection with id: {connection} now has heuristic {nodeInformation[connection].fCost}");
 
-				if (!nodeInformation[connection].visited) nodesToCheck.Add(connection);
+				if (!nodeInformation[connection].visited && !nodesToCheck.Contains(connection)) nodesToCheck.Add(connection);
 			}
 			
 			SortNodesToCheck();
@@ -152,17 +154,6 @@ internal class AStarPathFinder : PathFinder
 					nodesToCheck[i] = nodesToCheck[j];
 					nodesToCheck[j] = tempI;
 				}
-				// else if (Math.Abs(iHeuristic - jHeuristic) < 0.001f)
-				// {
-				// 	float iDistanceToEnd = nodeInformation[nodesToCheck[i]].distanceToEnd;
-				// 	float jDistanceToEnd = nodeInformation[nodesToCheck[j]].distanceToEnd;
-				//
-				// 	if (iDistanceToEnd < jDistanceToEnd)
-				// 	{
-				// 		nodesToCheck[i] = nodesToCheck[j];
-				// 		nodesToCheck[j] = tempI;
-				// 	}
-				// }
 			}
 		}
 		

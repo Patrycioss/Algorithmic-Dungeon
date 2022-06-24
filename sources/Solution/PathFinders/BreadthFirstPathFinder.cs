@@ -29,7 +29,12 @@ internal class BreadthFirstPathFinder : PathFinder
 			Node node = nodesToCheck.Dequeue();
 			checkedNodes.Add(node);
 
-			if (debugMode) Console.WriteLine($"Checking Node: {node.id}");
+
+			if (debugMode)
+			{
+				Console.WriteLine($"Checking Node: {node.id}");
+				AlgorithmsAssignment.DrawCross(node.location.X,node.location.Y);
+			}
 
 			if (AlgorithmsAssignment.DO_WONKY_STEP_BY_STEP)
 			{
