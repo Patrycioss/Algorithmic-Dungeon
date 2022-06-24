@@ -22,3 +22,16 @@ In the third and last version of the generator the rooms get shrinked down makin
 ![ExcellentDungeon](https://user-images.githubusercontent.com/72610925/175541078-da080a73-c234-45cd-a22f-b248de1c89d7.gif)
 
 
+## Nodegraph Generators
+The nodegraphs are generated to provide a path for "Morc the Orc" to explore the dungeon. 
+
+The first version of this graph only makes a single node in the center of each room and one at the doors. These nodes are then connected appropriately. This version doesn't work with the third version of the dungeon generator so we use the second version. 
+
+![HighLevelNodeGraph](https://user-images.githubusercontent.com/72610925/175546079-7594f637-2950-4b2e-8713-1ae653c1d23d.png)
+
+The second version makes a node at every tile Morc should be able to walk. These nodes are then connected appropriately diagonally, horizontally and vertically. 
+
+![LowLevelNodeGraph](https://user-images.githubusercontent.com/72610925/175546248-45a78ee0-c273-4998-a858-db3b2258e8b0.png)
+
+
+
